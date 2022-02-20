@@ -1,0 +1,52 @@
+﻿@page "/createRoom"
+@using StoryPointEstimatorBlazorApp.Models
+
+<style>
+    .inputArea{
+        text-align : center;
+    }
+    .inputText{
+        background-color: #EDEDED;
+        display:inline-block;
+        width:300px;
+        padding-left:30px;
+        padding-right:30px;
+        padding-top:30px;
+        padding-bottom:30px;
+        margin:10px;
+    }
+</style>
+
+<div class="inputArea">
+    <div class="inputText">
+        <EditForm Model="@newRoomModel" OnInvalidSubmit="@insertData">
+            <ObjectGraphDataAnnotationsValidator />
+
+            <div class="form-group">
+                <label for="roomName">Enter a room name: </label>
+                <InputText id="roomName" Class="form-control" @bind-Value="newRoomModel.roomName"/>
+                <ValidationMessage For="@(() => newRoomModel.roomName)" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Room</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    private DisplayRoomModel newRoomModel = new DisplayRoomModel();
+
+
+
+    //TODO When database is finished need to make sure generated code is unique
+    private int createRoomCode()
+    {
+        Random rand = new Random();
+        return rand.Next(1000, 10000); //generates a random room code between 1000 and 9999
+    }
+
+    private async Task insertData(){
+        //TODO Add data to newRoomModel and update db 
+    }
+}
