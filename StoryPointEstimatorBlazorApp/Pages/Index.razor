@@ -1,9 +1,44 @@
 ﻿@page "/"
+<style>
+    
+    .room-buttons {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+        height: 100%;
+        display: -ms-flexbox;
+        flex-direction: row;
+        padding: 17%;
+        margin: auto;
+    }
 
-<PageTitle>Index</PageTitle>
+    .room-buttons > a, .room-buttons > a:visited {
+        text-decoration: none;
+        color: whitesmoke;
+        background-color: #4B27FE;
+        border-radius: 50%;
+        padding: 20%;
+        margin: auto;
+        width: 32px;
+        height: 32px;
+        font-size: x-large;
+    }
 
-<h1>Hello, world!</h1>
+    .room-buttons > a:hover, .room-buttons > a:active {
+        background-color: #4A8FFD;
+    }
 
-Welcome to your new app.
+    #join-button {
+        padding: 10%;
+        height: 10px;
+        width: 10px;
+    }
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+</style>
+
+<div class="room-buttons">
+    <a href="CreateRoom">Create Room</a>
+    <a href="aboutUs" id="join-button">Join Room</a>
+</div>
+
+

@@ -85,7 +85,7 @@ a, .btn-link {
 
 
 .topbar-link, .topbar-link:visited {
-    color: #9db7df;
+    color: whitesmoke;
     text-decoration: none;
     background-color: #4B27FE;
     border-radius: 50%;
@@ -121,4 +121,5 @@ a, .btn-link {
 
 .content {
     background-image: linear-gradient(to bottom right, #75A9FC,#4A8FFD,#0967FD,#024EC6);
+    height: 100%
 }
