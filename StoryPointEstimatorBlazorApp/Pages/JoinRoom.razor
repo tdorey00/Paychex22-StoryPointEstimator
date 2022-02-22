@@ -1,4 +1,4 @@
-﻿@page "/createRoom"
+﻿@page "/joinRoom"
 @using StoryPointEstimatorBlazorApp.Models
 <style>
     .inputArea{
@@ -19,17 +19,16 @@
     }
 </style>
 
-
 <div class="inputArea">
     <div class="inputText">
-        <EditForm Model="@newRoomModel" OnValidSubmit="@insertData">
-            <ObjectGraphDataAnnotationsValidator />
+         <EditForm Model="@newRoomModel" OnValidSubmit="@insertData">
+             <ObjectGraphDataAnnotationsValidator />
 
-            <div class = "inputSpacer">
+             <div class = "inputSpacer">
                 <div class="form-group">
-                    <label for="roomName">Enter a room name: </label>
-                    <InputText id="roomName" Class="form-control" @bind-Value="newRoomModel.roomName"/>
-                    <ValidationMessage For="@(() => newRoomModel.roomName)" />
+                    <label for="roomCode">Enter a room code: </label>
+                    <InputNumber id="roomCode" Class="form-control" @bind-Value="newRoomModel.roomId"/>
+                    <ValidationMessage For="@(() => newRoomModel.roomId)" />
                 </div>
             </div>
 
@@ -50,20 +49,15 @@
 
             <button type="submit" class="btn btn-primary">Create Room</button>
             <a class="btn btn-primary" href="/">Cancel</a>
-        </EditForm>
+
+         </EditForm>
     </div>
 </div>
 
 @code {
 
-    private DisplayRoomModel newRoomModel = new DisplayRoomModel();
+     private DisplayRoomModel newRoomModel = new DisplayRoomModel();
 
-    //TODO When database is finished need to make sure generated code is unique
-    private int createRoomCode()
-    {
-        Random rand = new Random();
-        return rand.Next(1000, 10000); //generates a random room code between 1000 and 9999
-    }
     //TODO When database is finished need to make sure generated code is unique
     private int createUserId()
     {
@@ -71,7 +65,7 @@
         return rand.Next(1000, 10000); //generates a random user ID between 1000 and 9999
     }
 
-    private async Task insertData(){
+     private async Task insertData(){
         //TODO Add data to newRoomModel and update db 
     }
 }
