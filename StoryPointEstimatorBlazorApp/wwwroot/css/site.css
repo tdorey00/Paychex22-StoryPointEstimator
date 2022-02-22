@@ -1,24 +1,5 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-/*
-html {
-    font-size: 14px;
-}
 
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
-
-html {
-    position: relative;
-    min-height: 100%;
-}
-
-body {
-    margin-bottom: 60px;
-}
-*/
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -85,19 +66,18 @@ a, .btn-link {
 
 
 .topbar-link, .topbar-link:visited {
-    color: whitesmoke;
+    color: red;
     text-decoration: none;
-    background-color: #4B27FE;
+    background-color: #4A8FFD;
     border-radius: 50%;
     transition: transform .2s;
     padding: 8px;
 }
-
 .topbar-link:hover, .topbar-link:active {
     color: whitesmoke;
-    background-color: #4A8FFD;
+    background-color: #4B27FE;
     transform: scale(1.1);
-}
+ }
 
 #toprow {
     background-color: #08FED5;
@@ -121,5 +101,12 @@ a, .btn-link {
 
 .content {
     background-image: linear-gradient(to bottom right, #75A9FC,#4A8FFD,#0967FD,#024EC6);
-    height: 100%
+    height: 100vh;
+    width: 100vw;
+}
+
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
 }
