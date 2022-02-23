@@ -8,8 +8,7 @@ namespace StoryPointEstimatorBlazorApp.Models
         [MinLength(2, ErrorMessage = "Room name is too short.")]
         public string roomName { get; set; }
         [Required]
-        [MaxLength(4, ErrorMessage = "Room code is too long.")] //join room
-        [MinLength(4, ErrorMessage = "Room code is too short.")] //join room
+        [Range(1000, 9999, ErrorMessage = "Room Code invalid (1000-9999).")]
         public int roomId { get; set; }
         
         //Potential Fix instead of using two data models, using redundant models where each instance of the user stores all room info
