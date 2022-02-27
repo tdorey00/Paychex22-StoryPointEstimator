@@ -1,5 +1,9 @@
 ﻿@page "/createRoom"
 @using StoryPointEstimatorBlazorApp.Models
+@using SqlDataAccessLib
+@using SQLDataAccessLibrary.Models
+@inject IRoomDataAccess _dB
+
 <style>
     .inputArea{
         text-align : center;
@@ -22,29 +26,29 @@
 
 <div class="inputArea">
     <div class="inputText">
-        <EditForm Model="@newRoomModel" OnValidSubmit="@insertData">
+        <EditForm Model="@newGroupModel" OnValidSubmit="@insertData">
             <ObjectGraphDataAnnotationsValidator />
 
             <div class = "inputSpacer">
                 <div class="form-group">
                     <label for="roomName">Enter a room name: </label>
-                    <InputText id="roomName" Class="form-control" @bind-Value="newRoomModel.roomName"/>
-                    <ValidationMessage For="@(() => newRoomModel.roomName)" />
+                    <InputText id="roomName" Class="form-control" @bind-Value="newGroupModel.roomName"/>
+                    <ValidationMessage For="@(() => newGroupModel.roomName)" />
                 </div>
             </div>
 
             <div class = "inputSpacer">
                 <div class="form-group">
                     <label for="userName">Enter a Username:</label>
-                    <InputText id="userName" class="form-control" @bind-Value="newRoomModel.userName"/>
-                    <ValidationMessage For="@(() => newRoomModel.userName)" />
+                    <InputText id="userName" class="form-control" @bind-Value="newGroupModel.userName"/>
+                    <ValidationMessage For="@(() => newGroupModel.userName)" />
                 </div>
             </div>
 
             <div class = "inputSpacer">
                 <div class="form-group">
                     <label for="isAdmin">Are you a facilitator?</label>
-                    <input type="checkbox" id="isAdmin" @bind="newRoomModel.isAdmin">
+                    <input type="checkbox" id="isAdmin" @bind="newGroupModel.isAdmin">
                 </div>
             </div>
 
@@ -52,23 +56,79 @@
             <a class="btn btn-primary" href="/">Cancel</a>
         </EditForm>
     </div>
+    @*EXAMPLE DATA OUTPUT FOR TESTING*@
+    @if(newGroupModel.roomId == 0)// if not loaded, works because room data is loaded last
+    {
+        <p>loading...</p>
+    }
+    else
+    {
+        <p>userId: @newGroupModel.userId</p>
+        <br />
+        <p>roomId: @newGroupModel.roomId</p>
+        <br />
+        <p>userName: @newGroupModel.userName</p>
+        <br />
+        <p>roomName: @newGroupModel.roomName</p>
+        <br />
+        <p>isAdmin: @newGroupModel.isAdmin</p>
+    }
 </div>
 
 @code {
+    private userModel user = new userModel();
+    private roomModel room = new roomModel();
+    private List<int> userIdList = new List<int>();
+    //ROOM ID LIST 
+    private DisplayGroupedModel newGroupModel = new DisplayGroupedModel();
+    //TESTING OUTPUT + DATABASE GRAB METHODS
+    protected override async Task OnInitializedAsync()
+    {
+        user = await _dB.GetUserData(6969);
+        room = await _dB.GetRoomData(1234);
+        newGroupModel = new DisplayGroupedModel
+            {
+                roomId = room.roomId,                   //EXAMPLE STUFF DELETE AFTER WEDNESDAY
+                userId = user.userId,
+                userName = user.userName,
+                isAdmin = user.isAdmin,
+                roomName = room.roomName
 
-    private DisplayRoomModel newRoomModel = new DisplayRoomModel();
+            };
+
+        //SAVE THIS STUFF
+        userIdList =  await _dB.GetUserIds(); //NEEDS TO BE DONE SYNCHRONOUSLY
+        //FILL ROOM ID LIST
+    }
 
     //TODO When database is finished need to make sure generated code is unique
     private int createRoomCode()
     {
         Random rand = new Random();
-        return rand.Next(1000, 10000); //generates a random room code between 1000 and 9999
+        return rand.Next(1000, 10000); //generates a random user ID between 1000 and 9999
     }
     //TODO When database is finished need to make sure generated code is unique
     private int createUserId()
     {
         Random rand = new Random();
-        return rand.Next(1000, 10000); //generates a random user ID between 1000 and 9999
+        int possibleId = rand.Next(1000, 10000); //generates a random room code between 1000 and 9999
+        bool unique = false;
+        while (!unique)
+        {
+            foreach(int id in userIdList){
+                if(id == possibleId)
+                {
+                    possibleId = rand.Next(1000, 10000); //randomize again                          //POSSIBLE SOLUTION NOT DONE.
+                    unique = false;                                                                 //NEED TO PULL LIST SYNCHRONOUSLY PROBABLY GOING TO HAVE TO ASK AUSTIN 
+                    break;  //if ids match recompare entire list
+                }
+                else
+                {
+                    unique = true;
+                }
+            }
+        }
+        return possibleId;
     }
 
     private async Task insertData(){
