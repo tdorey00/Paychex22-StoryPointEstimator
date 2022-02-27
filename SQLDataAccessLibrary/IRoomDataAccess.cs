@@ -7,5 +7,6 @@ namespace SqlDataAccessLib
         public Task<userModel> GetUserData(int userId);
         public Task<roomModel> GetRoomData(int roomId);
         Task<List<int>> GetUserIds();
+        Task<List<int>> GetRoomIds();
     }
 }
