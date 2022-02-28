@@ -34,7 +34,7 @@
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
                             <MudTextField Mask="@mask" Label="Username" 
-                      @bind-Value="newGroupedModel.userName"  Variant="@Variant.Outlined" Clearable />
+                      @bind-Value="newGroupModel.userName"  Variant="@Variant.Outlined" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
@@ -45,14 +45,14 @@
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
                             <MudTextField Mask="@mask2" Label="Room Name" 
-                      @bind-Value="newGroupedModel.roomName"  Variant="@Variant.Outlined" Clearable />
+                      @bind-Value="newGroupModel.roomName"  Variant="@Variant.Outlined" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
             </div>
 
             <div class = "inputSpacer">
-                <MudCheckBox @bind-Checked="newGroupedModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
+                <MudCheckBox @bind-Checked="newGroupModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
             </div>
 
             <button type="submit" class="btn btn-primary">Create Room</button>

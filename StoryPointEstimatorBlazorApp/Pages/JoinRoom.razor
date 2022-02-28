@@ -21,7 +21,7 @@
 
 <div class="inputArea">
     <div class="inputText">
-         <EditForm Model="@newRoomModel" OnValidSubmit="@insertData">
+         <EditForm Model="@newGroupModel" OnValidSubmit="@insertData">
              <ObjectGraphDataAnnotationsValidator />
 
              <div class = "inputSpacer">
@@ -29,7 +29,7 @@
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
                             <MudTextField Mask="@mask" Label="Username" 
-                      @bind-Value="newGroupedModel.userName"  Variant="@Variant.Outlined" Clearable />
+                      @bind-Value="newGroupModel.userName"  Variant="@Variant.Outlined" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
@@ -40,14 +40,14 @@
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
                             <MudTextField Mask="@mask2" Label="Room Code" 
-                      @bind-Value="newGroupedModel.roomId"  Variant="@Variant.Outlined" Clearable />
+                      @bind-Value="newGroupModel.roomId"  Variant="@Variant.Outlined" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
             </div>
 
             <div class = "inputSpacer">
-                <MudCheckBox @bind-Checked="newGroupedModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
+                <MudCheckBox @bind-Checked="newGroupModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
             </div>
 
             <button type="submit" class="btn btn-primary">Join Room</button>
@@ -63,7 +63,7 @@
     IMask mask = new BlockMask(delimiters:" ", new Block('a', 1,50));
     IMask mask2 = new BlockMask(delimiters:" ", new Block('a', 1,4));
     //Datamodels
-    private DisplayGroupedModel newGroupedModel = new DisplayGroupedModel();
+    private DisplayGroupedModel newGroupModel = new DisplayGroupedModel();
 
     //TODO When database is finished need to make sure generated code is unique
     private int createUserId()
