@@ -36,5 +36,11 @@ namespace SqlDataAccessLib
             return _dB.LoadListData<int, dynamic>(sql, new { });
         }
 
+        public Task<List<int>> GetRoomIds()
+        {
+            string sql = "select roomId from dbo.roomTable";
+            return _dB.LoadListData<int, dynamic>(sql, new { });
+        }
+
     }
 }
