@@ -1,43 +1,13 @@
 ﻿@page "/"
-<style>
-    
-    .room-buttons {
-        text-align: center;
-        margin-top: 10px;
-        display: -ms-flexbox;
-        flex-direction: row;
-        margin: auto;
-        padding-top: 20%;
-    }
 
-    .room-buttons > a, .room-buttons > a:visited {
-        text-decoration: none;
-        color: whitesmoke;
-        background-color: #024EC6;
-        border-radius: 50%;
-        padding: 20%;
-        margin: auto;
-        width: 32px;
-        height: 32px;
-        font-size: 48px;
-    }
+    <div class=buttons-container>
+        
+        <MudButton Link="CreateRoom" Variant="Variant.Filled"  Class="buttons" Style="width: 300px; height: 300px;">
+        Create Room</MudButton>
+        
+        <MudButton Link="JoinRoom" Variant="Variant.Filled" Class="buttons" Style="font-size: 24px;">
+        Join Room</MudButton>
+    </div>
 
-    .room-buttons > a:hover, .room-buttons > a:active {
-        background-color: #4B27FE;
-    }
-
-    #join-button {
-        padding: 10%;
-        height: 10px;
-        width: 10px;
-    }
-
-
-</style>
-
-<div class="room-buttons">
-    <a href="createRoom">Create Room</a>
-    <a href="joinRoom" id="join-button">Join Room</a>
-</div>
 
 

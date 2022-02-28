@@ -26,28 +26,31 @@
 
              <div class = "inputSpacer">
                 <div class="form-group">
-                    <label for="roomCode">Enter a room code: </label>
-                    <InputNumber id="roomCode" Class="form-control" @bind-Value="newRoomModel.roomId"/>
-                    <ValidationMessage For="@(() => newRoomModel.roomId)" />
+                    <MudGrid Class="justify-space-between" Style="max-width: 400px;">
+                        <MudItem xs="12">
+                            <MudTextField Mask="@mask" Label="Username" 
+                      @bind-Value="text"  Variant="@Variant.Outlined" Clearable />
+                        </MudItem>
+                    </MudGrid>
                 </div>
             </div>
 
             <div class = "inputSpacer">
                 <div class="form-group">
-                    <label for="userName">Enter a Username:</label>
-                    <InputText id="userName" class="form-control" @bind-Value="newRoomModel.userName"/>
-                    <ValidationMessage For="@(() => newRoomModel.userName)" />
+                    <MudGrid Class="justify-space-between" Style="max-width: 400px;">
+                        <MudItem xs="12">
+                            <MudTextField Mask="@mask2" Label="Room Code" 
+                      @bind-Value="text"  Variant="@Variant.Outlined" Clearable />
+                        </MudItem>
+                    </MudGrid>
                 </div>
             </div>
 
             <div class = "inputSpacer">
-                <div class="form-group">
-                    <label for="isAdmin">Are you a facilitator?</label>
-                    <input type="checkbox" id="isAdmin" @bind="newRoomModel.isAdmin">
-                </div>
+                <MudCheckBox @bind-Checked="@isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
             </div>
 
-            <button type="submit" class="btn btn-primary">Create Room</button>
+            <button type="submit" class="btn btn-primary">Join Room</button>
             <a class="btn btn-primary" href="/">Cancel</a>
 
          </EditForm>
@@ -56,7 +59,13 @@
 
 @code {
 
-     private DisplayRoomModel newRoomModel = new DisplayRoomModel();
+    //Input Masks
+    public string text { get; set; }
+    IMask mask = new BlockMask(delimiters:" ", new Block('a', 1,50));
+    IMask mask2 = new BlockMask(delimiters:" ", new Block('a', 1,4));
+    public bool isAdmin { get; set; } = true;
+
+    private DisplayRoomModel newRoomModel = new DisplayRoomModel();
 
     //TODO When database is finished need to make sure generated code is unique
     private int createUserId()
