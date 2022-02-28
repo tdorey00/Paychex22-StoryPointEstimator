@@ -78,10 +78,10 @@
 @code {
     private userModel user = new userModel();
     private roomModel room = new roomModel();
-    private List<int> userIdList = new List<int>(); // user id list
+    private List<int> userIdList = new List<int>(); 
     private List<int> roomIdList = new List<int>();
-    //ROOM ID LIST 
     private DisplayGroupedModel newGroupModel = new DisplayGroupedModel();
+
     //TESTING OUTPUT + DATABASE GRAB METHODS
     protected override async Task OnInitializedAsync()
     {
@@ -99,7 +99,7 @@
 
         //SAVE THIS STUFF
         userIdList =  await _dB.GetUserIds(); //NEEDS TO BE DONE SYNCHRONOUSLY
-                                             //FILL ROOM ID LIST
+        roomIdList = await _dB.GetRoomIds(); 
     }
 
     //TODO When database is finished need to make sure generated code is unique
