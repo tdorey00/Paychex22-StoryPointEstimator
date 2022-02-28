@@ -1,4 +1,4 @@
-﻿@page "/createRoom"
+@page "/createRoom"
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
@@ -31,25 +31,28 @@
 
             <div class = "inputSpacer">
                 <div class="form-group">
-                    <label for="roomName">Enter a room name: </label>
-                    <InputText id="roomName" Class="form-control" @bind-Value="newGroupModel.roomName"/>
-                    <ValidationMessage For="@(() => newGroupModel.roomName)" />
+                    <MudGrid Class="justify-space-between" Style="max-width: 400px;">
+                        <MudItem xs="12">
+                            <MudTextField Mask="@mask" Label="Username" 
+                      @bind-Value="newGroupedModel.userName"  Variant="@Variant.Outlined" Clearable />
+                        </MudItem>
+                    </MudGrid>
                 </div>
             </div>
 
             <div class = "inputSpacer">
                 <div class="form-group">
-                    <label for="userName">Enter a Username:</label>
-                    <InputText id="userName" class="form-control" @bind-Value="newGroupModel.userName"/>
-                    <ValidationMessage For="@(() => newGroupModel.userName)" />
+                    <MudGrid Class="justify-space-between" Style="max-width: 400px;">
+                        <MudItem xs="12">
+                            <MudTextField Mask="@mask2" Label="Room Name" 
+                      @bind-Value="newGroupedModel.roomName"  Variant="@Variant.Outlined" Clearable />
+                        </MudItem>
+                    </MudGrid>
                 </div>
             </div>
 
             <div class = "inputSpacer">
-                <div class="form-group">
-                    <label for="isAdmin">Are you a facilitator?</label>
-                    <input type="checkbox" id="isAdmin" @bind="newGroupModel.isAdmin">
-                </div>
+                <MudCheckBox @bind-Checked="newGroupedModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
             </div>
 
             <button type="submit" class="btn btn-primary">Create Room</button>
@@ -76,11 +79,18 @@
 </div>
 
 @code {
+
+    //Input Masks
+    public string text { get; set; }
+    IMask mask = new BlockMask(delimiters:" ", new Block('a', 1,50));
+    IMask mask2 = new BlockMask(delimiters: " ", new Block('a', 1, 100));
+    //Data Models
     private userModel user = new userModel();
     private roomModel room = new roomModel();
     private List<int> userIdList = new List<int>(); 
     private List<int> roomIdList = new List<int>();
     private DisplayGroupedModel newGroupModel = new DisplayGroupedModel();
+
 
     //TESTING OUTPUT + DATABASE GRAB METHODS
     protected override async Task OnInitializedAsync()
@@ -101,6 +111,9 @@
         userIdList =  await _dB.GetUserIds(); //NEEDS TO BE DONE SYNCHRONOUSLY
         roomIdList = await _dB.GetRoomIds(); 
     }
+
+
+
 
     //TODO When database is finished need to make sure generated code is unique
     private int createRoomCode()
