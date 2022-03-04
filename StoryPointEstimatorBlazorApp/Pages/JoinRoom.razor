@@ -11,7 +11,9 @@
         padding-right:30px;
         padding-top:30px;
         padding-bottom:30px;
-        margin:10px;
+        margin:150px;
+        max-width: 265px;
+        min-width: 265px;
     }
     .inputSpacer{
         padding-top:10px;
@@ -27,9 +29,9 @@
              <div class = "inputSpacer">
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
-                        <MudItem xs="12">
-                            <MudTextField Mask="@mask" Label="Username" 
-                      @bind-Value="newGroupModel.userName"  Variant="@Variant.Outlined" Clearable />
+                        <MudItem xs="12"> 
+                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(MaxCharacters))" Mask="@mask" Label="Username" 
+                      @bind-Value="newGroupModel.userName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
@@ -40,7 +42,7 @@
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
                             <MudTextField Mask="@mask2" Label="Room Code" 
-                      @bind-Value="newGroupModel.roomId"  Variant="@Variant.Outlined" Clearable />
+                      @bind-Value="newGroupModel.roomId"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
@@ -60,8 +62,17 @@
 @code {
 
     //Input Masks
-    IMask mask = new BlockMask(delimiters:" ", new Block('a', 1,50));
-    IMask mask2 = new BlockMask(delimiters:" ", new Block('a', 1,4));
+    
+    IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
+    IMask mask2 = new BlockMask(delimiters:" ", new Block('0', 1,4));
+
+    //Max Character Length
+        private IEnumerable<string> MaxCharacters(string ch)
+    {
+        if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
+            yield return "Too many characters";
+    }
+
     //Datamodels
     private DisplayGroupedModel newGroupModel = new DisplayGroupedModel();
 
