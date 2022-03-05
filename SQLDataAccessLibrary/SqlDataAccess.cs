@@ -31,8 +31,8 @@ namespace SqlDataAccessLib
                 return data.First<T>();
             }
         }
-        //Returns a list of Rows from a table
-        public async Task<List<T>> LoadListData<T, U>(string sql, U parameters)
+        //Returns a list of Rows from a table Asynchronously 
+        public async Task<List<T>> LoadListDataAsync<T, U>(string sql, U parameters)
         {
             string connectionString = _config.GetConnectionString(ConnectionStringName);
 
@@ -42,7 +42,30 @@ namespace SqlDataAccessLib
                 return data.ToList<T>();
             }
         }
-        public async Task SaveData<T>(string sql, T parameters)
+
+        //Returns a list of Rows from a table Synchrously 
+        public List<T> LoadListDataSync<T, U>(string sql, U parameters)
+        {
+            string connectionString = _config.GetConnectionString(ConnectionStringName);
+
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                var data = connection.Query<T>(sql, parameters);
+                return data.ToList<T>();
+            }
+        }
+        //Saves data to dB synchronously 
+        public void SaveDataSync<T>(string sql, T parameters)
+        {
+            string connectionString = _config.GetConnectionString(ConnectionStringName);
+
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(sql, parameters);
+            }
+        }
+        //saves data to Db asynchronously 
+        public async Task SaveDataAsync<T>(string sql, T parameters)
         {
             string connectionString = _config.GetConnectionString(ConnectionStringName);
 

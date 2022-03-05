@@ -61,23 +61,6 @@
             <a class="btn btn-primary" href="/">Cancel</a>
         </EditForm>
     </div>
-    @*EXAMPLE DATA OUTPUT FOR TESTING*@
-    @if(newGroupModel.roomId == 0)// if not loaded, works because room data is loaded last
-    {
-@*        <p>loading...</p>
-*@    }
-    else
-    {
-@*        <p>userId: @newGroupModel.userId</p>
-        <br />
-        <p>roomId: @newGroupModel.roomId</p>
-        <br />
-        <p>userName: @newGroupModel.userName</p>
-        <br />
-        <p>roomName: @newGroupModel.roomName</p>
-        <br />
-        <p>isAdmin: @newGroupModel.isAdmin</p>*@
-    }
 </div>
 
 @code {
@@ -88,50 +71,24 @@
     IMask mask2 = new RegexMask(@"^[ a-zA-Z0-9_-]+$");
 
     //Max Character Length
-        private IEnumerable<string> MaxCharacters(string ch)
+    private IEnumerable<string> MaxCharacters(string ch)
     {
         if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
             yield return "Too many characters";
     }
 
     //Data Models
-    private userModel user = new userModel();
-    private roomModel room = new roomModel();
     private List<int> userIdList = new List<int>(); 
     private List<int> roomIdList = new List<int>();
     private DisplayGroupedModel newGroupModel = new DisplayGroupedModel();
 
-
-    //TESTING OUTPUT + DATABASE GRAB METHODS
-    protected override async Task OnInitializedAsync()
-    {
-        //user = await _dB.GetUserData(6969);
-        //room = await _dB.GetRoomData(1234);
-        newGroupModel = new DisplayGroupedModel
-            {
-                roomId = room.roomId,                   //EXAMPLE STUFF DELETE AFTER WEDNESDAY
-                userId = user.userId,
-                userName = user.userName,
-                isAdmin = user.isAdmin,
-                roomName = room.roomName
-
-            };
-
-        //SAVE THIS STUFF
-        userIdList =  await _dB.GetUserIds(); //NEEDS TO BE DONE SYNCHRONOUSLY
-        roomIdList = await _dB.GetRoomIds(); 
-    }
-
-
-
-
-    //TODO When database is finished need to make sure generated code is unique
     private int createRoomCode()
     {
         Random rand = new Random();
 
         int randomId = rand.Next(1000, 10000); //generates a random user ID between 1000 and 9999
         bool unique = false;
+        roomIdList = _dB.GetRoomIds(); //pull roomId list from dB
         while (!unique)
         {
             foreach(int id in roomIdList)
@@ -139,9 +96,9 @@
                 if(id == randomId)
                 {
                     randomId = rand.Next(1000, 10000);
-
                     unique = false;
-                    break;
+                    roomIdList = _dB.GetRoomIds(); //refresh roomId list
+                    break; //if ids match recompare entire list
                 }
                 else
                 {
@@ -151,19 +108,21 @@
         }
         return randomId;
     }
-    //TODO When database is finished need to make sure generated code is unique
+
     private int createUserId()
     {
         Random rand = new Random();
         int possibleId = rand.Next(1000, 10000); //generates a random room code between 1000 and 9999
         bool unique = false;
+        userIdList = _dB.GetUserIds(); //pull userId list from the db
         while (!unique)
         {
             foreach(int id in userIdList){
                 if(id == possibleId)
                 {
-                    possibleId = rand.Next(1000, 10000); //randomize again                          //POSSIBLE SOLUTION NOT DONE.
-                    unique = false;                                                                 //NEED TO PULL LIST SYNCHRONOUSLY PROBABLY GOING TO HAVE TO ASK AUSTIN 
+                    possibleId = rand.Next(1000, 10000); //randomize again                     
+                    unique = false;          
+                    userIdList = _dB.GetUserIds(); //refresh userId list                                                     
                     break;  //if ids match recompare entire list
                 }
                 else
@@ -175,7 +134,20 @@
         return possibleId;
     }
 
-    private async Task insertData(){
-        //TODO Add data to newRoomModel and update db 
+    private void insertData(){
+        //define roomModel and userModel
+        roomModel roomInsert = new roomModel();
+        userModel userInsert = new userModel();
+        //bind all data from GroupModel to the above models
+        roomInsert.roomId = createRoomCode();
+        roomInsert.roomName = newGroupModel.roomName;
+
+        userInsert.userId = createUserId();
+        userInsert.userName = newGroupModel.userName;
+        userInsert.isAdmin = newGroupModel.isAdmin;
+
+        _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
+
+        
     }
 }
