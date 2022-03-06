@@ -23,7 +23,7 @@
     width: 50%;
     display: flex;
     justify-content: center;
-    margin-top: 10%;
+    margin-top: none;
 }
 
 .buttons {
