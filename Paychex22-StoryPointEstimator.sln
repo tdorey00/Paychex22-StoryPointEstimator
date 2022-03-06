@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoryPointEstimatorBlazorAp
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Paychex_StoryPointDB", "Paychex_StoryPointDB\Paychex_StoryPointDB.sqlproj", "{75E26DE5-32B8-4106-8640-F86C19D2A5FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLDataAccessLibrary", "SQLDataAccessLibrary\SQLDataAccessLibrary.csproj", "{C254C9D6-8E4B-4C40-8082-9C0093481628}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLDataAccessLibrary", "SQLDataAccessLibrary\SQLDataAccessLibrary.csproj", "{C254C9D6-8E4B-4C40-8082-9C0093481628}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

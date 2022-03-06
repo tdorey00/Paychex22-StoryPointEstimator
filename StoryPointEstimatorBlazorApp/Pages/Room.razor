@@ -1,0 +1,58 @@
+﻿@page "/Room"
+
+<MudButtonGroup Color="Color.Primary" Variant="Variant.Filled">
+    <MudButton>Fibonacci Tool</MudButton>
+    <MudButton>Fist to Five</MudButton>
+    <MudButton>1-24 Voting</MudButton>
+    <MudButton>T-Shirt Size</MudButton>
+    <MudButton>Timer</MudButton>
+</MudButtonGroup>
+
+
+
+<div class="table-container">
+    <MudSimpleTable Style="overflow-x: auto;" Class="table">
+        <thead>
+            <tr>
+                @foreach (var h in headings)
+                {
+                    <th>@h</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in rows)
+            {
+                <tr>
+                    @foreach (var x in row.Split())
+                    {
+                        <td>@x</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </MudSimpleTable>
+</div>
+<div class="voting-area">
+    <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled">
+        <MudButton>Fibonacci Tool</MudButton>
+        <MudButton>Fist to Five</MudButton>
+        <MudButton>1-24 Scale</MudButton>
+        <MudButton>T-Shirt Size</MudButton>
+        <MudButton>Timer</MudButton>
+    </MudButtonGroup>
+</div>
+
+@code {
+
+    string[] headings = { "User", "Vote" };
+    string[] rows = {
+        @"Krishna 1",
+        @"Webb 2",
+        @"Nathanil 3",
+        @"Adara 4",
+        @"Cecilius 5",
+        @"Cicely 6",
+    };
+
+}

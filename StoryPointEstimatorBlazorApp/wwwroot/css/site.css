@@ -37,3 +37,20 @@
     font-family: 'Ubuntu', sans-serif;
     min-width: 200px
 }
+
+.table-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.table {
+    width: 25%;
+}
+
+.voting-area {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 20%;
+}
