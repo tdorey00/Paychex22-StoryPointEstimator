@@ -31,14 +31,16 @@
 
 <div class="inputArea">
     <div class="inputText">
-        <EditForm Model="@newGroupModel" OnValidSubmit="@insertData">
-            <ObjectGraphDataAnnotationsValidator />
-
+        @if (!validSubmit && submitBtnClicked)
+        {
+            <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Invalid Submission! Please fix errors.</MudAlert>
+        }
+        <EditForm Model="@newGroupModel" OnSubmit="@insertData">
             <div class = "inputSpacer">
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
-                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(MaxCharacters))" Mask="@mask" Label="Username" 
+                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Username" 
                       @bind-Value="newGroupModel.userName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
@@ -49,7 +51,7 @@
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
-                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(MaxCharacters))" Mask="@mask2" Label="Room Name" 
+                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask2" Label="Room Name" 
                       @bind-Value="newGroupModel.roomName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
@@ -73,12 +75,26 @@
     IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
     IMask mask2 = new RegexMask(@"^[ a-zA-Z0-9_-]+$");
 
-    //Max Character Length
-    private IEnumerable<string> MaxCharacters(string ch)
+    //Validation
+    private IEnumerable<string> TextValidation (string ch)
     {
         if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
+        {
+            validSubmit = false;
             yield return "Too many characters";
+        }
+        else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
+        {
+            validSubmit = false;
+            yield return "Too few characters";
+        }
+        else
+        {
+            validSubmit = true;
+        }
     }
+    private bool validSubmit = false;
+    private bool submitBtnClicked = false;
 
     //Data Models
     private List<int> userIdList = new List<int>(); 
@@ -138,19 +154,25 @@
     }
 
     private void insertData(){
-        //define roomModel and userModel
-        roomModel roomInsert = new roomModel();
-        userModel userInsert = new userModel();
-        //bind all data from GroupModel to the above models
-        roomInsert.roomId = createRoomCode();
-        roomInsert.roomName = newGroupModel.roomName;
+        submitBtnClicked = true;
+        if (validSubmit)
+        {
+            //define roomModel and userModel
+            roomModel roomInsert = new roomModel();
+            userModel userInsert = new userModel();
+            //bind all data from GroupModel to the above models
+            roomInsert.roomId = createRoomCode();
+            roomInsert.roomName = newGroupModel.roomName;
 
-        userInsert.userId = createUserId();
-        userInsert.userName = newGroupModel.userName;
-        userInsert.isAdmin = newGroupModel.isAdmin;
+            userInsert.userId = createUserId();
+            userInsert.userName = newGroupModel.userName;
+            userInsert.isAdmin = newGroupModel.isAdmin;
 
-        _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
-
-        
+            _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
+        }
+        else //invalid submit
+        {
+            validSubmit = false;
+        }
     }
 }

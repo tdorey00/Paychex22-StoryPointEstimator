@@ -25,9 +25,6 @@
         padding-top:10px;
         padding-bottom:10px;
     }
-    .errorText{
-        color: #ad170c;
-    }
 </style>
 
 <img src="/css/LogoExample3.png" width=100 height=100/>
@@ -36,18 +33,21 @@
 <div class="inputArea">
     <div class="inputText">
 
-        @if (!isValidId) //displays an error if the room code is invalid, different from valid id input pls no delete
+        @if (!isValidId && submitBtnClicked) //displays an error if the room code is invalid, different from valid id input pls no delete
         {
-            <p class="errorText">The Room Code is invalid.</p>
+             <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">The room code is invalid!</MudAlert>
         }
-        <EditForm Model="@newGroupModel" OnValidSubmit="@insertData">
-             <ObjectGraphDataAnnotationsValidator />
+        @if (!validSubmit && submitBtnClicked)
+        {
+            <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Invalid Submission! Please fix errors.</MudAlert>
+        }
+        <EditForm Model="@newGroupModel" OnSubmit="@insertData">
 
              <div class = "inputSpacer">
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12"> 
-                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(MaxCharacters))" Mask="@mask" Label="Username" 
+                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Username" 
                       @bind-Value="newGroupModel.userName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
@@ -83,22 +83,37 @@
     IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
     IMask mask2 = new BlockMask(delimiters:" ", new Block('0', 1,4));
 
-    //Max Character Length
-    private IEnumerable<string> MaxCharacters(string ch)
+    //Validation
+    private IEnumerable<string> TextValidation(string ch)
     {
         if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
+        {
+            validSubmit = false;
             yield return "Too many characters";
+        }
+        else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
+        {
+            validSubmit = false;
+            yield return "Too few characters";
+        }
+        else
+        {
+            validSubmit = true;
+        }
     }
+    private bool validSubmit = false;
+    private bool submitBtnClicked = false;
 
     //Datamodels
     private DisplayGroupedModel newGroupModel = new DisplayGroupedModel();
     private List<int> userIdList = new List<int>();
     private List<int> roomIdList = new List<int>();
-    private bool isValidId = true; 
+    private bool isValidId = false; 
 
     private bool validateRoomId()
     {
         int inputId = newGroupModel.roomId; //the id the user inputs into the box
+        roomIdList = _dB.GetRoomIds();
         foreach(int validId in roomIdList)
         {
             if(inputId == validId) 
@@ -135,13 +150,30 @@
     }
 
     private void insertData(){
-        //define model for insertion
-        userModel userInsert = new userModel();
-        //bind data to insertion model
-        userInsert.isAdmin = newGroupModel.isAdmin;
-        userInsert.userName = newGroupModel.userName;
-        userInsert.userId = newGroupModel.userId;
-        //save user model and link user to room based on user input
-        _dB.joinRoomSaveData(newGroupModel.roomId, userInsert); 
+        submitBtnClicked = true;
+        isValidId = true;
+        if (validSubmit)
+        {
+            if (validateRoomId()) //if room code is valid
+            {
+                //define model for insertion
+                userModel userInsert = new userModel();
+                //bind data to insertion model
+                userInsert.isAdmin = newGroupModel.isAdmin;
+                userInsert.userName = newGroupModel.userName;
+                userInsert.userId = createUserId();
+                //save user model and link user to room based on user input
+                _dB.joinRoomSaveData(newGroupModel.roomId, userInsert); 
+            }
+            else
+            {
+                isValidId = false;
+            }
+        }
+        else
+        {
+            validSubmit = false;
+        }
+
     }
 }
