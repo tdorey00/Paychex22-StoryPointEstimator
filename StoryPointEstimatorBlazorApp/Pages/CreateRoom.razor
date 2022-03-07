@@ -1,5 +1,9 @@
-﻿@page "/createRoom"
+@page "/createRoom"
 @using StoryPointEstimatorBlazorApp.Models
+@using SqlDataAccessLib
+@using SQLDataAccessLibrary.Models
+@inject IRoomDataAccess _dB
+
 <style>
     .inputArea{
         text-align : center;
@@ -11,7 +15,11 @@
         padding-right:30px;
         padding-top:30px;
         padding-bottom:30px;
-        margin:10px;
+        margin:150px;
+        max-width: 265px;
+        min-width: 265px;
+        margin-top: 0px;
+        margin-bottom: 0px;
     }
     .inputSpacer{
         padding-top:10px;
@@ -19,33 +27,39 @@
     }
 </style>
 
+<img src="/css/LogoExample3.png" width=100 height=100/>
 
 <div class="inputArea">
     <div class="inputText">
-        <EditForm Model="@newRoomModel" OnValidSubmit="@insertData">
-            <ObjectGraphDataAnnotationsValidator />
-
+        @if (!validSubmit && submitBtnClicked)
+        {
+            <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Invalid Submission! Please fix errors.</MudAlert>
+        }
+        <EditForm Model="@newGroupModel" OnSubmit="@insertData">
             <div class = "inputSpacer">
                 <div class="form-group">
-                    <label for="roomName">Enter a room name: </label>
-                    <InputText id="roomName" Class="form-control" @bind-Value="newRoomModel.roomName"/>
-                    <ValidationMessage For="@(() => newRoomModel.roomName)" />
+                    <MudGrid Class="justify-space-between" Style="max-width: 400px;">
+                        <MudItem xs="12">
+                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Username" 
+                      @bind-Value="newGroupModel.userName"  Variant="@Variant.Filled" Clearable />
+                        </MudItem>
+                    </MudGrid>
                 </div>
             </div>
 
             <div class = "inputSpacer">
                 <div class="form-group">
-                    <label for="userName">Enter a Username:</label>
-                    <InputText id="userName" class="form-control" @bind-Value="newRoomModel.userName"/>
-                    <ValidationMessage For="@(() => newRoomModel.userName)" />
+                    <MudGrid Class="justify-space-between" Style="max-width: 400px;">
+                        <MudItem xs="12">
+                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask2" Label="Room Name" 
+                      @bind-Value="newGroupModel.roomName"  Variant="@Variant.Filled" Clearable />
+                        </MudItem>
+                    </MudGrid>
                 </div>
             </div>
 
             <div class = "inputSpacer">
-                <div class="form-group">
-                    <label for="isAdmin">Are you a facilitator?</label>
-                    <input type="checkbox" id="isAdmin" @bind="newRoomModel.isAdmin">
-                </div>
+                <MudCheckBox @bind-Checked="newGroupModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
             </div>
 
             <button type="submit" class="btn btn-primary">Create Room</button>
@@ -56,22 +70,109 @@
 
 @code {
 
-    private DisplayRoomModel newRoomModel = new DisplayRoomModel();
+    //Input Masks
+    public string text { get; set; }
+    IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
+    IMask mask2 = new RegexMask(@"^[ a-zA-Z0-9_-]+$");
 
-    //TODO When database is finished need to make sure generated code is unique
+    //Validation
+    private IEnumerable<string> TextValidation (string ch)
+    {
+        if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
+        {
+            validSubmit = false;
+            yield return "Too many characters";
+        }
+        else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
+        {
+            validSubmit = false;
+            yield return "Too few characters";
+        }
+        else
+        {
+            validSubmit = true;
+        }
+    }
+    private bool validSubmit = false;
+    private bool submitBtnClicked = false;
+
+    //Data Models
+    private List<int> userIdList = new List<int>(); 
+    private List<int> roomIdList = new List<int>();
+    private DisplayGroupedModel newGroupModel = new DisplayGroupedModel();
+
     private int createRoomCode()
     {
         Random rand = new Random();
-        return rand.Next(1000, 10000); //generates a random room code between 1000 and 9999
+
+        int randomId = rand.Next(1000, 10000); //generates a random user ID between 1000 and 9999
+        bool unique = false;
+        roomIdList = _dB.GetRoomIds(); //pull roomId list from dB
+        while (!unique)
+        {
+            foreach(int id in roomIdList)
+            {
+                if(id == randomId)
+                {
+                    randomId = rand.Next(1000, 10000);
+                    unique = false;
+                    roomIdList = _dB.GetRoomIds(); //refresh roomId list
+                    break; //if ids match recompare entire list
+                }
+                else
+                {
+                    unique = true;
+                }
+            }
+        }
+        return randomId;
     }
-    //TODO When database is finished need to make sure generated code is unique
+
     private int createUserId()
     {
         Random rand = new Random();
-        return rand.Next(1000, 10000); //generates a random user ID between 1000 and 9999
+        int possibleId = rand.Next(1000, 10000); //generates a random room code between 1000 and 9999
+        bool unique = false;
+        userIdList = _dB.GetUserIds(); //pull userId list from the db
+        while (!unique)
+        {
+            foreach(int id in userIdList){
+                if(id == possibleId)
+                {
+                    possibleId = rand.Next(1000, 10000); //randomize again                     
+                    unique = false;          
+                    userIdList = _dB.GetUserIds(); //refresh userId list                                                     
+                    break;  //if ids match recompare entire list
+                }
+                else
+                {
+                    unique = true;
+                }
+            }
+        }
+        return possibleId;
     }
 
-    private async Task insertData(){
-        //TODO Add data to newRoomModel and update db 
+    private void insertData(){
+        submitBtnClicked = true;
+        if (validSubmit)
+        {
+            //define roomModel and userModel
+            roomModel roomInsert = new roomModel();
+            userModel userInsert = new userModel();
+            //bind all data from GroupModel to the above models
+            roomInsert.roomId = createRoomCode();
+            roomInsert.roomName = newGroupModel.roomName;
+
+            userInsert.userId = createUserId();
+            userInsert.userName = newGroupModel.userName;
+            userInsert.isAdmin = newGroupModel.isAdmin;
+
+            _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
+        }
+        else //invalid submit
+        {
+            validSubmit = false;
+        }
     }
 }

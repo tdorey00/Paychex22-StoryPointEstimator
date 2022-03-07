@@ -1,0 +1,113 @@
+﻿@page "/Room"
+
+<MudRadioGroup @bind-SelectedOption="Voting_Mode">
+    <MudRadio Option="1" Size="Size.Medium">Fibonacci Sequence</MudRadio>
+    <MudRadio Option="2" Size="Size.Medium">T-Shirt Sizes</MudRadio>
+    <MudRadio Option="3" Size="Size.Medium">Fist of Five</MudRadio>
+    <MudRadio Option="4" Size="Size.Medium">1-24 (NOT DONE)</MudRadio>
+</MudRadioGroup>
+
+<div class="mainContainer">
+    <div class="button-label-container">
+        <MudPaper Class="tool-buttons-container" Elevation="3">    
+            @if(Voting_Mode==1) 
+            {
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    ?</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    0</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    0.5</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    1</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    2</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    3</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    5</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    8</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    13</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    20</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    40</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    100</MudButton>    
+            }
+            @if(Voting_Mode == 2)
+            {
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    XS</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    S</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    M</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    L</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    XL</MudButton>
+            }
+            @if(Voting_Mode == 3)
+            {
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    1</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    2</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    3</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    4</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    5</MudButton>
+            }
+        </MudPaper>
+        <div class=roomLabel-container>
+            <MudChip Class="roomLabel" >Room Name Goes Here</MudChip>
+            <MudChip Class="roomLabel" >Room Code Goes Here</MudChip>
+        </div>
+    </div>
+    <MudSimpleTable Style="overflow-x: auto;" Class="table">
+        <thead>
+            <tr>
+                @foreach (var h in headings)
+                {
+                    <th>@h</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in rows)
+            {
+                <tr>
+                    @foreach (var x in row.Split())
+                    {
+                        <td>@x</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </MudSimpleTable>
+</div>
+
+
+
+
+
+@code {
+
+    public int Voting_Mode { get; set; } = 1;
+
+    string[] headings = { "User", "Vote" };
+    string[] rows = {
+        @"Krishna 1",
+        @"Webb 2",
+        @"Nathanil 3",
+        @"Adara 4",
+        @"Cecilius 5",
+        @"Cicely 6",
+    };
+}
+
