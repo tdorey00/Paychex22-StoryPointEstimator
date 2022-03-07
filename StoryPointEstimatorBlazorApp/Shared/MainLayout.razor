@@ -8,6 +8,8 @@
     <MudAppBar Class="appbar">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
         ScrumSpace
+        <MudButton Link="Room" Variant="Variant.Text" Class="appbar-buttons"> Room Testing</MudButton>
+
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" Class="drawer">
         <a href="aboutUs" class="drawer">About Us</a>
