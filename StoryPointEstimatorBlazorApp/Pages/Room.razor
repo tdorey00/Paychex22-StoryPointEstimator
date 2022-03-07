@@ -1,11 +1,23 @@
 ﻿@page "/Room"
 
-<MudRadioGroup @bind-SelectedOption="Voting_Mode">
-    <MudRadio Option="1" Size="Size.Medium">Fibonacci Sequence</MudRadio>
-    <MudRadio Option="2" Size="Size.Medium">T-Shirt Sizes</MudRadio>
-    <MudRadio Option="3" Size="Size.Medium">Fist of Five</MudRadio>
-    <MudRadio Option="4" Size="Size.Medium">1-24 (NOT DONE)</MudRadio>
-</MudRadioGroup>
+<div>
+    <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+        ScrumSpace
+        <MudButton Link="/" Variant="Variant.Text" Class="appbar-buttons"> Home</MudButton>
+        <MudButton OnClick="Fibonacci_Voting" Variant="Variant.Text" Class="appbar-buttons"> Fibonacci Tool</MudButton>
+        <MudButton OnClick="FistFive_Voting" Variant="Variant.Text" Class="appbar-buttons"> Five to Five</MudButton>
+        <MudButton OnClick="TShirt_Voting" Variant="Variant.Text" Class="appbar-buttons"> 1-24 Voting</MudButton>
+        <MudButton OnClick="CustomScale_Voting" Variant="Variant.Text" Class="appbar-buttons"> T-Shirt Sizing</MudButton>
+        <MudButton Variant="Variant.Text" Class="appbar-buttons"> Timer</MudButton>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Filled.Settings" Color="Color.Inherit" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="@_drawerOpen" Class="drawer">
+        <a href="aboutUs" class="drawer">About Us</a>
+    </MudDrawer>
+
+</div>
 
 <div class="mainContainer">
     <div class="button-label-container">
@@ -92,11 +104,14 @@
     </MudSimpleTable>
 </div>
 
-
-
-
-
 @code {
+
+    bool _drawerOpen = false;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
 
     public int Voting_Mode { get; set; } = 1;
 
@@ -109,5 +124,19 @@
         @"Cecilius 5",
         @"Cicely 6",
     };
+
+    //Changes Button Layout
+    void Fibonacci_Voting(){
+        Voting_Mode = 1;   
+    }
+    void CustomScale_Voting(){
+        Voting_Mode = 2;
+    }
+    void FistFive_Voting(){
+        Voting_Mode = 3;
+    }
+    void TShirt_Voting(){
+        Voting_Mode = 4;
+    }
 }
 
