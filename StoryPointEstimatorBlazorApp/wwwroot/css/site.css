@@ -39,19 +39,16 @@
 }
 
 .mainContainer {
-    flex-wrap: wrap;
+    display: flex;
+    margin-top: 1%;
+    justify-content: space-between;
 }
 
 .tool-buttons-container {
-    margin: auto;
-    width: 40%;
+    width: 55%;
     display: flex;
-    justify-content: left;
+    justify-content: space-evenly;
     flex-wrap: wrap;
-    margin-top: 100px;
-    margin-bottom: 100px;
-    margin-right: 100px;
-    margin-left: 100px;
 }
 
 .tool-buttons {
@@ -60,10 +57,11 @@
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    margin: 5px;
+    margin: 10px;
     font-size: 36px;
     font-family: 'Ubuntu', sans-serif;
-    min-width: 100px
+    min-width: 100px;
+    padding: 10px;
 }
 
 .table-container {
@@ -71,10 +69,13 @@
     flex-direction: row;
     justify-content: right;
     width: 25%;
+    margin-right: 10%;
 }
 
 .table {
-
+    width: 30%;
+    height: 40%;
+    margin: auto;
 }
 
 .voting-area {
@@ -84,16 +85,6 @@
     margin-top: 20%;
 }
 
-.label {
-    color: black;
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 30px;
-    font-weight: bold;
-    margin-top: 100px;
-    margin-bottom: 100px;
-    margin-right: 100px;
-    margin-left: 100px;
-}
 .roomLabel {
     background-color: #4B27FE;
     color: white;
@@ -107,4 +98,10 @@
     font-family: 'Ubuntu';
     font-size: 20px;
     font-weight: bold;
+}
+
+.button-label-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
 }

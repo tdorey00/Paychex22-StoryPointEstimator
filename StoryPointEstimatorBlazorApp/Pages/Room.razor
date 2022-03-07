@@ -1,55 +1,75 @@
 ﻿@page "/Room"
 
-<div>
-    <MudAppBar Class="appbar">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
-        <MudButton Link="/" Variant="Variant.Text" Class="appbar-buttons"> Home</MudButton>
-        <MudButton Link="Room" Variant="Variant.Text" Class="appbar-buttons"> Fibonacci Tool</MudButton>
-        <MudButton Variant="Variant.Text" Class="appbar-buttons"> Fist to Five</MudButton>
-        <MudButton Variant="Variant.Text" Class="appbar-buttons"> 1-24 Voting</MudButton>
-        <MudButton Variant="Variant.Text" Class="appbar-buttons"> T-Shirt Size</MudButton>
-        <MudButton Variant="Variant.Text" Class="appbar-buttons"> Timer </MudButton>
-    </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen" Class="drawer">
-        <a href="aboutUs" class="drawer">About Us</a>
-        <a href="Room" class="drawer">ROOM PAGE (DEBUGGING)</a>
-    </MudDrawer>
-</div>
+<MudRadioGroup @bind-SelectedOption="Voting_Mode">
+    <MudRadio Option="1" Size="Size.Medium">Fibonacci Sequence</MudRadio>
+    <MudRadio Option="2" Size="Size.Medium">T-Shirt Sizes</MudRadio>
+    <MudRadio Option="3" Size="Size.Medium">Fist of Five</MudRadio>
+    <MudRadio Option="4" Size="Size.Medium">1-24 (NOT DONE)</MudRadio>
+</MudRadioGroup>
 
-<div>
-    <span class="label">Fibonacci Tool</span>
-</div>
-
-<div class="mainContainer"> 
-    <div class="tool-buttons-container">    
-    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-        ?</MudButton>
-    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-        0</MudButton>
-    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-        0.5</MudButton>
-    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-        1</MudButton>
-    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-        2</MudButton>
-    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-        3</MudButton>
-    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-        5</MudButton>
-    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-        8</MudButton>
-    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-        13</MudButton>
-    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-        20</MudButton>
-    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-        40</MudButton>
-    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-        100</MudButton>
+<div class="mainContainer">
+    <div class="button-label-container">
+        <MudPaper Class="tool-buttons-container" Elevation="3">    
+            @if(Voting_Mode==1) 
+            {
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    ?</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    0</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    0.5</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    1</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    2</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    3</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    5</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    8</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    13</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    20</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    40</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    100</MudButton>    
+            }
+            @if(Voting_Mode == 2)
+            {
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    XS</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    S</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    M</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    L</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    XL</MudButton>
+            }
+            @if(Voting_Mode == 3)
+            {
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    1</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    2</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    3</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    4</MudButton>
+                <MudButton Variant="Variant.Filled" Class="tool-buttons">
+                    5</MudButton>
+            }
+        </MudPaper>
+        <div class=roomLabel-container>
+            <MudChip Class="roomLabel" >Room Name Goes Here</MudChip>
+            <MudChip Class="roomLabel" >Room Code Goes Here</MudChip>
+        </div>
     </div>
-
-    <div class="table-container">
-        <MudSimpleTable Style="overflow-x: auto;" Class="table">
+    <MudSimpleTable Style="overflow-x: auto;" Class="table">
         <thead>
             <tr>
                 @foreach (var h in headings)
@@ -70,31 +90,15 @@
             }
         </tbody>
     </MudSimpleTable>
-    </div>        
 </div>
 
-<div>
-    <MudChip Class="roomLabel" >Room Name Goes Here</MudChip>
-    <MudChip Class="roomLabel" >Room Code Goes Here</MudChip>
-</div>
 
-<div class="voting-area">
-    <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled">
-        <MudButton>Fibonacci Tool</MudButton>
-        <MudButton>Fist to Five</MudButton>
-        <MudButton>1-24 Scale</MudButton>
-        <MudButton>T-Shirt Size</MudButton>
-        <MudButton>Timer</MudButton>
-    </MudButtonGroup>
-</div>
+
+
 
 @code {
-    bool _drawerOpen = false;
 
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
+    public int Voting_Mode { get; set; } = 1;
 
     string[] headings = { "User", "Vote" };
     string[] rows = {
