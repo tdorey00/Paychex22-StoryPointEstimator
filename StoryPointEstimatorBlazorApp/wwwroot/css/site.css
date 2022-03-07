@@ -45,7 +45,7 @@
 }
 
 .tool-buttons-container {
-    width: 55%;
+    width: 70%;
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
@@ -98,6 +98,10 @@
     font-family: 'Ubuntu';
     font-size: 20px;
     font-weight: bold;
+}
+.appbar-buttons:hover {
+    color: #4B27FE;
+    background-color: white;
 }
 
 .button-label-container {
