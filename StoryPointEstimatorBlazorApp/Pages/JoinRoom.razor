@@ -59,7 +59,7 @@
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
                             <MudTextField Mask="@mask2" Label="Room Code" 
-                      @bind-Value="newGroupModel.roomId"  Variant="@Variant.Filled" Clearable />
+                      @bind-Value="newGroupModel.stringId"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
@@ -150,6 +150,7 @@
     }
 
     private void insertData(){
+        newGroupModel.roomId = Int32.Parse(newGroupModel.stringId); //turns stringId into roomId, no try catch needed because Input Mask only allows numbers
         submitBtnClicked = true;
         isValidId = true;
         if (validSubmit)
