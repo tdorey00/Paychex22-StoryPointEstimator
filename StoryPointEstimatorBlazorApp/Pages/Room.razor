@@ -21,9 +21,15 @@
 
 <div class="mainContainer">
     <div class="button-label-container">
-        <MudPaper Class="tool-buttons-container" Elevation="3">    
+        <MudItem xs="12">
+        <MudPaper Class="mud-paper-buttons" Height ="650px" Elevation="0">    
             @if(Voting_Mode==1) 
             {
+                <MudItem xs="6">
+                    <MudPaper Class="mud-paper-tool-name" Elevation="0">    
+                        <MudText Class="mud-paper-tool-name"> Fibonacci Tool</MudText>
+                    </MudPaper>
+                </MudItem>
                 <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
                     ?</MudButton>
                 <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
@@ -51,6 +57,11 @@
             }
             @if(Voting_Mode == 2)
             {
+                <MudItem xs="6">
+                    <MudPaper Class="mud-paper-tool-name" Elevation="0">    
+                        <MudText Class="mud-paper-tool-name"> T-Shirt Sizing</MudText>
+                    </MudPaper>
+                </MudItem>
                 <MudButton Variant="Variant.Filled" Class="tool-buttons">
                     XS</MudButton>
                 <MudButton Variant="Variant.Filled" Class="tool-buttons">
@@ -64,6 +75,11 @@
             }
             @if(Voting_Mode == 3)
             {
+                <MudItem xs="6">
+                    <MudPaper Class="mud-paper-tool-name" Elevation="0">    
+                        <MudText Class="mud-paper-tool-name"> Fist to Five</MudText>
+                    </MudPaper>
+                </MudItem>
                 <MudButton Variant="Variant.Filled" Class="tool-buttons">
                     1</MudButton>
                 <MudButton Variant="Variant.Filled" Class="tool-buttons">
@@ -75,12 +91,77 @@
                 <MudButton Variant="Variant.Filled" Class="tool-buttons">
                     5</MudButton>
             }
+            @if(Voting_Mode==4) 
+            {
+                <MudItem xs="6">
+                    <MudPaper Class="mud-paper-tool-name" Elevation="0">    
+                        <MudText Class="mud-paper-tool-name"> 1-24 Voting (WIP)</MudText>
+                    </MudPaper>
+                </MudItem>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    1</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    2</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    3</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    4</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    5</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    6</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    7</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    8</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    9</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    10</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    11</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    12</MudButton>    
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    13</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    14</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    15</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    16</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    17</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    18</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    19</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    20</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    21</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    22</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    23</MudButton>
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    24</MudButton>    
+            }
         </MudPaper>
-        <div class=roomLabel-container>
-            <MudChip Class="roomLabel" >Room Name Goes Here</MudChip>
-            <MudChip Class="roomLabel" >Room Code Goes Here</MudChip>
-        </div>
+        </MudItem>
+        <MudItem xs="12">
+        <MudPaper Class="mud-paper-room-labels" Elevation="0">  
+            <MudChip Class="mud-chip" >Room Name Goes Here</MudChip>
+            <MudChip Class="mud-chip" >Room Code Goes Here</MudChip>
+        </MudPaper>
+        </MudItem>
     </div>
+    <div>
+    <MudItem xs="12">
+    <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
+    <MudItem>
+            <MudText Class="mud-paper-tool-name"> Results</MudText>
+    </MudItem>
     <MudSimpleTable Style="overflow-x: auto;" Class="table">
         <thead>
             <tr>
@@ -102,6 +183,18 @@
             }
         </tbody>
     </MudSimpleTable>
+</MudPaper>
+</MudItem>
+<MudPaper Class="mud-paper-admin-tools" Height ="200px" Elevation="0">
+    <MudItem xs="6">
+            <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
+    </MudItem>
+    <button type="submit" class="btn admin-tools-buttons">Delete Votes</button>
+    <button type="submit" class="btn admin-tools-buttons">Hide Votes</button>
+    <button type="submit" class="btn admin-tools-buttons">Hide Names</button>
+    <button type="submit" class="btn admin-tools-buttons">Save Results</button>
+</MudPaper>
+</div>
 </div>
 
 @code {
@@ -117,12 +210,12 @@
 
     string[] headings = { "User", "Vote" };
     string[] rows = {
-        @"Krishna 1",
-        @"Webb 2",
-        @"Nathanil 3",
-        @"Adara 4",
-        @"Cecilius 5",
-        @"Cicely 6",
+        @"User1 1",
+        @"User2 2",
+        @"User3 3",
+        @"User4 4",
+        @"User5 5",
+        @"User6 6",
     };
 
     //Changes Button Layout
