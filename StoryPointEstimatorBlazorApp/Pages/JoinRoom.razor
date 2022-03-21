@@ -150,31 +150,37 @@
     }
 
     private void insertData(){
-        newGroupModel.roomId = Int32.Parse(newGroupModel.stringId); //turns stringId into roomId, no try catch needed because Input Mask only allows numbers
         submitBtnClicked = true;
-        isValidId = true;
-        if (validSubmit)
+        if(newGroupModel.stringId != "")
         {
-            if (validateRoomId()) //if room code is valid
+            newGroupModel.roomId = Int32.Parse(newGroupModel.stringId); //turns stringId into roomId
+            isValidId = true;
+            if (validSubmit)
             {
-                //define model for insertion
-                userModel userInsert = new userModel();
-                //bind data to insertion model
-                userInsert.isAdmin = newGroupModel.isAdmin;
-                userInsert.userName = newGroupModel.userName;
-                userInsert.userId = createUserId();
-                //save user model and link user to room based on user input
-                _dB.joinRoomSaveData(newGroupModel.roomId, userInsert); 
+                if (validateRoomId()) //if room code is valid
+                {
+                    //define model for insertion
+                    userModel userInsert = new userModel();
+                    //bind data to insertion model
+                    userInsert.isAdmin = newGroupModel.isAdmin;
+                    userInsert.userName = newGroupModel.userName;
+                    userInsert.userId = createUserId();
+                    //save user model and link user to room based on user input
+                    _dB.joinRoomSaveData(newGroupModel.roomId, userInsert); 
+                }
+                else
+                {
+                    isValidId = false;
+                }
             }
             else
             {
-                isValidId = false;
+                validSubmit = false;
             }
         }
         else
         {
             validSubmit = false;
         }
-
     }
 }
