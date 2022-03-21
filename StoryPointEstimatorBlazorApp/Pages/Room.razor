@@ -3,13 +3,13 @@
 <div>
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
-        ScrumSpace
-        <MudButton Link="/" Variant="Variant.Text" Class="appbar-buttons"> Home</MudButton>
-        <MudButton OnClick="Fibonacci_Voting" Variant="Variant.Text" Class="appbar-buttons"> Fibonacci Tool</MudButton>
-        <MudButton OnClick="FistFive_Voting" Variant="Variant.Text" Class="appbar-buttons"> Five to Five</MudButton>
-        <MudButton OnClick="TShirt_Voting" Variant="Variant.Text" Class="appbar-buttons"> 1-24 Voting</MudButton>
-        <MudButton OnClick="CustomScale_Voting" Variant="Variant.Text" Class="appbar-buttons"> T-Shirt Sizing</MudButton>
-        <MudButton Variant="Variant.Text" Class="appbar-buttons"> Timer</MudButton>
+        ScrumSpace - 
+        <MudButton Link="/" Variant="Variant.Text" Class="appbar-buttons"> Home</MudButton> |
+        <MudButton OnClick="Fibonacci_Voting" Variant="Variant.Text" Class="appbar-buttons"> Fibonacci Tool</MudButton> |
+        <MudButton OnClick="FistFive_Voting" Variant="Variant.Text" Class="appbar-buttons"> Five to Five</MudButton> |
+        <MudButton OnClick="TShirt_Voting" Variant="Variant.Text" Class="appbar-buttons"> T-Shirt Sizing</MudButton> |
+        <MudButton Variant="Variant.Text" Class="appbar-buttons"> Timer</MudButton> |
+        <MudButton OnClick="CustomScale_Voting" Variant="Variant.Text" Class="appbar-buttons"> Custom Voting</MudButton>
         <MudSpacer />
         <MudIconButton Icon="@Icons.Filled.Settings" Color="Color.Inherit" />
     </MudAppBar>
@@ -35,7 +35,7 @@
                 <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
                     0</MudButton>
                 <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    0.5</MudButton>
+                    @half</MudButton>
                 <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
                     1</MudButton>
                 <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
@@ -54,6 +54,9 @@
                     40</MudButton>
                 <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
                     100</MudButton>    
+                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    @coffee</MudButton>    
+
             }
             @if(Voting_Mode == 2)
             {
@@ -95,7 +98,7 @@
             {
                 <MudItem xs="6">
                     <MudPaper Class="mud-paper-tool-name" Elevation="0">    
-                        <MudText Class="mud-paper-tool-name"> 1-24 Voting (WIP)</MudText>
+                        <MudText Class="mud-paper-tool-name"> Custom Voting</MudText>
                     </MudPaper>
                 </MudItem>
                 <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
@@ -191,8 +194,10 @@
     </MudItem>
     <button type="submit" class="btn admin-tools-buttons">Delete Votes</button>
     <button type="submit" class="btn admin-tools-buttons">Hide Votes</button>
-    <button type="submit" class="btn admin-tools-buttons">Hide Names</button>
+    <button type="submit" class="btn admin-tools-buttons">Hide Users</button>
+    <button type="submit" class="btn admin-tools-buttons">Clear Users</button>
     <button type="submit" class="btn admin-tools-buttons">Save Results</button>
+
 </MudPaper>
 </div>
 </div>
@@ -222,14 +227,18 @@
     void Fibonacci_Voting(){
         Voting_Mode = 1;   
     }
-    void CustomScale_Voting(){
+    void TShirt_Voting(){
         Voting_Mode = 2;
     }
     void FistFive_Voting(){
         Voting_Mode = 3;
     }
-    void TShirt_Voting(){
+    void CustomScale_Voting(){
         Voting_Mode = 4;
     }
+    
+    //Symbols
+    char coffee = '\u2615';
+    char half = '\u00BD';
 }
 

@@ -23,7 +23,6 @@
     width: 50%;
     display: flex;
     justify-content: center;
-    margin-top: none;
 }
 
 .buttons {
@@ -62,6 +61,7 @@
     min-width: 100px;
     padding: 10px;
 }
+
 
 .table-container {
     padding: 5px;
@@ -106,6 +106,7 @@
     margin: 5px;
     font-weight: bold;
 }
+
 .admin-tools-buttons:hover {
     color: white;
     background-color: lightgrey;
@@ -126,15 +127,15 @@
     color: white;
 }
 .mud-paper-buttons {
-    padding: 70px;
-    min-width: 1000px;
-    max-width: 1000px;
+    padding: 25px;
+    min-width: 850px;
+    max-width: 850px;
     margin: 10px;
 }
 .mud-paper-table {
     padding: 50px;
-    min-width: 600px;
-    max-width: 600px;
+    min-width: 750px;
+    max-width: 750px;
     margin: 10px;
 }
 .mud-paper-room-labels {
@@ -154,8 +155,8 @@
     padding: 5px;
 }
 .mud-paper-admin-tools {
-    min-width: 600px;
-    max-width: 600px;
+    min-width: 750px;
+    max-width: 750px;
     padding: 50px;
     margin: 10px;
 }
