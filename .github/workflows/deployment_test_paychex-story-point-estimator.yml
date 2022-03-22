@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - paychex-story-point-e
 on:
   push:
     branches:
-      - master
+      - deployment_test
   workflow_dispatch:
 
 jobs:
@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'paychex-story-point-estimator'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F42C6086FAAD4A2180B4767BFB049AD6 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DA1F55351DBD482B9DF7403EC55EAA2B }}
           package: .
