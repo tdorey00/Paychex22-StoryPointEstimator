@@ -4,12 +4,59 @@
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
         ScrumSpace - 
-        <MudButton Link="/" Variant="Variant.Text" Class="appbar-buttons"> Home</MudButton> |
-        <MudButton OnClick="Fibonacci_Voting" Variant="Variant.Text" Class="appbar-buttons"> Fibonacci Tool</MudButton> |
-        <MudButton OnClick="FistFive_Voting" Variant="Variant.Text" Class="appbar-buttons"> Five to Five</MudButton> |
-        <MudButton OnClick="TShirt_Voting" Variant="Variant.Text" Class="appbar-buttons"> T-Shirt Sizing</MudButton> |
-        <MudButton Variant="Variant.Text" Class="appbar-buttons"> Timer</MudButton> |
-        <MudButton OnClick="CustomScale_Voting" Variant="Variant.Text" Class="appbar-buttons"> Custom Voting</MudButton>
+        <MudButton Link="/" Disabled="@_ClickedBtn1" Class="appbar-buttons"> 
+            <MudText Class="appbar-buttons">Home</MudText>
+        </MudButton> |
+        <MudButton Disabled="@_ClickedBtn2" OnClick="Fibonacci_Voting" Class="appbar-buttons">
+                     @if (_ClickedBtn2)
+                        {
+                            <MudText Class="appbar-buttons-clicked" >Fibonacci Tool</MudText>
+                        }
+                     else
+                        {
+                            <MudText Class="appbar-buttons">Fibonacci Tool</MudText>}
+        </MudButton> |
+        <MudButton Disabled="@_ClickedBtn3" OnClick="FistFive_Voting" Class="appbar-buttons">
+                     @if (_ClickedBtn3)
+                        {
+                            <MudText Class="appbar-buttons-clicked">Five to Five</MudText>
+                        }
+                     else
+                        {
+                            <MudText Class="appbar-buttons">Five to Five</MudText>
+                        }
+        </MudButton> |
+                        <MudButton Disabled="@_ClickedBtn4" OnClick="TShirt_Voting" Class="appbar-buttons">
+                     @if (_ClickedBtn4)
+                        {
+
+                            <MudText Class="appbar-buttons-clicked">T-Shirt Sizing</MudText>
+                        }
+                     else
+                        {
+                            <MudText Class="appbar-buttons">T-Shirt Sizing</MudText>
+                        }
+        </MudButton> |
+        <MudButton Disabled="@_ClickedBtn5" OnClick="Timer_Mode" Class="appbar-buttons">
+                     @if (_ClickedBtn5)
+                        {
+                            <MudText Class="appbar-buttons-clicked">Timer</MudText>
+                        }
+                     else
+                        {
+                            <MudText Class="appbar-buttons">Timer</MudText>
+                        }
+        </MudButton> |
+        <MudButton Disabled="@_ClickedBtn6" OnClick="CustomScale_Voting" Class="appbar-buttons">
+                     @if (_ClickedBtn6)
+                        {
+                            <MudText Class="appbar-buttons-clicked">Custom Voting</MudText>
+                        }
+                     else
+                        {
+                            <MudText Class="appbar-buttons">Custom Voting</MudText>
+                        }
+        </MudButton>
         <MudSpacer />
         <MudIconButton Icon="@Icons.Filled.Settings" Color="Color.Inherit" />
     </MudAppBar>
@@ -56,6 +103,8 @@
                     100</MudButton>    
                 <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
                     @coffee</MudButton>    
+
+
 
             }
             @if(Voting_Mode == 2)
@@ -160,6 +209,16 @@
         </MudItem>
     </div>
     <div>
+    <MudPaper Class="mud-paper-admin-tools" Height ="200px" Elevation="0">
+    <MudItem xs="6">
+            <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
+    </MudItem>
+    <button type="submit" class="btn admin-tools-buttons">Delete Votes</button>
+    <button type="submit" class="btn admin-tools-buttons">Hide Votes</button>
+    <button type="submit" class="btn admin-tools-buttons">Hide Users</button>
+    <button type="submit" class="btn admin-tools-buttons">Clear Users</button>
+    <button type="submit" class="btn admin-tools-buttons">Save Results</button>
+</MudPaper>
     <MudItem xs="12">
     <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
     <MudItem>
@@ -188,17 +247,6 @@
     </MudSimpleTable>
 </MudPaper>
 </MudItem>
-<MudPaper Class="mud-paper-admin-tools" Height ="200px" Elevation="0">
-    <MudItem xs="6">
-            <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
-    </MudItem>
-    <button type="submit" class="btn admin-tools-buttons">Delete Votes</button>
-    <button type="submit" class="btn admin-tools-buttons">Hide Votes</button>
-    <button type="submit" class="btn admin-tools-buttons">Hide Users</button>
-    <button type="submit" class="btn admin-tools-buttons">Clear Users</button>
-    <button type="submit" class="btn admin-tools-buttons">Save Results</button>
-
-</MudPaper>
 </div>
 </div>
 
@@ -223,22 +271,51 @@
         @"User6 6",
     };
 
-    //Changes Button Layout
+    //Appbar Buttons
     void Fibonacci_Voting(){
-        Voting_Mode = 1;   
-    }
-    void TShirt_Voting(){
-        Voting_Mode = 2;
+        Voting_Mode = 1;
+        EverythingFalse();
+        _ClickedBtn2 = true;
     }
     void FistFive_Voting(){
         Voting_Mode = 3;
+        EverythingFalse();
+        _ClickedBtn3 = true;
+    }
+    void TShirt_Voting(){
+        Voting_Mode = 2;
+        EverythingFalse();
+        _ClickedBtn4 = true;
+    }
+    void Timer_Mode(){
+        EverythingFalse();
+        _ClickedBtn5 = true;
     }
     void CustomScale_Voting(){
         Voting_Mode = 4;
+        EverythingFalse();
+        _ClickedBtn6 = true;
     }
-    
+    void EverythingFalse()
+    {
+        _ClickedBtn1 = false;
+        _ClickedBtn2 = false;
+        _ClickedBtn3 = false;
+        _ClickedBtn4 = false;
+        _ClickedBtn5 = false;
+        _ClickedBtn6 = false;
+    }
+
     //Symbols
     char coffee = '\u2615';
     char half = '\u00BD';
+
+    //Toggle Button
+    private bool _ClickedBtn1 = false;
+    private bool _ClickedBtn2 = true;
+    private bool _ClickedBtn3 = false;
+    private bool _ClickedBtn4 = false;
+    private bool _ClickedBtn5 = false;
+    private bool _ClickedBtn6 = false;
 }
 
