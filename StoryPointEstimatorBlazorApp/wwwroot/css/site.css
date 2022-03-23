@@ -23,7 +23,6 @@
     width: 50%;
     display: flex;
     justify-content: center;
-    margin-top: none;
 }
 
 .buttons {
@@ -45,10 +44,9 @@
 }
 
 .tool-buttons-container {
-    width: 55%;
-    display: flex;
     justify-content: space-evenly;
-    flex-wrap: wrap;
+    min-width: 200px; 
+    max-width: 200px;
 }
 
 .tool-buttons {
@@ -64,18 +62,13 @@
     padding: 10px;
 }
 
+
 .table-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: right;
-    width: 25%;
-    margin-right: 10%;
+    padding: 5px;
 }
 
 .table {
-    width: 30%;
-    height: 40%;
-    margin: auto;
+
 }
 
 .voting-area {
@@ -99,9 +92,76 @@
     font-size: 20px;
     font-weight: bold;
 }
+.appbar-buttons-clicked {
+    background-color: #21A7EC;
+    color: white;
+    font-family: 'Ubuntu';
+    font-size: 20px;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 10%;
+}
 
-.button-label-container {
-    display: flex;
-    flex-direction: column;
-    margin-left: 10%;
+.admin-tools-buttons {
+    background-color: #4B27FE;
+    color: white;
+    font-family: 'Ubuntu';
+    font-size: 15px;
+    padding: 8px;
+    margin: 5px;
+    font-weight: bold;
+}
+
+.admin-tools-buttons:hover {
+    color: white;
+    background-color: lightgrey;
+    font-weight: bold;
+}
+.mud-chip {
+    min-width: 50px;
+    padding: 25px;
+    background-color: #4B27FE;
+    color: white;
+    font-family: 'Ubuntu';
+    font-size: 25px;
+    font-weight: bold;
+    justify-content: center;
+}
+.mud-chip:hover {
+    background-color: #4B27FE;
+    color: white;
+}
+.mud-paper-buttons {
+    padding: 25px;
+    min-width: 850px;
+    max-width: 850px;
+    margin: 10px;
+}
+.mud-paper-table {
+    padding: 5px;
+    min-width: 750px;
+    max-width: 750px;
+    margin: 10px;
+}
+.mud-paper-room-labels {
+    padding: 5px;
+    min-width: 500px;
+    max-width: 500px;
+    justify-content: right;
+    margin: 10px;
+}
+.mud-paper-tool-name {
+    color: black;
+    font-family: 'Ubuntu';
+    font-size: 30px;
+    font-weight: bold;
+    min-width: 500px;
+    max-width: 500px;
+    padding: 5px;
+}
+.mud-paper-admin-tools {
+    min-width: 750px;
+    max-width: 750px;
+    padding: 50px;
+    margin: 10px;
 }
