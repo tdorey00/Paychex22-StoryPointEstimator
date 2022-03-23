@@ -8,9 +8,9 @@
     justify-content: center;
 }
 
-.drawer:hover {
-    color: #75A9FC;
-}
+    .drawer:hover {
+        color: #75A9FC;
+    }
 
 .appbar {
     font-size: 24px;
@@ -45,7 +45,7 @@
 
 .tool-buttons-container {
     justify-content: space-evenly;
-    min-width: 200px; 
+    min-width: 200px;
     max-width: 200px;
 }
 
@@ -68,7 +68,6 @@
 }
 
 .table {
-
 }
 
 .voting-area {
@@ -91,7 +90,10 @@
     font-family: 'Ubuntu';
     font-size: 20px;
     font-weight: bold;
+    padding: 8px;
+    border-radius: 10%;
 }
+
 .appbar-buttons-clicked {
     background-color: #21A7EC;
     color: white;
@@ -99,7 +101,7 @@
     font-size: 20px;
     font-weight: bold;
     padding: 8px;
-    border-radius: 10%;
+    border-radius: 10px;
 }
 
 .admin-tools-buttons {
@@ -112,11 +114,12 @@
     font-weight: bold;
 }
 
-.admin-tools-buttons:hover {
-    color: white;
-    background-color: lightgrey;
-    font-weight: bold;
-}
+    .admin-tools-buttons:hover {
+        color: white;
+        background-color: lightgrey;
+        font-weight: bold;
+    }
+
 .mud-chip {
     min-width: 50px;
     padding: 25px;
@@ -127,22 +130,26 @@
     font-weight: bold;
     justify-content: center;
 }
-.mud-chip:hover {
-    background-color: #4B27FE;
-    color: white;
-}
+
+    .mud-chip:hover {
+        background-color: #4B27FE;
+        color: white;
+    }
+
 .mud-paper-buttons {
     padding: 25px;
     min-width: 850px;
     max-width: 850px;
     margin: 10px;
 }
+
 .mud-paper-table {
-    padding: 5px;
+    padding: 15px;
     min-width: 750px;
     max-width: 750px;
-    margin: 10px;
+    margin: 1px;
 }
+
 .mud-paper-room-labels {
     padding: 5px;
     min-width: 500px;
@@ -150,6 +157,7 @@
     justify-content: right;
     margin: 10px;
 }
+
 .mud-paper-tool-name {
     color: black;
     font-family: 'Ubuntu';
@@ -159,9 +167,13 @@
     max-width: 500px;
     padding: 5px;
 }
+
 .mud-paper-admin-tools {
     min-width: 750px;
     max-width: 750px;
-    padding: 50px;
-    margin: 10px;
+    padding-top: 40px;
+    padding-bottom: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin: 1px;
 }

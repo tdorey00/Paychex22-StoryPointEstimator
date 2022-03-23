@@ -14,16 +14,17 @@
                         }
                      else
                         {
-                            <MudText Class="appbar-buttons">Fibonacci Tool</MudText>}
+                            <MudText Class="appbar-buttons">Fibonacci Tool</MudText>
+                        }
         </MudButton> |
         <MudButton Disabled="@_ClickedBtn3" OnClick="FistFive_Voting" Class="appbar-buttons">
                      @if (_ClickedBtn3)
                         {
-                            <MudText Class="appbar-buttons-clicked">Five to Five</MudText>
+                            <MudText Class="appbar-buttons-clicked">Fist of Five</MudText>
                         }
                      else
                         {
-                            <MudText Class="appbar-buttons">Five to Five</MudText>
+                            <MudText Class="appbar-buttons">Fist of Five</MudText>
                         }
         </MudButton> |
                         <MudButton Disabled="@_ClickedBtn4" OnClick="TShirt_Voting" Class="appbar-buttons">
@@ -37,18 +38,8 @@
                             <MudText Class="appbar-buttons">T-Shirt Sizing</MudText>
                         }
         </MudButton> |
-        <MudButton Disabled="@_ClickedBtn5" OnClick="Timer_Mode" Class="appbar-buttons">
+        <MudButton Disabled="@_ClickedBtn5" OnClick="CustomScale_Voting" Class="appbar-buttons">
                      @if (_ClickedBtn5)
-                        {
-                            <MudText Class="appbar-buttons-clicked">Timer</MudText>
-                        }
-                     else
-                        {
-                            <MudText Class="appbar-buttons">Timer</MudText>
-                        }
-        </MudButton> |
-        <MudButton Disabled="@_ClickedBtn6" OnClick="CustomScale_Voting" Class="appbar-buttons">
-                     @if (_ClickedBtn6)
                         {
                             <MudText Class="appbar-buttons-clicked">Custom Voting</MudText>
                         }
@@ -56,7 +47,17 @@
                         {
                             <MudText Class="appbar-buttons">Custom Voting</MudText>
                         }
-        </MudButton>
+        </MudButton> |
+        <MudButton Disabled="@_ClickedBtn6" OnClick="Timer_Mode" Class="appbar-buttons">
+                     @if (_ClickedBtn6)
+                        {
+                            <MudText Class="appbar-buttons-clicked">Timer</MudText>
+                        }
+                     else
+                        {
+                            <MudText Class="appbar-buttons">Timer</MudText>
+                        }
+        </MudButton> 
         <MudSpacer />
         <MudIconButton Icon="@Icons.Filled.Settings" Color="Color.Inherit" />
     </MudAppBar>
@@ -103,9 +104,6 @@
                     100</MudButton>    
                 <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
                     @coffee</MudButton>    
-
-
-
             }
             @if(Voting_Mode == 2)
             {
@@ -129,7 +127,7 @@
             {
                 <MudItem xs="6">
                     <MudPaper Class="mud-paper-tool-name" Elevation="0">    
-                        <MudText Class="mud-paper-tool-name"> Fist to Five</MudText>
+                        <MudText Class="mud-paper-tool-name"> Fist of Five</MudText>
                     </MudPaper>
                 </MudItem>
                 <MudButton Variant="Variant.Filled" Class="tool-buttons">
@@ -209,7 +207,7 @@
         </MudItem>
     </div>
     <div>
-    <MudPaper Class="mud-paper-admin-tools" Height ="200px" Elevation="0">
+    <MudPaper Class="mud-paper-admin-tools" Height ="150px" Elevation="0">
     <MudItem xs="6">
             <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
     </MudItem>
@@ -287,12 +285,12 @@
         EverythingFalse();
         _ClickedBtn4 = true;
     }
-    void Timer_Mode(){
+    void CustomScale_Voting(){
+        Voting_Mode = 4;
         EverythingFalse();
         _ClickedBtn5 = true;
     }
-    void CustomScale_Voting(){
-        Voting_Mode = 4;
+    void Timer_Mode(){
         EverythingFalse();
         _ClickedBtn6 = true;
     }
