@@ -4,59 +4,28 @@
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
         ScrumSpace - 
-        <MudButton Link="/" Disabled="@_ClickedBtn1" Class="appbar-buttons"> 
+        <MudButton Link="/" Disabled="@_ClickedAppBarBtn1" Class="appbar-buttons"> 
             <MudText Class="appbar-buttons">Home</MudText>
         </MudButton> |
-        <MudButton Disabled="@_ClickedBtn2" OnClick="Fibonacci_Voting" Class="appbar-buttons">
-                     @if (_ClickedBtn2)
-                        {
-                            <MudText Class="appbar-buttons-clicked" >Fibonacci Tool</MudText>
-                        }
-                     else
-                        {
-                            <MudText Class="appbar-buttons">Fibonacci Tool</MudText>
-                        }
+        <MudButton Disabled="@_ClickedAppBarBtn2" OnClick="Fibonacci_Voting" Class="appbar-buttons">
+                     @if (_ClickedAppBarBtn2) {<MudText Class="appbar-buttons-clicked" >Fibonacci Tool</MudText>}
+                     else {<MudText Class="appbar-buttons">Fibonacci Tool</MudText>}
         </MudButton> |
-        <MudButton Disabled="@_ClickedBtn3" OnClick="FistFive_Voting" Class="appbar-buttons">
-                     @if (_ClickedBtn3)
-                        {
-                            <MudText Class="appbar-buttons-clicked">Fist of Five</MudText>
-                        }
-                     else
-                        {
-                            <MudText Class="appbar-buttons">Fist of Five</MudText>
-                        }
+        <MudButton Disabled="@_ClickedAppBarBtn3" OnClick="FistFive_Voting" Class="appbar-buttons">
+                     @if (_ClickedAppBarBtn3) {<MudText Class="appbar-buttons-clicked">Fist of Five</MudText>}
+                     else {<MudText Class="appbar-buttons">Fist of Five</MudText>}
         </MudButton> |
-                        <MudButton Disabled="@_ClickedBtn4" OnClick="TShirt_Voting" Class="appbar-buttons">
-                     @if (_ClickedBtn4)
-                        {
-
-                            <MudText Class="appbar-buttons-clicked">T-Shirt Sizing</MudText>
-                        }
-                     else
-                        {
-                            <MudText Class="appbar-buttons">T-Shirt Sizing</MudText>
-                        }
+                        <MudButton Disabled="@_ClickedAppBarBtn4" OnClick="TShirt_Voting" Class="appbar-buttons">
+                     @if (_ClickedAppBarBtn4) {<MudText Class="appbar-buttons-clicked">T-Shirt Sizing</MudText>}
+                     else {<MudText Class="appbar-buttons">T-Shirt Sizing</MudText>}
         </MudButton> |
-        <MudButton Disabled="@_ClickedBtn5" OnClick="CustomScale_Voting" Class="appbar-buttons">
-                     @if (_ClickedBtn5)
-                        {
-                            <MudText Class="appbar-buttons-clicked">Custom Voting</MudText>
-                        }
-                     else
-                        {
-                            <MudText Class="appbar-buttons">Custom Voting</MudText>
-                        }
+        <MudButton Disabled="@_ClickedAppBarBtn5" OnClick="CustomScale_Voting" Class="appbar-buttons">
+                     @if (_ClickedAppBarBtn5) {<MudText Class="appbar-buttons-clicked">Custom Voting</MudText>}
+                     else {<MudText Class="appbar-buttons">Custom Voting</MudText>}
         </MudButton> |
-        <MudButton Disabled="@_ClickedBtn6" OnClick="Timer_Mode" Class="appbar-buttons">
-                     @if (_ClickedBtn6)
-                        {
-                            <MudText Class="appbar-buttons-clicked">Timer</MudText>
-                        }
-                     else
-                        {
-                            <MudText Class="appbar-buttons">Timer</MudText>
-                        }
+        <MudButton Disabled="@_ClickedAppBarBtn6" OnClick="Timer_Mode" Class="appbar-buttons">
+                     @if (_ClickedAppBarBtn6) {<MudText Class="appbar-buttons-clicked">Timer</MudText>}
+                     else {<MudText Class="appbar-buttons">Timer</MudText>}
         </MudButton> 
         <MudSpacer />
         <MudIconButton Icon="@Icons.Filled.Settings" Color="Color.Inherit" />
@@ -78,32 +47,58 @@
                         <MudText Class="mud-paper-tool-name"> Fibonacci Tool</MudText>
                     </MudPaper>
                 </MudItem>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    ?</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    0</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    @half</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    1</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    2</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    3</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    5</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    8</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    13</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    20</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    40</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    100</MudButton>    
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    @coffee</MudButton>    
+                <MudButton Disabled="@_ClickedFiboBtn1" OnClick="FiboBtn1" Class="tool-buttons">
+                     @if (_ClickedFiboBtn1) {<MudText Class="tool-buttons-clicked">?</MudText>}
+                     else {<MudText Class="tool-buttons">?</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFiboBtn2" OnClick="FiboBtn2" Class="tool-buttons">
+                     @if (_ClickedFiboBtn2) {<MudText Class="tool-buttons-clicked">0</MudText>}
+                     else {<MudText Class="tool-buttons">0</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFiboBtn3" OnClick="FiboBtn3" Class="tool-buttons">
+                     @if (_ClickedFiboBtn3) {<MudText Class="tool-buttons-clicked">@half</MudText>}
+                     else {<MudText Class="tool-buttons">@half</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFiboBtn4" OnClick="FiboBtn4" Class="tool-buttons">
+                     @if (_ClickedFiboBtn4) {<MudText Class="tool-buttons-clicked">1</MudText>}
+                     else {<MudText Class="tool-buttons">1</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFiboBtn5" OnClick="FiboBtn5" Class="tool-buttons">
+                     @if (_ClickedFiboBtn5) {<MudText Class="tool-buttons-clicked">2</MudText>}
+                     else {<MudText Class="tool-buttons">2</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFiboBtn6" OnClick="FiboBtn6" Class="tool-buttons">
+                     @if (_ClickedFiboBtn6) {<MudText Class="tool-buttons-clicked">3</MudText>}
+                     else {<MudText Class="tool-buttons">3</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFiboBtn7" OnClick="FiboBtn7" Class="tool-buttons">
+                     @if (_ClickedFiboBtn7) {<MudText Class="tool-buttons-clicked">5</MudText>}
+                     else {<MudText Class="tool-buttons">5</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFiboBtn8" OnClick="FiboBtn8" Class="tool-buttons">
+                     @if (_ClickedFiboBtn8) {<MudText Class="tool-buttons-clicked">8</MudText>}
+                     else {<MudText Class="tool-buttons">8</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFiboBtn9" OnClick="FiboBtn9" Class="tool-buttons">
+                     @if (_ClickedFiboBtn9) {<MudText Class="tool-buttons-clicked">13</MudText>}
+                     else {<MudText Class="tool-buttons">13</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFiboBtn10" OnClick="FiboBtn10" Class="tool-buttons">
+                     @if (_ClickedFiboBtn10) {<MudText Class="tool-buttons-clicked">20</MudText>}
+                     else {<MudText Class="tool-buttons">20</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFiboBtn11" OnClick="FiboBtn11" Class="tool-buttons">
+                     @if (_ClickedFiboBtn11) {<MudText Class="tool-buttons-clicked">40</MudText>}
+                     else {<MudText Class="tool-buttons">40</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFiboBtn12" OnClick="FiboBtn12" Class="tool-buttons">
+                     @if (_ClickedFiboBtn12) {<MudText Class="tool-buttons-clicked">100</MudText>}
+                     else {<MudText Class="tool-buttons">100</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFiboBtn13" OnClick="FiboBtn13" Class="tool-buttons">
+                     @if (_ClickedFiboBtn13) {<MudText Class="tool-buttons-clicked">@coffee</MudText>}
+                     else {<MudText Class="tool-buttons">@coffee</MudText>}
+                </MudButton> 
             }
             @if(Voting_Mode == 2)
             {
@@ -112,16 +107,26 @@
                         <MudText Class="mud-paper-tool-name"> T-Shirt Sizing</MudText>
                     </MudPaper>
                 </MudItem>
-                <MudButton Variant="Variant.Filled" Class="tool-buttons">
-                    XS</MudButton>
-                <MudButton Variant="Variant.Filled" Class="tool-buttons">
-                    S</MudButton>
-                <MudButton Variant="Variant.Filled" Class="tool-buttons">
-                    M</MudButton>
-                <MudButton Variant="Variant.Filled" Class="tool-buttons">
-                    L</MudButton>
-                <MudButton Variant="Variant.Filled" Class="tool-buttons">
-                    XL</MudButton>
+                <MudButton Disabled="@_ClickedFistBtn1" OnClick="FistBtn1" Class="tool-buttons">
+                     @if (_ClickedFistBtn1) {<MudText Class="tool-buttons-clicked">XS</MudText>}
+                     else {<MudText Class="tool-buttons">XS</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFistBtn2" OnClick="FistBtn2" Class="tool-buttons">
+                     @if (_ClickedFistBtn2) {<MudText Class="tool-buttons-clicked">S</MudText>}
+                     else {<MudText Class="tool-buttons">S</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFistBtn3" OnClick="FistBtn3" Class="tool-buttons">
+                     @if (_ClickedFistBtn3) {<MudText Class="tool-buttons-clicked">M</MudText>}
+                     else {<MudText Class="tool-buttons">M</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFistBtn4" OnClick="FistBtn4" Class="tool-buttons">
+                     @if (_ClickedFistBtn4) {<MudText Class="tool-buttons-clicked">L</MudText>}
+                     else {<MudText Class="tool-buttons">L</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedFistBtn5" OnClick="FistBtn5" Class="tool-buttons">
+                     @if (_ClickedFistBtn5) {<MudText Class="tool-buttons-clicked">XL</MudText>}
+                     else {<MudText Class="tool-buttons">XL</MudText>}
+                </MudButton> 
             }
             @if(Voting_Mode == 3)
             {
@@ -129,17 +134,27 @@
                     <MudPaper Class="mud-paper-tool-name" Elevation="0">    
                         <MudText Class="mud-paper-tool-name"> Fist of Five</MudText>
                     </MudPaper>
-                </MudItem>
-                <MudButton Variant="Variant.Filled" Class="tool-buttons">
-                    1</MudButton>
-                <MudButton Variant="Variant.Filled" Class="tool-buttons">
-                    2</MudButton>
-                <MudButton Variant="Variant.Filled" Class="tool-buttons">
-                    3</MudButton>
-                <MudButton Variant="Variant.Filled" Class="tool-buttons">
-                    4</MudButton>
-                <MudButton Variant="Variant.Filled" Class="tool-buttons">
-                    5</MudButton>
+                </MudItem>                
+                <MudButton Disabled="@_ClickedShirtBtn1" OnClick="ShirtBtn1" Class="tool-buttons">
+                     @if (_ClickedShirtBtn1) {<MudText Class="tool-buttons-clicked">1</MudText>}
+                     else {<MudText Class="tool-buttons">1</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedShirtBtn2" OnClick="ShirtBtn2" Class="tool-buttons">
+                     @if (_ClickedShirtBtn2) {<MudText Class="tool-buttons-clicked">2</MudText>}
+                     else {<MudText Class="tool-buttons">2</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedShirtBtn3" OnClick="ShirtBtn3" Class="tool-buttons">
+                     @if (_ClickedShirtBtn3) {<MudText Class="tool-buttons-clicked">3</MudText>}
+                     else {<MudText Class="tool-buttons">3</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedShirtBtn4" OnClick="ShirtBtn4" Class="tool-buttons">
+                     @if (_ClickedShirtBtn4) {<MudText Class="tool-buttons-clicked">4</MudText>}
+                     else {<MudText Class="tool-buttons">4</MudText>}
+                </MudButton>
+                <MudButton Disabled="@_ClickedShirtBtn5" OnClick="ShirtBtn5" Class="tool-buttons">
+                     @if (_ClickedShirtBtn5) {<MudText Class="tool-buttons-clicked">5</MudText>}
+                     else {<MudText Class="tool-buttons">5</MudText>}
+                </MudButton> 
             }
             @if(Voting_Mode==4) 
             {
@@ -256,7 +271,6 @@
     {
         _drawerOpen = !_drawerOpen;
     }
-
     public int Voting_Mode { get; set; } = 1;
 
     string[] headings = { "User", "Vote" };
@@ -268,52 +282,218 @@
         @"User5 5",
         @"User6 6",
     };
-
     //Appbar Buttons
     void Fibonacci_Voting(){
         Voting_Mode = 1;
-        EverythingFalse();
-        _ClickedBtn2 = true;
+        AppBarEverythingFalse();
+        _ClickedAppBarBtn2 = true;
     }
     void FistFive_Voting(){
         Voting_Mode = 3;
-        EverythingFalse();
-        _ClickedBtn3 = true;
+        AppBarEverythingFalse();
+        _ClickedAppBarBtn3 = true;
     }
     void TShirt_Voting(){
         Voting_Mode = 2;
-        EverythingFalse();
-        _ClickedBtn4 = true;
+        AppBarEverythingFalse();
+        _ClickedAppBarBtn4 = true;
     }
     void CustomScale_Voting(){
         Voting_Mode = 4;
-        EverythingFalse();
-        _ClickedBtn5 = true;
+        AppBarEverythingFalse();
+        _ClickedAppBarBtn5 = true;
     }
     void Timer_Mode(){
-        EverythingFalse();
-        _ClickedBtn6 = true;
+        AppBarEverythingFalse();
+        _ClickedAppBarBtn6 = true;
     }
-    void EverythingFalse()
+    //Unhighlights AppBar Buttons
+    void AppBarEverythingFalse()
     {
-        _ClickedBtn1 = false;
-        _ClickedBtn2 = false;
-        _ClickedBtn3 = false;
-        _ClickedBtn4 = false;
-        _ClickedBtn5 = false;
-        _ClickedBtn6 = false;
+        _ClickedAppBarBtn1 = false;
+        _ClickedAppBarBtn2 = false;
+        _ClickedAppBarBtn3 = false;
+        _ClickedAppBarBtn4 = false;
+        _ClickedAppBarBtn5 = false;
+        _ClickedAppBarBtn6 = false;
+    }
+    void FiboBtn1()
+    {
+        DeselectButton();
+        _ClickedFiboBtn1 = true;
+    }
+    void FiboBtn2()
+    {
+        DeselectButton();
+        _ClickedFiboBtn2 = true;
+    }
+    void FiboBtn3()
+    {
+        DeselectButton();
+        _ClickedFiboBtn3 = true;
+    }
+    void FiboBtn4()
+    {
+        DeselectButton();
+        _ClickedFiboBtn4 = true;
+    }
+    void FiboBtn5()
+    {
+        DeselectButton();
+        _ClickedFiboBtn5 = true;
+    }
+    void FiboBtn6()
+    {
+        DeselectButton();
+        _ClickedFiboBtn6 = true;
+    }
+    void FiboBtn7()
+    {
+        DeselectButton();
+        _ClickedFiboBtn7 = true;
+    }
+    void FiboBtn8()
+    {
+        DeselectButton();
+        _ClickedFiboBtn8 = true;
+    }
+    void FiboBtn9()
+    {
+        DeselectButton();
+        _ClickedFiboBtn9 = true;
+    }
+    void FiboBtn10()
+    {
+        DeselectButton();
+        _ClickedFiboBtn10 = true;
+    }
+    void FiboBtn11()
+    {
+        DeselectButton();
+        _ClickedFiboBtn11 = true;
+    }
+    void FiboBtn12()
+    {
+        DeselectButton();
+        _ClickedFiboBtn12 = true;
+    }
+    void FiboBtn13()
+    {
+        DeselectButton();
+        _ClickedFiboBtn13 = true;   
     }
 
+    void FistBtn1()
+    {
+        DeselectButton();
+        _ClickedFistBtn1 = true;
+    }
+    void FistBtn2()
+    {
+        DeselectButton();
+        _ClickedFistBtn2 = true;
+    }
+    void FistBtn3()
+    {
+        DeselectButton();
+        _ClickedFistBtn3 = true;
+    }
+    void FistBtn4()
+    {
+        DeselectButton();
+        _ClickedFistBtn4 = true;
+    }
+    void FistBtn5()
+    {
+        DeselectButton();
+        _ClickedFistBtn5 = true;
+    }
+    void ShirtBtn1()
+    {
+        DeselectButton();
+        _ClickedShirtBtn1 = true;
+    }
+    void ShirtBtn2()
+    {
+        DeselectButton();
+        _ClickedShirtBtn2 = true;
+    }
+    void ShirtBtn3()
+    {
+        DeselectButton();
+        _ClickedShirtBtn3 = true;
+    }
+    void ShirtBtn4()
+    {
+        DeselectButton();
+        _ClickedShirtBtn4 = true;
+    }
+    void ShirtBtn5()
+    {
+        DeselectButton();
+        _ClickedShirtBtn5 = true;
+    }
+    //Unhighlights Voting Buttons
+    void DeselectButton()
+    {
+        _ClickedFiboBtn1 = false;
+        _ClickedFiboBtn2 = false;
+        _ClickedFiboBtn3 = false;
+        _ClickedFiboBtn4 = false;
+        _ClickedFiboBtn5 = false;
+        _ClickedFiboBtn6 = false;
+        _ClickedFiboBtn7 = false;
+        _ClickedFiboBtn8 = false;
+        _ClickedFiboBtn9 = false;
+        _ClickedFiboBtn10 = false;
+        _ClickedFiboBtn11 = false;
+        _ClickedFiboBtn12 = false;
+        _ClickedFiboBtn13 = false;
+        _ClickedFistBtn1 = false;
+        _ClickedFistBtn2 = false;
+        _ClickedFistBtn3 = false;
+        _ClickedFistBtn4 = false;
+        _ClickedFistBtn5 = false;
+        _ClickedShirtBtn1 = false;
+        _ClickedShirtBtn2 = false;
+        _ClickedShirtBtn3 = false;
+        _ClickedShirtBtn4 = false;
+        _ClickedShirtBtn5 = false;
+    }
     //Symbols
     char coffee = '\u2615';
     char half = '\u00BD';
-
-    //Toggle Button
-    private bool _ClickedBtn1 = false;
-    private bool _ClickedBtn2 = true;
-    private bool _ClickedBtn3 = false;
-    private bool _ClickedBtn4 = false;
-    private bool _ClickedBtn5 = false;
-    private bool _ClickedBtn6 = false;
-}
-
+    //AppBar Buttons
+    private bool _ClickedAppBarBtn1 = false;
+    private bool _ClickedAppBarBtn2 = true;
+    private bool _ClickedAppBarBtn3 = false;
+    private bool _ClickedAppBarBtn4 = false;
+    private bool _ClickedAppBarBtn5 = false;
+    private bool _ClickedAppBarBtn6 = false;
+    //Fibonacci Buttons
+    private bool _ClickedFiboBtn1 = false;
+    private bool _ClickedFiboBtn2 = false;
+    private bool _ClickedFiboBtn3 = false;
+    private bool _ClickedFiboBtn4 = false;
+    private bool _ClickedFiboBtn5 = false;
+    private bool _ClickedFiboBtn6 = false;
+    private bool _ClickedFiboBtn7 = false;
+    private bool _ClickedFiboBtn8 = false;
+    private bool _ClickedFiboBtn9 = false;
+    private bool _ClickedFiboBtn10 = false;
+    private bool _ClickedFiboBtn11 = false;
+    private bool _ClickedFiboBtn12 = false;
+    private bool _ClickedFiboBtn13 = false; 
+    //Fist of Five Buttons
+    private bool _ClickedFistBtn1 = false;
+    private bool _ClickedFistBtn2 = false;
+    private bool _ClickedFistBtn3 = false;
+    private bool _ClickedFistBtn4 = false;
+    private bool _ClickedFistBtn5 = false;
+    //T-Shirt Buttons
+    private bool _ClickedShirtBtn1 = false;
+    private bool _ClickedShirtBtn2 = false;
+    private bool _ClickedShirtBtn3 = false;
+    private bool _ClickedShirtBtn4 = false;
+    private bool _ClickedShirtBtn5 = false;
+} 
