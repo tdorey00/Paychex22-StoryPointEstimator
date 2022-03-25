@@ -120,7 +120,7 @@
     border-radius: 10%;
 }
 
-.appbar-buttons-clicked {
+.appbar-buttons:focus {
     background-color: #21A7EC;
     color: white;
     font-family: 'Ubuntu';

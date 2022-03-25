@@ -4,28 +4,23 @@
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
         ScrumSpace - 
-        <MudButton Link="/" Disabled="@_ClickedAppBarBtn1" Class="appbar-buttons"> 
-            <MudText Class="appbar-buttons">Home</MudText>
+        <MudButton Link="/" Class="appbar-buttons"> 
+            Home
         </MudButton> |
-        <MudButton Disabled="@_ClickedAppBarBtn2" OnClick="Fibonacci_Voting" Class="appbar-buttons">
-                     @if (_ClickedAppBarBtn2) {<MudText Class="appbar-buttons-clicked" >Fibonacci Tool</MudText>}
-                     else {<MudText Class="appbar-buttons">Fibonacci Tool</MudText>}
+        <MudButton OnClick="() => setVotingMode(1)" Class="appbar-buttons">
+            Fibonacci Tool
         </MudButton> |
-        <MudButton Disabled="@_ClickedAppBarBtn3" OnClick="FistFive_Voting" Class="appbar-buttons">
-                     @if (_ClickedAppBarBtn3) {<MudText Class="appbar-buttons-clicked">Fist of Five</MudText>}
-                     else {<MudText Class="appbar-buttons">Fist of Five</MudText>}
+        <MudButton OnClick="() => setVotingMode(2)" Class="appbar-buttons">
+            Fist of Five
         </MudButton> |
-                        <MudButton Disabled="@_ClickedAppBarBtn4" OnClick="TShirt_Voting" Class="appbar-buttons">
-                     @if (_ClickedAppBarBtn4) {<MudText Class="appbar-buttons-clicked">T-Shirt Sizing</MudText>}
-                     else {<MudText Class="appbar-buttons">T-Shirt Sizing</MudText>}
+        <MudButton OnClick="() => setVotingMode(3)" Class="appbar-buttons">
+             T-Shirt Sizing
         </MudButton> |
-        <MudButton Disabled="@_ClickedAppBarBtn5" OnClick="CustomScale_Voting" Class="appbar-buttons">
-                     @if (_ClickedAppBarBtn5) {<MudText Class="appbar-buttons-clicked">Custom Voting</MudText>}
-                     else {<MudText Class="appbar-buttons">Custom Voting</MudText>}
+        <MudButton OnClick="() => setVotingMode(4)" Class="appbar-buttons">
+             Custom Voting
         </MudButton> |
-        <MudButton Disabled="@_ClickedAppBarBtn6" OnClick="Timer_Mode" Class="appbar-buttons">
-                     @if (_ClickedAppBarBtn6) {<MudText Class="appbar-buttons-clicked">Timer</MudText>}
-                     else {<MudText Class="appbar-buttons">Timer</MudText>}
+        <MudButton OnClick="() => setVotingMode(5)" Class="appbar-buttons">
+             Timer
         </MudButton> 
         <MudSpacer />
         <MudIconButton Icon="@Icons.Filled.Settings" Color="Color.Inherit" />
@@ -258,54 +253,19 @@
         @"User5 5",
         @"User6 6",
     };
-    //Appbar Buttons
-    void Fibonacci_Voting(){
-        Voting_Mode = 1;
-        AppBarEverythingFalse();
-        _ClickedAppBarBtn2 = true;
+
+    void setVotingMode(int mode){
+        Voting_Mode = mode;
     }
-    void FistFive_Voting(){
-        Voting_Mode = 3;
-        AppBarEverythingFalse();
-        _ClickedAppBarBtn3 = true;
-    }
-    void TShirt_Voting(){
-        Voting_Mode = 2;
-        AppBarEverythingFalse();
-        _ClickedAppBarBtn4 = true;
-    }
-    void CustomScale_Voting(){
-        Voting_Mode = 4;
-        AppBarEverythingFalse();
-        _ClickedAppBarBtn5 = true;
-    }
-    void Timer_Mode(){
-        AppBarEverythingFalse();
-        _ClickedAppBarBtn6 = true;
-    }
+
     //Unhighlights AppBar Buttons
-    void AppBarEverythingFalse()
-    {
-        _ClickedAppBarBtn1 = false;
-        _ClickedAppBarBtn2 = false;
-        _ClickedAppBarBtn3 = false;
-        _ClickedAppBarBtn4 = false;
-        _ClickedAppBarBtn5 = false;
-        _ClickedAppBarBtn6 = false;
-    }
 
     string setVote(string val)
     {
         return val;
     }
+
     //Symbols
     char coffee = '\u2615';
     char half = '\u00BD';
-    //AppBar Buttons
-    private bool _ClickedAppBarBtn1 = false;
-    private bool _ClickedAppBarBtn2 = true;
-    private bool _ClickedAppBarBtn3 = false;
-    private bool _ClickedAppBarBtn4 = false;
-    private bool _ClickedAppBarBtn5 = false;
-    private bool _ClickedAppBarBtn6 = false;
 } 
