@@ -3,7 +3,8 @@
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
 @inject IRoomDataAccess _dB
-
+@inject DisplayGroupedModel newGroupModel
+@inject NavigationManager NavigationManager
 <style>
     .inputArea{
         text-align : center;
@@ -105,7 +106,6 @@
     private bool submitBtnClicked = false;
 
     //Datamodels
-    private DisplayGroupedModel newGroupModel = new DisplayGroupedModel();
     private List<int> userIdList = new List<int>();
     private List<int> roomIdList = new List<int>();
     private bool isValidId = false; 
@@ -167,6 +167,7 @@
                     userInsert.userId = createUserId();
                     //save user model and link user to room based on user input
                     _dB.joinRoomSaveData(newGroupModel.roomId, userInsert); 
+                    NavigationManager.NavigateTo("/Room/" + newGroupModel.roomId+ "/" + newGroupModel.userId, true);
                 }
                 else
                 {

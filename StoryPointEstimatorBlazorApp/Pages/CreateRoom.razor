@@ -3,6 +3,8 @@
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
 @inject IRoomDataAccess _dB
+@inject DisplayGroupedModel newGroupModel
+@inject NavigationManager NavigationManager
 
 <style>
     .inputArea{
@@ -98,7 +100,7 @@
     //Data Models
     private List<int> userIdList = new List<int>(); 
     private List<int> roomIdList = new List<int>();
-    private DisplayGroupedModel newGroupModel = new DisplayGroupedModel();
+
 
     private int createRoomCode()
     {
@@ -161,13 +163,16 @@
             userModel userInsert = new userModel();
             //bind all data from GroupModel to the above models
             roomInsert.roomId = createRoomCode();
+            newGroupModel.roomId = roomInsert.roomId;
             roomInsert.roomName = newGroupModel.roomName;
 
             userInsert.userId = createUserId();
+            newGroupModel.userId = userInsert.userId;
             userInsert.userName = newGroupModel.userName;
             userInsert.isAdmin = newGroupModel.isAdmin;
 
             _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
+            NavigationManager.NavigateTo("/Room/" + newGroupModel.roomId+ "/" + newGroupModel.userId, true);
         }
         else //invalid submit
         {
