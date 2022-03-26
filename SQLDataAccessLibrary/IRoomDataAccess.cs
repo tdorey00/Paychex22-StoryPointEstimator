@@ -10,5 +10,6 @@ namespace SqlDataAccessLib
         List<int> GetRoomIds();
         void createRoomSaveData(roomModel room, userModel user);
         void joinRoomSaveData(int roomId, userModel user);
+        List<roomModel> GetRoomModels();
     }
 }

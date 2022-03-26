@@ -45,6 +45,12 @@ namespace SqlDataAccessLib
             return _dB.LoadListDataSync<int, dynamic>(sql, new { });
         }
 
+        public List<roomModel> GetRoomModels()
+        {
+            string sql = "select * from dbo.roomTable";
+            return _dB.LoadListDataSync<roomModel, dynamic>(sql, new { });
+        }
+
         //insert records of room and user into the database while also linking the records in the roomUser table
         //only used for createRoom page b/c function creates a new room in dB
         //Parameters: room = roomModel with room data from Grouped Model
