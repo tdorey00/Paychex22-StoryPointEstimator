@@ -68,5 +68,6 @@
     <Build Include="dbo\Tables\roomUserTable.sql" />
     <Build Include="dbo\Stored Procedures\dbo.ExampleDataInsert.sql" />
     <Build Include="dbo\Stored Procedures\RemoveExampleData.sql" />
+    <Build Include="dbo\Stored Procedures\RemoveAllData.sql" />
   </ItemGroup>
 </Project>

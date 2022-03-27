@@ -1,4 +1,10 @@
-﻿@page "/Room"
+﻿@page "/Room/{roomId:int}/{userId:int}"
+@using StoryPointEstimatorBlazorApp.Models
+@using SqlDataAccessLib
+@using SQLDataAccessLibrary.Models
+@inject DisplayGroupedModel newGroupModel
+@inject IRoomDataAccess _dB
+@inject IDialogService DialogService
 
 <div>
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
@@ -23,227 +29,354 @@
              Timer
         </MudButton> 
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Filled.Settings" Color="Color.Inherit" />
+        <MudText Class="appbar-buttons">@roomGroupModel.userName</MudText>
+        <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Inherit" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
+            <MudMenuItem @onclick="OpenDialog">User Profile</MudMenuItem>
+            <MudMenuItem>Dark Mode</MudMenuItem>
+            <MudMenuItem>About</MudMenuItem>
+        </MudMenu>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" Class="drawer">
         <a href="aboutUs" class="drawer">About Us</a>
     </MudDrawer>
 
 </div>
-
-<div class="mainContainer">
-    <div class="button-label-container">
-        <MudItem xs="12">
-        <MudPaper Class="mud-paper-buttons" Height ="650px" Elevation="0">    
-            @if(Voting_Mode==1) 
-            {
-                <MudItem xs="6">
-                    <MudPaper Class="mud-paper-tool-name" Elevation="0">    
-                        <MudText Class="mud-paper-tool-name"> Fibonacci Tool</MudText>
-                    </MudPaper>
-                </MudItem>
-                <MudButton OnClick='() => setVote("?")' Class="tool-buttons">
-                    ?</MudButton>
-                <MudButton OnClick='() => setVote("0")' Class="tool-buttons">
-                     0
-                </MudButton>
-                <MudButton OnClick='() => setVote("0.5")' Class="tool-buttons">
-                     @half
-                </MudButton>
-                <MudButton OnClick='() => setVote("1")' Class="tool-buttons">
-                     1
-                </MudButton>
-                <MudButton OnClick='() => setVote("2")' Class="tool-buttons">
-                     2
-                </MudButton>
-                <MudButton OnClick='() => setVote("3")' Class="tool-buttons">
-                     3
-                </MudButton>
-                <MudButton OnClick='() => setVote("5")' Class="tool-buttons">
-                     5
-                </MudButton>
-                <MudButton OnClick='() => setVote("8")' Class="tool-buttons">
-                     8
-                </MudButton>
-                <MudButton OnClick='() => setVote("13")' Class="tool-buttons">
-                     13
-                </MudButton>
-                <MudButton OnClick='() => setVote("20")' Class="tool-buttons">
-                     20
-                </MudButton>
-                <MudButton OnClick='() => setVote("40")' Class="tool-buttons">
-                     40
-                </MudButton>
-                <MudButton OnClick='() => setVote("100")' Class="tool-buttons">
-                     100
-                </MudButton>
-                <MudButton OnClick='() => setVote("Coffee")' Class="tool-buttons">
-                     @coffee
-                </MudButton> 
-            }
-            @if(Voting_Mode == 2)
-            {
-                <MudItem xs="6">
-                    <MudPaper Class="mud-paper-tool-name" Elevation="0">    
-                        <MudText Class="mud-paper-tool-name"> T-Shirt Sizing</MudText>
-                    </MudPaper>
-                </MudItem>
-                <MudButton OnClick='() => setVote("1")' Class="tool-buttons">
-                     1
-                </MudButton>
-                <MudButton OnClick='() => setVote("2")' Class="tool-buttons">
-                     2
-                </MudButton>
-                <MudButton OnClick='() => setVote("3")' Class="tool-buttons">
-                     3
-                </MudButton>
-                <MudButton OnClick='() => setVote("4")' Class="tool-buttons">
-                     4
-                </MudButton>
-                <MudButton OnClick='() => setVote("5")' Class="tool-buttons">
-                     5
-                </MudButton> 
-            }
-            @if(Voting_Mode == 3)
-            {
-                <MudItem xs="6">
-                    <MudPaper Class="mud-paper-tool-name" Elevation="0">    
-                        <MudText Class="mud-paper-tool-name"> Fist of Five</MudText>
-                    </MudPaper>
-                </MudItem>                
-                <MudButton OnClick='() => setVote("XS")' Class="tool-buttons">
-                     XS
-                </MudButton>
-                <MudButton OnClick='() => setVote("S")' Class="tool-buttons">
-                     S
-                </MudButton>
-                <MudButton OnClick='() => setVote("M")' Class="tool-buttons">
-                     M
-                </MudButton>
-                <MudButton OnClick='() => setVote("L")' Class="tool-buttons">
-                     L
-                </MudButton>
-                <MudButton OnClick='() => setVote("XL")' Class="tool-buttons">
-                     XL
-                </MudButton> 
-            }
-            @if(Voting_Mode==4) 
-            {
-                <MudItem xs="6">
-                    <MudPaper Class="mud-paper-tool-name" Elevation="0">    
-                        <MudText Class="mud-paper-tool-name"> Custom Voting</MudText>
-                    </MudPaper>
-                </MudItem>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    1</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    2</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    3</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    4</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    5</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    6</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    7</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    8</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    9</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    10</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    11</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    12</MudButton>    
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    13</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    14</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    15</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    16</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    17</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    18</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    19</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    20</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    21</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    22</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    23</MudButton>
-                <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                    24</MudButton>    
-            }
-        </MudPaper>
-        </MudItem>
-        <MudItem xs="12">
-        <MudPaper Class="mud-paper-room-labels" Elevation="0">  
-            <MudChip Class="mud-chip" >Room Name Goes Here</MudChip>
-            <MudChip Class="mud-chip" >Room Code Goes Here</MudChip>
-        </MudPaper>
-        </MudItem>
-    </div>
-    <div>
-    <MudPaper Class="mud-paper-admin-tools" Height ="150px" Elevation="0">
-    <MudItem xs="6">
-            <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
-    </MudItem>
-    <button type="submit" class="btn admin-tools-buttons">Delete Votes</button>
-    <button type="submit" class="btn admin-tools-buttons">Hide Votes</button>
-    <button type="submit" class="btn admin-tools-buttons">Hide Users</button>
-    <button type="submit" class="btn admin-tools-buttons">Clear Users</button>
-    <button type="submit" class="btn admin-tools-buttons">Save Results</button>
-</MudPaper>
-    <MudItem xs="12">
-    <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
-    <MudItem>
-            <MudText Class="mud-paper-tool-name"> Results</MudText>
-    </MudItem>
-    <MudSimpleTable Style="overflow-x: auto;" Class="table">
-        <thead>
-            <tr>
-                @foreach (var h in headings)
+@if (loading)
+{
+    <MudText>Your Room is loading...</MudText>
+}
+else{
+    <div class="mainContainer">
+        <div class="button-label-container">
+            <MudItem xs="12">
+            <MudPaper Class="mud-paper-buttons" Height ="650px" Elevation="0">    
+                @if(Voting_Mode==1) 
                 {
-                    <th>@h</th>
+                    <MudItem xs="6">
+                        <MudPaper Class="mud-paper-tool-name" Elevation="0">    
+                            <MudText Class="mud-paper-tool-name"> Fibonacci Tool</MudText>
+                        </MudPaper>
+                    </MudItem>
+                    <MudButton OnClick='() => setVote("?")' Class="tool-buttons">
+                         ?
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("0")' Class="tool-buttons">
+                         0
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("0.5")' Class="tool-buttons">
+                         @half
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("1")' Class="tool-buttons">
+                         1
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("2")' Class="tool-buttons">
+                         2
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("3")' Class="tool-buttons">
+                         3
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("5")' Class="tool-buttons">
+                         5
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("8")' Class="tool-buttons">
+                         8
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("13")' Class="tool-buttons">
+                         13
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("20")' Class="tool-buttons">
+                         20
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("40")' Class="tool-buttons">
+                         40
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("100")' Class="tool-buttons">
+                         100
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("Coffee")' Class="tool-buttons">
+                         @coffee
+                    </MudButton> 
                 }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var row in rows)
-            {
+                @if(Voting_Mode == 2)
+                {
+                    <MudItem xs="6">
+                        <MudPaper Class="mud-paper-tool-name" Elevation="0">    
+                            <MudText Class="mud-paper-tool-name"> Fist of Five</MudText>
+                        </MudPaper>
+                    </MudItem>
+                    <MudButton OnClick='() => setVote("1")' Class="tool-buttons">
+                         1
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("2")' Class="tool-buttons">
+                         2
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("3")' Class="tool-buttons">
+                         3
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("4")' Class="tool-buttons">
+                         4
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("5")' Class="tool-buttons">
+                         5
+                    </MudButton> 
+                }
+                @if(Voting_Mode == 3)
+                {
+                    <MudItem xs="6">
+                        <MudPaper Class="mud-paper-tool-name" Elevation="0">    
+                            <MudText Class="mud-paper-tool-name"> T-Shirt Sizing</MudText>
+                        </MudPaper>
+                    </MudItem>                
+                    <MudButton OnClick='() => setVote("XS")' Class="tool-buttons">
+                         XS
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("S")' Class="tool-buttons">
+                         S
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("M")' Class="tool-buttons">
+                         M
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("L")' Class="tool-buttons">
+                         L
+                    </MudButton>
+                    <MudButton OnClick='() => setVote("XL")' Class="tool-buttons">
+                         XL
+                    </MudButton> 
+                }
+                @if(Voting_Mode==4) 
+                {
+                    <MudItem>
+                        <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
+                            <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
+                            @if(@newGroupModel.isAdmin){
+                                <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
+                                <!-- <MudTextField @bind-Value="customScale" Validation="@(new Func<string, IEnumerable<string>>(CustomScaleValidation))" Mask="@mask3" Class="custom-scale-input" Label="Enter Size (1-24)" Variant="Variant.Outlined" Clearable="true"></MudTextField> --> 
+                                <button @onclick="updateCustomVote" class="btn admin-tools-buttons">Update</button>
+                            }
+                        </MudPaper>
+                    </MudItem>
+
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        1</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        2</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        3</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        4</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        5</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        6</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        7</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        8</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        9</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        10</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        11</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        12</MudButton>    
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        13</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        14</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        15</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        16</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        17</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        18</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        19</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        20</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        21</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        22</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        23</MudButton>
+                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                        24</MudButton>    
+                }
+            </MudPaper>
+            </MudItem>
+            <MudItem xs="12">
+            <MudPaper Class="mud-paper-room-labels" Elevation="0">  
+                <MudChip Class="mud-chip" >Room Name: @roomGroupModel.roomName</MudChip>
+                <MudChip Class="mud-chip" >Room Code: @roomId</MudChip>
+            </MudPaper>
+            </MudItem>
+        </div>
+        <div>
+        @if(@newGroupModel.isAdmin)
+        {
+            <MudPaper Class="mud-paper-admin-tools" Height ="115px" Elevation="0">
+            <MudItem xs="6">
+                <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
+            </MudItem>
+            <button type="submit" class="btn admin-tools-buttons">Delete Votes</button>
+            <button type="submit" class="btn admin-tools-buttons">Hide Votes</button>
+            <button type="submit" class="btn admin-tools-buttons">Hide Users</button>
+            <button type="submit" class="btn admin-tools-buttons">Clear Users</button>
+            <button type="submit" class="btn admin-tools-buttons">Save Results</button>
+            </MudPaper>
+        }
+        <MudItem xs="12">
+        <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
+        <MudItem>
+                <MudText Class="mud-paper-tool-name"> Results</MudText>
+        </MudItem>
+        <MudSimpleTable Style="overflow-x: auto;" Class="table">
+            <thead>
                 <tr>
-                    @foreach (var x in row.Split())
+                    @foreach (var h in headings)
                     {
-                        <td>@x</td>
+                        <th>@h</th>
                     }
                 </tr>
-            }
-        </tbody>
-    </MudSimpleTable>
-</MudPaper>
-</MudItem>
-</div>
-</div>
-
+            </thead>
+            <tbody>
+                @foreach (var row in rows)
+                {
+                    <tr>
+                        @foreach (var x in row.Split())
+                        {
+                            <td>@x</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </MudPaper>
+    </MudItem>
+    <MudDialog @bind-IsVisible="visible" Options="dialogOptions">
+        <DialogContent>
+            <MudText Style="font-size: 30px">User Profile</MudText>
+            <MudText Style="font-size: 16px">Current Username: @roomGroupModel.userName</MudText>
+            <MudTextField @bind-Value="tempUsername" Variant="@Variant.Filled" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Change Username"></MudTextField>
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="CloseDialog">Cancel</MudButton>
+            <MudButton Color="Color.Primary" OnClick="SubmitDialog">Save</MudButton>
+        </DialogActions>
+    </MudDialog>
+    </div>
+    </div>
+}
 @code {
+    //data
+    [Parameter]
+    public int roomId{ get; set; }
+    [Parameter]
+    public int userId{ get; set; }
+    private string tempUsername = "";
+    private bool loading = true;
+    private string currentCustomTitle;
+    private DisplayGroupedModel roomGroupModel = new DisplayGroupedModel();
 
+    protected override async Task OnInitializedAsync()
+    {
+        roomModel roomData = await _dB.GetRoomData(roomId);
+        userModel userData = await _dB.GetUserData(userId);
+
+        roomGroupModel.userName = userData.userName;
+        tempUsername = roomGroupModel.userName;
+        roomGroupModel.isAdmin = userData.isAdmin;
+
+        roomGroupModel.roomName = roomData.roomName;
+
+        roomGroupModel.currentScale = roomData.currentScale;
+        roomGroupModel.scaleTitle = roomData.scaleTitle;
+        currentCustomTitle = roomData.scaleTitle;
+
+        loading = false;
+    }
+
+    //Validation
+    IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
+    IMask mask2 = new RegexMask(@"^[ a-zA-Z0-9_-]+$");
+    IMask mask3 = new BlockMask(delimiters:" ", new Block('0', 1,2));
+
+    private IEnumerable<string> TextValidation(string ch)
+    {
+        if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
+        {
+            yield return "Too many characters";
+        }
+        else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
+        {
+            yield return "Too few characters";
+        }
+    }
+    private IEnumerable<string> CustomTitleValidation(string ch)
+    {
+        if (!string.IsNullOrEmpty(ch) && 100 < ch?.Length)
+        {
+            yield return "Too many characters";
+        }
+        else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
+        {
+            yield return "Too few characters";
+        }
+    }
+    /*private IEnumerable<string> CustomScaleValidation(string ch)
+         {
+         if (!string.IsNullOrEmpty(ch) && 24 < ch?.Length)
+             {
+         yield return "Too many buttons";
+         }
+         else if (!string.IsNullOrEmpty(ch) && 1 > ch?.Length)
+             {
+             yield return "Too few buttons";
+     }   
+     }
+    */
+    //Custom Scale
+    private string newCustomTitle { get; set; } = "Enter A Title";
+    //private int customScale { get; set; } = 24;
+
+    void updateCustomVote()
+    {
+        if(newCustomTitle.Length > 3 && newCustomTitle.Length < 101)
+        {
+            //if(customScale > 1 && customScale < 25)
+            {
+                _dB.UpdateCustomScale(roomId, newCustomTitle);
+                currentCustomTitle = newCustomTitle;
+            }
+        }
+    }
+
+    //Settings Menu
+    private bool visible;
+    private void OpenDialog() => visible = true;
+    void CloseDialog() => visible = false;
+    void SubmitDialog()
+    {
+        if(!(tempUsername.Length > 50 || tempUsername.Length < 3)){ //valid submission
+            visible = false;
+            _dB.UpdateUsername(userId, tempUsername);
+            roomGroupModel.userName = tempUsername;
+        }
+    }
+    private DialogOptions dialogOptions = new() { FullWidth = true };
+
+    //AppDrawer
     bool _drawerOpen = false;
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
-    public int Voting_Mode { get; set; } = 1;
 
+    //Table
     string[] headings = { "User", "Vote" };
     string[] rows = {
         @"User1 1",
@@ -253,6 +386,9 @@
         @"User5 5",
         @"User6 6",
     };
+
+    //Voting Mode
+    public int Voting_Mode { get; set; } = 1;
 
     void setVotingMode(int mode){
         Voting_Mode = mode;

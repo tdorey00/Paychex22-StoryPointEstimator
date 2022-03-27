@@ -133,6 +133,13 @@
         font-weight: bold;
     }
 
+.custom-scale-input {
+    min-width: 200px;
+    max-width: 200px;
+    display: flex;
+    justify-content: center;
+}
+
 .mud-chip {
     min-width: 50px;
     padding: 25px;
@@ -153,14 +160,14 @@
     padding: 25px;
     min-width: 850px;
     max-width: 850px;
-    margin: 10px;
 }
 
 .mud-paper-table {
-    padding: 15px;
+    padding: 1px;
     min-width: 750px;
     max-width: 750px;
-    margin: 1px;
+    margin-left: 25px;
+    margin-right: 15px;
 }
 
 .mud-paper-room-labels {
@@ -176,17 +183,26 @@
     font-family: 'Ubuntu';
     font-size: 30px;
     font-weight: bold;
-    min-width: 500px;
-    max-width: 500px;
+    min-height: 60px;
+    max-height: 70px;
     padding: 5px;
+    justify-content: right;
 }
-
+.mud-paper-custom-scale {
+    color: black;
+    font-family: 'Ubuntu';
+    font-size: 30px;
+    font-weight: bold;
+    min-height: 60px;
+    max-height: 70px;
+    padding: 5px;
+    display: flex;
+    justify-content: left;
+}
 .mud-paper-admin-tools {
     min-width: 750px;
     max-width: 750px;
-    padding-top: 40px;
-    padding-bottom: 15px;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin: 1px;
+    padding: 1px;
+    margin-right: 25px;
+    margin-left: 25px;
 }
