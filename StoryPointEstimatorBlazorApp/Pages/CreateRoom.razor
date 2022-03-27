@@ -40,7 +40,7 @@
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
-                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Username" 
+                            <MudTextField Immediate="false" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Username" 
                       @bind-Value="newGroupModel.userName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
@@ -51,7 +51,7 @@
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
-                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask2" Label="Room Name" 
+                            <MudTextField DebounceInterval="500" OnDebounceIntervalElapsed="HandleIntervalElapsed" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask2" Label="Room Name" 
                       @bind-Value="newGroupModel.roomName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
@@ -94,6 +94,11 @@
     }
     private bool validSubmit = false;
     private bool submitBtnClicked = false;
+
+    void HandleIntervalElapsed(string debouncedText)
+    {
+        // at this stage, interval has elapsed
+    }
 
     //Data Models
     private List<int> userIdList = new List<int>(); 
