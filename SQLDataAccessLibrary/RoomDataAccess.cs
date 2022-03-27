@@ -61,7 +61,7 @@ namespace SqlDataAccessLib
         public async void UpdateCustomScale(int roomid, string customtitle)
         {
             var parameters = new {roomID = roomid, customTitle = customtitle};
-            string sql = "update dbo.roomTable set 24ScaleTitle = @customTitle where roomId = @roomID;";
+            string sql = "update dbo.roomTable set scaleTitle = @customTitle where roomId = @roomID;";
             await _dB.SaveDataAsync(sql, parameters);
         }
 

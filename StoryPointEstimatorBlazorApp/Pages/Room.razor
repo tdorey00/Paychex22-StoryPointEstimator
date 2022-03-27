@@ -148,9 +148,11 @@ else{
                     <MudItem>
                         <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
                             <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
-                            <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
-                          <!-- <MudTextField @bind-Value="customScale" Validation="@(new Func<string, IEnumerable<string>>(CustomScaleValidation))" Mask="@mask3" Class="custom-scale-input" Label="Enter Size (1-24)" Variant="Variant.Outlined" Clearable="true"></MudTextField> --> 
-                            <button @onclick="updateCustomVote" class="btn admin-tools-buttons">Update</button>
+                            @if(@newGroupModel.isAdmin){
+                                <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
+                                <!-- <MudTextField @bind-Value="customScale" Validation="@(new Func<string, IEnumerable<string>>(CustomScaleValidation))" Mask="@mask3" Class="custom-scale-input" Label="Enter Size (1-24)" Variant="Variant.Outlined" Clearable="true"></MudTextField> --> 
+                                <button @onclick="updateCustomVote" class="btn admin-tools-buttons">Update</button>
+                            }
                         </MudPaper>
                     </MudItem>
 
@@ -213,16 +215,19 @@ else{
             </MudItem>
         </div>
         <div>
-        <MudPaper Class="mud-paper-admin-tools" Height ="115px" Elevation="0">
-        <MudItem xs="6">
+        @if(@newGroupModel.isAdmin)
+        {
+            <MudPaper Class="mud-paper-admin-tools" Height ="115px" Elevation="0">
+            <MudItem xs="6">
                 <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
-        </MudItem>
-        <button type="submit" class="btn admin-tools-buttons">Delete Votes</button>
-        <button type="submit" class="btn admin-tools-buttons">Hide Votes</button>
-        <button type="submit" class="btn admin-tools-buttons">Hide Users</button>
-        <button type="submit" class="btn admin-tools-buttons">Clear Users</button>
-        <button type="submit" class="btn admin-tools-buttons">Save Results</button>
-    </MudPaper>
+            </MudItem>
+            <button type="submit" class="btn admin-tools-buttons">Delete Votes</button>
+            <button type="submit" class="btn admin-tools-buttons">Hide Votes</button>
+            <button type="submit" class="btn admin-tools-buttons">Hide Users</button>
+            <button type="submit" class="btn admin-tools-buttons">Clear Users</button>
+            <button type="submit" class="btn admin-tools-buttons">Save Results</button>
+            </MudPaper>
+        }
         <MudItem xs="12">
         <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
         <MudItem>
@@ -283,6 +288,7 @@ else{
 
         roomGroupModel.userName = userData.userName;
         tempUsername = roomGroupModel.userName;
+        roomGroupModel.isAdmin = userData.isAdmin;
 
         roomGroupModel.roomName = roomData.roomName;
 
