@@ -58,7 +58,8 @@ else{
                         </MudPaper>
                     </MudItem>
                     <MudButton OnClick='() => setVote("?")' Class="tool-buttons">
-                        ?</MudButton>
+                         ?
+                    </MudButton>
                     <MudButton OnClick='() => setVote("0")' Class="tool-buttons">
                          0
                     </MudButton>
@@ -100,7 +101,7 @@ else{
                 {
                     <MudItem xs="6">
                         <MudPaper Class="mud-paper-tool-name" Elevation="0">    
-                            <MudText Class="mud-paper-tool-name"> T-Shirt Sizing</MudText>
+                            <MudText Class="mud-paper-tool-name"> Fist of Five</MudText>
                         </MudPaper>
                     </MudItem>
                     <MudButton OnClick='() => setVote("1")' Class="tool-buttons">
@@ -123,7 +124,7 @@ else{
                 {
                     <MudItem xs="6">
                         <MudPaper Class="mud-paper-tool-name" Elevation="0">    
-                            <MudText Class="mud-paper-tool-name"> Fist of Five</MudText>
+                            <MudText Class="mud-paper-tool-name"> T-Shirt Sizing</MudText>
                         </MudPaper>
                     </MudItem>                
                     <MudButton OnClick='() => setVote("XS")' Class="tool-buttons">
@@ -146,10 +147,10 @@ else{
                 {
                     <MudItem>
                         <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
-                            <MudText Class="mud-paper-custom-scale"> Custom Voting</MudText>
-                            <MudTextField @bind-Value="customTitle" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
-                            <MudTextField @bind-Value="customTitle" Class="custom-scale-input" Label="Enter Size (1-24)" Variant="Variant.Outlined" Clearable="true"></MudTextField>
-                            <button type="submit" class="btn admin-tools-buttons">Update</button>
+                            <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
+                            <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
+                          <!-- <MudTextField @bind-Value="customScale" Validation="@(new Func<string, IEnumerable<string>>(CustomScaleValidation))" Mask="@mask3" Class="custom-scale-input" Label="Enter Size (1-24)" Variant="Variant.Outlined" Clearable="true"></MudTextField> --> 
+                            <button @onclick="updateCustomVote" class="btn admin-tools-buttons">Update</button>
                         </MudPaper>
                     </MudItem>
 
@@ -254,7 +255,7 @@ else{
         <DialogContent>
             <MudText Style="font-size: 30px">User Profile</MudText>
             <MudText Style="font-size: 16px">Current Username: @roomGroupModel.userName</MudText>
-            <MudTextField @bind-Value="newGroupModel.userName" Variant="@Variant.Filled" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Change Username"></MudTextField>
+            <MudTextField @bind-Value="tempUsername" Variant="@Variant.Filled" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Change Username"></MudTextField>
         </DialogContent>
         <DialogActions>
             <MudButton OnClick="CloseDialog">Cancel</MudButton>
@@ -270,47 +271,95 @@ else{
     public int roomId{ get; set; }
     [Parameter]
     public int userId{ get; set; }
+    private string tempUsername = "";
     private bool loading = true;
+    private string currentCustomTitle;
     private DisplayGroupedModel roomGroupModel = new DisplayGroupedModel();
 
     protected override async Task OnInitializedAsync()
     {
         roomModel roomData = await _dB.GetRoomData(roomId);
         userModel userData = await _dB.GetUserData(userId);
+
         roomGroupModel.userName = userData.userName;
+        tempUsername = roomGroupModel.userName;
+
         roomGroupModel.roomName = roomData.roomName;
+
+        roomGroupModel.currentScale = roomData.currentScale;
+        roomGroupModel.scaleTitle = roomData.scaleTitle;
+        currentCustomTitle = roomData.scaleTitle;
+
         loading = false;
     }
 
     //Validation
     IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
+    IMask mask2 = new RegexMask(@"^[ a-zA-Z0-9_-]+$");
+    IMask mask3 = new BlockMask(delimiters:" ", new Block('0', 1,2));
 
     private IEnumerable<string> TextValidation(string ch)
     {
         if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
         {
-            //validSubmit = false;
             yield return "Too many characters";
         }
         else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
         {
-            //validSubmit = false;
             yield return "Too few characters";
         }
-        else
+    }
+    private IEnumerable<string> CustomTitleValidation(string ch)
+    {
+        if (!string.IsNullOrEmpty(ch) && 100 < ch?.Length)
         {
-            //validSubmit = true;
+            yield return "Too many characters";
+        }
+        else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
+        {
+            yield return "Too few characters";
+        }
+    }
+    /*private IEnumerable<string> CustomScaleValidation(string ch)
+         {
+         if (!string.IsNullOrEmpty(ch) && 24 < ch?.Length)
+             {
+         yield return "Too many buttons";
+         }
+         else if (!string.IsNullOrEmpty(ch) && 1 > ch?.Length)
+             {
+             yield return "Too few buttons";
+     }   
+     }
+    */
+    //Custom Scale
+    private string newCustomTitle { get; set; } = "Enter A Title";
+    //private int customScale { get; set; } = 24;
+
+    void updateCustomVote()
+    {
+        if(newCustomTitle.Length > 3 && newCustomTitle.Length < 101)
+        {
+            //if(customScale > 1 && customScale < 25)
+            {
+                _dB.UpdateCustomScale(roomId, newCustomTitle);
+                currentCustomTitle = newCustomTitle;
+            }
         }
     }
 
-    //Custom Scale
-    public string customTitle { get; set; }
-
-    //Settings Button
+    //Settings Menu
     private bool visible;
     private void OpenDialog() => visible = true;
     void CloseDialog() => visible = false;
-    void SubmitDialog() => visible = false;
+    void SubmitDialog()
+    {
+        if(!(tempUsername.Length > 50 || tempUsername.Length < 3)){ //valid submission
+            visible = false;
+            _dB.UpdateUsername(userId, tempUsername);
+            roomGroupModel.userName = tempUsername;
+        }
+    }
     private DialogOptions dialogOptions = new() { FullWidth = true };
 
     //AppDrawer
@@ -320,7 +369,6 @@ else{
     {
         _drawerOpen = !_drawerOpen;
     }
-    public int Voting_Mode { get; set; } = 1;
 
     //Table
     string[] headings = { "User", "Vote" };
@@ -334,6 +382,8 @@ else{
     };
 
     //Voting Mode
+    public int Voting_Mode { get; set; } = 1;
+
     void setVotingMode(int mode){
         Voting_Mode = mode;
     }

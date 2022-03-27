@@ -14,6 +14,7 @@ namespace StoryPointEstimatorBlazorApp.Models
         public string stringId { get; set; } = ""; //Used for Input box on joinRoom then convered to roomId
         public int currentTab { get; set; }
         public string scaleTitle { get; set; } = "Enter A Title"; //1-24 scale title
+        public int currentScale { get; set; }
         //USER MODEL
         [Required]
         [StringLength(50, ErrorMessage = "Username is too long.")]

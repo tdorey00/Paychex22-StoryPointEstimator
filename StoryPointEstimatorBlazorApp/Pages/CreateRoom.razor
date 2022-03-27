@@ -53,7 +53,7 @@
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
-                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask2" Label="Room Name" 
+                            <MudTextField Immediate = "true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask2" Label="Room Name" 
                       @bind-Value="newGroupModel.roomName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
@@ -100,7 +100,6 @@
     //Data Models
     private List<int> userIdList = new List<int>(); 
     private List<int> roomIdList = new List<int>();
-
 
     private int createRoomCode()
     {
