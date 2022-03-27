@@ -4,6 +4,8 @@
 @using SQLDataAccessLibrary.Models
 @inject DisplayGroupedModel newGroupModel
 @inject IRoomDataAccess _dB
+@inject IDialogService DialogService
+
 <div>
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
@@ -27,7 +29,12 @@
              Timer
         </MudButton> 
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Filled.Settings" Color="Color.Inherit" />
+        <MudText Class="appbar-buttons">@roomGroupModel.userName</MudText>
+        <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Inherit" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
+            <MudMenuItem @onclick="OpenDialog">User Profile</MudMenuItem>
+            <MudMenuItem>Dark Mode</MudMenuItem>
+            <MudMenuItem>About</MudMenuItem>
+        </MudMenu>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" Class="drawer">
         <a href="aboutUs" class="drawer">About Us</a>
@@ -45,7 +52,6 @@ else{
             <MudPaper Class="mud-paper-buttons" Height ="650px" Elevation="0">    
                 @if(Voting_Mode==1) 
                 {
-                    <MudText>UserName is @roomGroupModel.userName</MudText>
                     <MudItem xs="6">
                         <MudPaper Class="mud-paper-tool-name" Elevation="0">    
                             <MudText Class="mud-paper-tool-name"> Fibonacci Tool</MudText>
@@ -138,11 +144,15 @@ else{
                 }
                 @if(Voting_Mode==4) 
                 {
-                    <MudItem xs="6">
-                        <MudPaper Class="mud-paper-tool-name" Elevation="0">    
-                            <MudText Class="mud-paper-tool-name"> Custom Voting</MudText>
+                    <MudItem>
+                        <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
+                            <MudText Class="mud-paper-custom-scale"> Custom Voting</MudText>
+                            <MudTextField @bind-Value="customTitle" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
+                            <MudTextField @bind-Value="customTitle" Class="custom-scale-input" Label="Enter Size (1-24)" Variant="Variant.Outlined" Clearable="true"></MudTextField>
+                            <button type="submit" class="btn admin-tools-buttons">Update</button>
                         </MudPaper>
                     </MudItem>
+
                     <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
                         1</MudButton>
                     <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
@@ -202,7 +212,7 @@ else{
             </MudItem>
         </div>
         <div>
-        <MudPaper Class="mud-paper-admin-tools" Height ="150px" Elevation="0">
+        <MudPaper Class="mud-paper-admin-tools" Height ="115px" Elevation="0">
         <MudItem xs="6">
                 <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
         </MudItem>
@@ -240,6 +250,17 @@ else{
         </MudSimpleTable>
     </MudPaper>
     </MudItem>
+    <MudDialog @bind-IsVisible="visible" Options="dialogOptions">
+        <DialogContent>
+            <MudText Style="font-size: 30px">User Profile</MudText>
+            <MudText Style="font-size: 16px">Current Username: @roomGroupModel.userName</MudText>
+            <MudTextField @bind-Value="newGroupModel.userName" Variant="@Variant.Filled" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Change Username"></MudTextField>
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="CloseDialog">Cancel</MudButton>
+            <MudButton Color="Color.Primary" OnClick="SubmitDialog">Save</MudButton>
+        </DialogActions>
+    </MudDialog>
     </div>
     </div>
 }
@@ -261,6 +282,36 @@ else{
         loading = false;
     }
 
+    //Validation
+    IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
+
+    private IEnumerable<string> TextValidation(string ch)
+    {
+        if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
+        {
+            //validSubmit = false;
+            yield return "Too many characters";
+        }
+        else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
+        {
+            //validSubmit = false;
+            yield return "Too few characters";
+        }
+        else
+        {
+            //validSubmit = true;
+        }
+    }
+
+    //Custom Scale
+    public string customTitle { get; set; }
+
+    //Settings Button
+    private bool visible;
+    private void OpenDialog() => visible = true;
+    void CloseDialog() => visible = false;
+    void SubmitDialog() => visible = false;
+    private DialogOptions dialogOptions = new() { FullWidth = true };
 
     //AppDrawer
     bool _drawerOpen = false;
