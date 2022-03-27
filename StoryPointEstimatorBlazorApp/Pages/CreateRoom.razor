@@ -53,7 +53,7 @@
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
-                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask2" Label="Room Name" 
+                            <MudTextField Immediate = "true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask2" Label="Room Name" 
                       @bind-Value="newGroupModel.roomName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
@@ -101,7 +101,6 @@
     private List<int> userIdList = new List<int>(); 
     private List<int> roomIdList = new List<int>();
 
-
     private int createRoomCode()
     {
         Random rand = new Random();
@@ -109,6 +108,10 @@
         int randomId = rand.Next(1000, 10000); //generates a random user ID between 1000 and 9999
         bool unique = false;
         roomIdList = _dB.GetRoomIds(); //pull roomId list from dB
+        if(roomIdList == null)
+        {
+            return randomId;
+        }
         while (!unique)
         {
             foreach(int id in roomIdList)
@@ -135,6 +138,10 @@
         int possibleId = rand.Next(1000, 10000); //generates a random room code between 1000 and 9999
         bool unique = false;
         userIdList = _dB.GetUserIds(); //pull userId list from the db
+        if(userIdList == null)
+        {
+            return possibleId;
+        }
         while (!unique)
         {
             foreach(int id in userIdList){

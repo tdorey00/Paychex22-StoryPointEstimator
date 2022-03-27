@@ -51,6 +51,20 @@ namespace SqlDataAccessLib
             return _dB.LoadListDataSync<roomModel, dynamic>(sql, new { });
         }
 
+        public async void UpdateUsername(int userid, string username)
+        {
+            var parameters = new {userID = userid, userName = username };
+            string sql = "update dbo.userTable set userName = @userName where userId = @userID;";
+            await _dB.SaveDataAsync(sql, parameters);
+        }
+
+        public async void UpdateCustomScale(int roomid, string customtitle)
+        {
+            var parameters = new {roomID = roomid, customTitle = customtitle};
+            string sql = "update dbo.roomTable set scaleTitle = @customTitle where roomId = @roomID;";
+            await _dB.SaveDataAsync(sql, parameters);
+        }
+
         //insert records of room and user into the database while also linking the records in the roomUser table
         //only used for createRoom page b/c function creates a new room in dB
         //Parameters: room = roomModel with room data from Grouped Model

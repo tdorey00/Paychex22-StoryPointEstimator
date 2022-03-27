@@ -11,5 +11,7 @@ namespace SqlDataAccessLib
         void createRoomSaveData(roomModel room, userModel user);
         void joinRoomSaveData(int roomId, userModel user);
         List<roomModel> GetRoomModels();
+        void UpdateUsername(int userid, string username);
+        void UpdateCustomScale(int roomid, string customtitle);
     }
 }
