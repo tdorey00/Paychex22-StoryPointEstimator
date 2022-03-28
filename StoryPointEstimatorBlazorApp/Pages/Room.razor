@@ -8,9 +8,8 @@
 
 <div>
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
         ScrumSpace - 
-        <MudButton Link="/" Class="appbar-buttons"> 
+        <MudButton OnClick="OnButtonClicked" Class="appbar-buttons"> 
             Home
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(1)" Class="appbar-buttons">
@@ -31,15 +30,11 @@
         <MudSpacer />
         <MudText Class="appbar-buttons">@roomGroupModel.userName</MudText>
         <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Inherit" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
-            <MudMenuItem @onclick="OpenDialog">User Profile</MudMenuItem>
+            <MudMenuItem @onclick="OpenProfile">User Profile</MudMenuItem>
             <MudMenuItem>Dark Mode</MudMenuItem>
-            <MudMenuItem>About</MudMenuItem>
+            <MudMenuItem @onclick="OpenAbout">About</MudMenuItem>
         </MudMenu>
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen" Class="drawer">
-        <a href="aboutUs" class="drawer">About Us</a>
-    </MudDrawer>
-
 </div>
 @if (loading)
 {
@@ -151,7 +146,7 @@ else{
                             @if(@newGroupModel.isAdmin){
                                 <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
                                 <!-- <MudTextField @bind-Value="customScale" Validation="@(new Func<string, IEnumerable<string>>(CustomScaleValidation))" Mask="@mask3" Class="custom-scale-input" Label="Enter Size (1-24)" Variant="Variant.Outlined" Clearable="true"></MudTextField> --> 
-                                <button @onclick="updateCustomVote" class="btn admin-tools-buttons">Update</button>
+                                <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>
                             }
                         </MudPaper>
                     </MudItem>
@@ -209,7 +204,7 @@ else{
             </MudItem>
             <MudItem xs="12">
             <MudPaper Class="mud-paper-room-labels" Elevation="0">  
-                <MudChip Class="mud-chip" >Room Name: @roomGroupModel.roomName</MudChip>
+                <MudChip Class="mud-chip" >@roomGroupModel.roomName</MudChip>
                 <MudChip Class="mud-chip" >Room Code: @roomId</MudChip>
             </MudPaper>
             </MudItem>
@@ -256,17 +251,41 @@ else{
         </MudSimpleTable>
     </MudPaper>
     </MudItem>
-    <MudDialog @bind-IsVisible="visible" Options="dialogOptions">
+    <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
         <DialogContent>
             <MudText Style="font-size: 30px">User Profile</MudText>
             <MudText Style="font-size: 16px">Current Username: @roomGroupModel.userName</MudText>
             <MudTextField @bind-Value="tempUsername" Variant="@Variant.Filled" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Change Username"></MudTextField>
-        </DialogContent>
+            <div class = "inputSpacer">
+                <MudCheckBox @bind-Checked="newGroupModel.isAdmin" Label="Facilitator" Color="Color.Primary"></MudCheckBox>
+            </div>
+            </DialogContent>
         <DialogActions>
-            <MudButton OnClick="CloseDialog">Cancel</MudButton>
-            <MudButton Color="Color.Primary" OnClick="SubmitDialog">Save</MudButton>
+            <MudButton OnClick="CloseProfile">Cancel</MudButton>
+            <MudButton Color="Color.Primary" OnClick="SubmitProfile">Save</MudButton>
         </DialogActions>
     </MudDialog>
+    <MudDialog @bind-Isvisible="visibleAbout" Options="dialogAbout">
+        <DialogContent>
+            <MudContainer Style="max-height: 300px; overflow-y: scroll">
+                <MudText Style="font-size: 30px">About Product</MudText>
+                <MudText Style="white-space: pre-wrap;">@AboutProduct</MudText>
+                <MudText Style="font-size: 30px">About Creators</MudText>
+                <MudText Style="white-space: pre-wrap;">@AboutUs</MudText>
+            </MudContainer>
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="CloseAbout">Close</MudButton>
+        </DialogActions>
+    </MudDialog>
+    <MudMessageBox @ref="returnHome" Title="Return Home" CancelText="Cancel">
+        <MessageContent>
+            Are you sure you wish to leave the room?
+        </MessageContent>
+        <YesButton>
+            <MudButton Link="/">Return Home</MudButton>
+        </YesButton>
+</MudMessageBox>
     </div>
     </div>
 }
@@ -326,17 +345,18 @@ else{
             yield return "Too few characters";
         }
     }
+    //Work in progress
     /*private IEnumerable<string> CustomScaleValidation(string ch)
-         {
+    {
          if (!string.IsNullOrEmpty(ch) && 24 < ch?.Length)
-             {
+         {
          yield return "Too many buttons";
          }
          else if (!string.IsNullOrEmpty(ch) && 1 > ch?.Length)
              {
              yield return "Too few buttons";
-     }   
-     }
+        }   
+    }
     */
     //Custom Scale
     private string newCustomTitle { get; set; } = "Enter A Title";
@@ -353,27 +373,33 @@ else{
             }
         }
     }
-
-    //Settings Menu
-    private bool visible;
-    private void OpenDialog() => visible = true;
-    void CloseDialog() => visible = false;
-    void SubmitDialog()
+    //Settings Menu Content
+    private bool visibleProfile;
+    private void OpenProfile() => visibleProfile = true;
+    void CloseProfile() => visibleProfile = false;
+    void SubmitProfile()
     {
         if(!(tempUsername.Length > 50 || tempUsername.Length < 3)){ //valid submission
-            visible = false;
+            visibleProfile = false;
             _dB.UpdateUsername(userId, tempUsername);
             roomGroupModel.userName = tempUsername;
         }
     }
-    private DialogOptions dialogOptions = new() { FullWidth = true };
+    private DialogOptions dialogProfile = new() { FullWidth = true };
+    private bool visibleAbout;
+    private void OpenAbout() => visibleAbout = true;
+    void CloseAbout() => visibleAbout = false;
+    private string AboutProduct = "This is a story point estimating tool for aid in the agile development process. This tool will (hopefully) serve as the ideal aid for Paychex agile development teams as it was created specifically with that in mind. Included are several different agile development voting systems, a timer for general use, and a room creation and joining feature. All aspects of the tool are designed to be as intuitive and simple as possible to provide the quickest and easiest solution to story point estimation and agile development collaboration.";
+    private string AboutUs = "This product was created by a team of four aspiring software engineers from SUNY Fredonia consisting of Derek Zeplowitz, Rick Corsi, Peyton Miller, and Tyler Dorey. All of us are extremely grateful to have the oppurtunity to work on this project as it has provided us with experience in agile development in a real world setting. We hope you have a great experience using our tool!";
+    private DialogOptions dialogAbout = new() { FullWidth = true };
 
-    //AppDrawer
-    bool _drawerOpen = false;
+    //Return Home Warning
+    MudMessageBox returnHome { get; set; }
+    string state = "";
 
-    void DrawerToggle()
+    private async void OnButtonClicked()
     {
-        _drawerOpen = !_drawerOpen;
+        bool? result = await returnHome.Show();
     }
 
     //Table
@@ -393,9 +419,6 @@ else{
     void setVotingMode(int mode){
         Voting_Mode = mode;
     }
-
-    //Unhighlights AppBar Buttons
-
     string setVote(string val)
     {
         return val;
