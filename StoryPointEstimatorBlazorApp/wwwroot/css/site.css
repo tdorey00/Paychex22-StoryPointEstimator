@@ -61,17 +61,14 @@
     min-width: 100px;
     padding: 23px;
 }
+
+.tool-buttons:hover {
+    background-color: #3e1fdd;
+    color: white;
+}
 .tool-buttons:focus {
     background-color: #21A7EC;
     color: white;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin: 10px;
-    font-size: 36px;
-    font-family: 'Ubuntu', sans-serif;
-    min-width: 100px;
-    padding: 23px;
 }
 .table-container {
     padding: 5px;
@@ -147,7 +144,6 @@
     font-weight: bold;
     justify-content: center;
 }
-
     .mud-chip:hover {
         background-color: #4B27FE;
         color: white;
@@ -166,7 +162,10 @@
     min-width: 100px;
     padding: 23px;
 }
-
+    .timer-buttons:hover {
+        background-color: #3e1fdd;
+        color: white;
+    }
 .timer-buttons-text {
     font-size: 22px;
     font-family: 'Ubuntu';
