@@ -9,7 +9,7 @@
 <div>
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
         ScrumSpace - 
-        <MudButton OnClick="OnButtonClicked" Class="appbar-buttons"> 
+        <MudButton OnClick="returnHome" Class="appbar-buttons"> 
             Home
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(1)" Class="appbar-buttons">
@@ -216,12 +216,13 @@ else{
             <MudItem xs="6">
                 <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
             </MudItem>
-            <button type="submit" class="btn admin-tools-buttons">Delete Votes</button>
-            <button type="submit" class="btn admin-tools-buttons">Hide Votes</button>
-            <button type="submit" class="btn admin-tools-buttons">Hide Users</button>
-            <button type="submit" class="btn admin-tools-buttons">Clear Users</button>
-            <button type="submit" class="btn admin-tools-buttons">Save Results</button>
-            </MudPaper>
+            <MudButton OnClick="clearVotes" Class="btn admin-tools-buttons">Delete Votes</MudButton>
+            <MudButton  Class="btn admin-tools-buttons">Hide Votes</MudButton>
+            <MudButton  Class="btn admin-tools-buttons">Hide Users</MudButton>
+            <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons">Clear Users</MudButton>
+            <MudButton  Class="btn admin-tools-buttons">Save Results</MudButton>
+            <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons">Delete Room</MudButton>    
+        </MudPaper>
         }
         <MudItem xs="12">
         <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
@@ -278,14 +279,38 @@ else{
             <MudButton OnClick="CloseAbout">Close</MudButton>
         </DialogActions>
     </MudDialog>
-    <MudMessageBox @ref="returnHome" Title="Return Home" CancelText="Cancel">
+    <MudMessageBox @ref="returnHomeMSG" Title="Return Home" CancelText="Cancel">
         <MessageContent>
-            Are you sure you wish to leave the room?
+            Do you wish to leave this room and return home?
         </MessageContent>
         <YesButton>
             <MudButton Link="/">Return Home</MudButton>
         </YesButton>
-</MudMessageBox>
+    </MudMessageBox>
+    <MudMessageBox @ref="deleteRoomMSG" Title="Delete Room" CancelText="Cancel">
+        <MessageContent>
+            Are you sure?
+        </MessageContent>
+        <YesButton>
+            <MudButton >Delete Room</MudButton>
+        </YesButton>
+    </MudMessageBox>
+    <MudMessageBox @ref="clearUsersMSG" Title="Clear Users" CancelText="Cancel">
+        <MessageContent>
+            Are you sure?
+        </MessageContent>
+        <YesButton>
+            <MudButton >Clear Users</MudButton>
+        </YesButton>
+    </MudMessageBox>
+    <MudMessageBox @ref="clearVotesMSG" Title="Clear Votes" CancelText="Cancel">
+        <MessageContent>
+            Are you sure?
+        </MessageContent>
+        <YesButton>
+            <MudButton >Clear Votes</MudButton>
+        </YesButton>
+    </MudMessageBox>
     </div>
     </div>
 }
@@ -394,12 +419,27 @@ else{
     private DialogOptions dialogAbout = new() { FullWidth = true };
 
     //Return Home Warning
-    MudMessageBox returnHome { get; set; }
-    string state = "";
-
-    private async void OnButtonClicked()
+    MudMessageBox returnHomeMSG { get; set; }
+    private async void returnHome()
     {
-        bool? result = await returnHome.Show();
+        bool? result = await returnHomeMSG.Show();
+    }
+
+    //Admin Tools
+    MudMessageBox deleteRoomMSG { get; set; }
+    private async void deleteRoom()
+    {
+        bool? result = await deleteRoomMSG.Show();
+    }
+    MudMessageBox clearUsersMSG { get; set; }
+    private async void clearUsers()
+    {
+        bool? result = await clearUsersMSG.Show();
+    }
+    MudMessageBox clearVotesMSG { get; set; }
+    private async void clearVotes()
+    {
+        bool? result = await clearVotesMSG.Show();
     }
 
     //Table
