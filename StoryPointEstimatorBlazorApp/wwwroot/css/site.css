@@ -157,17 +157,20 @@
     }
 
 .mud-paper-buttons {
-    padding: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 25px;
     min-width: 850px;
     max-width: 850px;
 }
 
 .mud-paper-table {
-    padding: 1px;
     min-width: 750px;
     max-width: 750px;
+    padding: 1px;
+    padding-top: 7px;
+    margin-right: 25px;
     margin-left: 25px;
-    margin-right: 15px;
 }
 
 .mud-paper-room-labels {
@@ -203,6 +206,7 @@
     min-width: 750px;
     max-width: 750px;
     padding: 1px;
+    padding-top: 7px;
     margin-right: 25px;
     margin-left: 25px;
 }
