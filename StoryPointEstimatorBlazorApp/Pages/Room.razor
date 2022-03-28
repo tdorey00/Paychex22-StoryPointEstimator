@@ -43,6 +43,7 @@
 else{
     <div class="mainContainer">
         <div class="button-label-container">
+            @if (Voting_Mode != 5){
             <MudItem xs="12">
             <MudPaper Class="mud-paper-buttons" Height ="650px" Elevation="0">    
                 @if(Voting_Mode==1) 
@@ -200,8 +201,30 @@ else{
                     <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
                         24</MudButton>    
                 }
-            </MudPaper>
+                </MudPaper>
             </MudItem>
+            }
+            @if (Voting_Mode == 5)
+                    {
+            <MudPaper Class="mud-paper-timer" Height ="650px" Width ="950px" Elevation="0">  
+                    <MudPaper Class="timer-display">
+                        <MudText Class="timer-display-text">00:00:00</MudText>
+                    </MudPaper>
+                    <MudPaper Height ="400px" Width ="400px" Elevation="0">
+                    <MudButton Disabled="@_timing" OnClick="timerToggle" Variant="Variant.Filled" Class="timer-buttons">
+                        @if (_timing) {<MudText Class="timer-buttons-text">Start</MudText>}
+                        else {<MudText Class="timer-buttons-text">Start</MudText>}
+                    </MudButton>
+                    <MudButton OnClick="resetTimer" Variant="Variant.Filled" Class="timer-buttons">
+                        <MudText Class="timer-buttons-text">Pause</MudText>
+                    </MudButton>
+                    <MudButton OnClick="resetTimer" Variant="Variant.Filled" Class="timer-buttons">
+                        <MudText Class="timer-buttons-text">Reset</MudText>
+                    </MudButton>
+                    <MudNumericField @bind-Value="IntValue" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
+                </MudPaper>
+            </MudPaper> 
+                    }
             <MudItem xs="12">
             <MudPaper Class="mud-paper-room-labels" Elevation="0">  
                 <MudChip Class="mud-chip" >@roomGroupModel.roomName</MudChip>
@@ -210,49 +233,55 @@ else{
             </MudItem>
         </div>
         <div>
-        @if(@newGroupModel.isAdmin)
-        {
-            <MudPaper Class="mud-paper-admin-tools" Height ="115px" Elevation="0">
-            <MudItem xs="6">
-                <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
-            </MudItem>
-            <MudButton OnClick="clearVotes" Class="btn admin-tools-buttons">Delete Votes</MudButton>
-            <MudButton  Class="btn admin-tools-buttons">Hide Votes</MudButton>
-            <MudButton  Class="btn admin-tools-buttons">Hide Users</MudButton>
-            <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons">Clear Users</MudButton>
-            <MudButton  Class="btn admin-tools-buttons">Save Results</MudButton>
-            <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons">Delete Room</MudButton>    
-        </MudPaper>
-        }
-        <MudItem xs="12">
-        <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
-        <MudItem>
-                <MudText Class="mud-paper-tool-name"> Results</MudText>
-        </MudItem>
-        <MudSimpleTable Style="overflow-x: auto;" Class="table">
-            <thead>
-                <tr>
-                    @foreach (var h in headings)
-                    {
-                        <th>@h</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in rows)
+            @if (@newGroupModel.isAdmin)
+            {
+                @if (Voting_Mode != 5)
                 {
-                    <tr>
-                        @foreach (var x in row.Split())
-                        {
-                            <td>@x</td>
-                        }
-                    </tr>
+                    <MudPaper Class="mud-paper-admin-tools" Height ="115px" Elevation="0">
+                        <MudItem xs="6">
+                            <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
+                        </MudItem>
+                        <MudButton  Class="btn admin-tools-buttons">Hide Votes</MudButton>
+                        <MudButton  Class="btn admin-tools-buttons">Hide Users</MudButton>
+                        <MudButton OnClick="clearVotes" Class="btn admin-tools-buttons">Clear Votes</MudButton>
+                        <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons">Clear Users</MudButton>
+                        <MudButton  Class="btn admin-tools-buttons">Save Results</MudButton>
+                        <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons">Delete Room</MudButton>    
+                    </MudPaper>
                 }
-            </tbody>
-        </MudSimpleTable>
-    </MudPaper>
-    </MudItem>
-    <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
+            }
+            @if (Voting_Mode != 5)
+            {
+                <MudItem xs="12">
+                    <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
+                        <MudItem>
+                            <MudText Class="mud-paper-tool-name"> Results</MudText>
+                        </MudItem>
+                        <MudSimpleTable Style="overflow-x: auto;" Class="table">
+                            <thead>
+                                <tr>
+                                    @foreach (var h in headings)
+                                    {
+                                        <th>@h</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var row in rows)
+                                {
+                                    <tr>
+                                        @foreach (var x in row.Split())
+                                        {
+                                            <td>@x</td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </MudSimpleTable>
+                    </MudPaper>
+                </MudItem>
+            }
+            <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
         <DialogContent>
             <MudText Style="font-size: 30px">User Profile</MudText>
             <MudText Style="font-size: 16px">Current Username: @roomGroupModel.userName</MudText>
@@ -372,7 +401,7 @@ else{
     }
     //Work in progress
     /*private IEnumerable<string> CustomScaleValidation(string ch)
-    {
+         {
          if (!string.IsNullOrEmpty(ch) && 24 < ch?.Length)
          {
          yield return "Too many buttons";
@@ -380,7 +409,7 @@ else{
          else if (!string.IsNullOrEmpty(ch) && 1 > ch?.Length)
              {
              yield return "Too few buttons";
-        }   
+    }   
     }
     */
     //Custom Scale
@@ -462,6 +491,18 @@ else{
     string setVote(string val)
     {
         return val;
+    }
+
+    //Timer
+    private bool _timing = false;
+    public int IntValue { get; set; }
+    async Task timerToggle()
+    {
+        _timing = true;
+    }
+    void resetTimer()
+    {
+        _timing = false;
     }
 
     //Symbols
