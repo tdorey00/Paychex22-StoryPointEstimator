@@ -8,9 +8,9 @@
     justify-content: center;
 }
 
-.drawer:hover {
-    color: #75A9FC;
-}
+    .drawer:hover {
+        color: #75A9FC;
+    }
 
 .appbar {
     font-size: 24px;
@@ -45,7 +45,7 @@
 
 .tool-buttons-container {
     justify-content: space-evenly;
-    min-width: 200px; 
+    min-width: 200px;
     max-width: 200px;
 }
 
@@ -59,7 +59,20 @@
     font-size: 36px;
     font-family: 'Ubuntu', sans-serif;
     min-width: 100px;
-    padding: 10px;
+    padding: 23px;
+}
+
+.tool-buttons:focus {
+    background-color: #21A7EC;
+    color: white;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 10px;
+    font-size: 36px;
+    font-family: 'Ubuntu', sans-serif;
+    min-width: 100px;
+    padding: 23px;
 }
 
 
@@ -68,7 +81,6 @@
 }
 
 .table {
-
 }
 
 .voting-area {
@@ -91,15 +103,18 @@
     font-family: 'Ubuntu';
     font-size: 20px;
     font-weight: bold;
+    padding: 8px;
+    border-radius: 10%;
 }
-.appbar-buttons-clicked {
+
+.appbar-buttons:focus {
     background-color: #21A7EC;
     color: white;
     font-family: 'Ubuntu';
     font-size: 20px;
     font-weight: bold;
     padding: 8px;
-    border-radius: 10%;
+    border-radius: 10px;
 }
 
 .admin-tools-buttons {
@@ -112,11 +127,19 @@
     font-weight: bold;
 }
 
-.admin-tools-buttons:hover {
-    color: white;
-    background-color: lightgrey;
-    font-weight: bold;
+    .admin-tools-buttons:hover {
+        color: white;
+        background-color: lightgrey;
+        font-weight: bold;
+    }
+
+.custom-scale-input {
+    min-width: 200px;
+    max-width: 200px;
+    display: flex;
+    justify-content: center;
 }
+
 .mud-chip {
     min-width: 50px;
     padding: 25px;
@@ -127,22 +150,29 @@
     font-weight: bold;
     justify-content: center;
 }
-.mud-chip:hover {
-    background-color: #4B27FE;
-    color: white;
-}
+
+    .mud-chip:hover {
+        background-color: #4B27FE;
+        color: white;
+    }
+
 .mud-paper-buttons {
-    padding: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 25px;
     min-width: 850px;
     max-width: 850px;
-    margin: 10px;
 }
+
 .mud-paper-table {
-    padding: 5px;
     min-width: 750px;
     max-width: 750px;
-    margin: 10px;
+    padding: 1px;
+    padding-top: 7px;
+    margin-right: 25px;
+    margin-left: 25px;
 }
+
 .mud-paper-room-labels {
     padding: 5px;
     min-width: 500px;
@@ -150,18 +180,33 @@
     justify-content: right;
     margin: 10px;
 }
+
 .mud-paper-tool-name {
     color: black;
     font-family: 'Ubuntu';
     font-size: 30px;
     font-weight: bold;
-    min-width: 500px;
-    max-width: 500px;
+    min-height: 60px;
+    max-height: 70px;
     padding: 5px;
+    justify-content: right;
+}
+.mud-paper-custom-scale {
+    color: black;
+    font-family: 'Ubuntu';
+    font-size: 30px;
+    font-weight: bold;
+    min-height: 60px;
+    max-height: 70px;
+    padding: 5px;
+    display: flex;
+    justify-content: left;
 }
 .mud-paper-admin-tools {
     min-width: 750px;
     max-width: 750px;
-    padding: 50px;
-    margin: 10px;
+    padding: 1px;
+    padding-top: 7px;
+    margin-right: 25px;
+    margin-left: 25px;
 }
