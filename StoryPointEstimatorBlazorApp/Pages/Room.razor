@@ -144,7 +144,7 @@ else{
                         <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
                             <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
                             
-                            @if(!@newGroupModel.isAdmin){
+                            @if(@newGroupModel.isAdmin){
                                 <MudItem Class="slider">
                                     <MudText Class="slider">Number of buttons: @customVotingScale</MudText>
                                     <MudSlider Min="1" Max="24" Step="1" @bind-Value="@customVotingScale" Style="{color: #4B27FE;}"/>
