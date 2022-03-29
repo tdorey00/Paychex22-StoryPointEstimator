@@ -142,13 +142,18 @@ else{
                 {
                     <MudItem Class="custom-voting-tools">
                         <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
-                            <MudText Class="mud-paper-custom-scale"> @customVotingScale </MudText>
-                            <MudSlider Min="1" Max="24" Step="1" @bind-Value="@customVotingScale" Color="Color.Success" />
-                            @if(@newGroupModel.isAdmin){
-                                
+                            <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
+                            
+                            @if(!@newGroupModel.isAdmin){
+                                <MudItem Class="slider">
+                                    <MudText Class="slider">Number of buttons: @customVotingScale</MudText>
+                                    <MudSlider Min="1" Max="24" Step="1" @bind-Value="@customVotingScale" Style="{color: #4B27FE;}"/>
+                                </MudItem>
                                 <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
                                 <!-- <MudTextField @bind-Value="customScale" Validation="@(new Func<string, IEnumerable<string>>(CustomScaleValidation))" Mask="@mask3" Class="custom-scale-input" Label="Enter Size (1-24)" Variant="Variant.Outlined" Clearable="true"></MudTextField> --> 
-                                <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>                            }
+                                <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>    
+                                
+                            }
                         </MudPaper>
                     </MudItem>
 
@@ -282,7 +287,7 @@ else{
     public int userId{ get; set; }
     private string tempUsername = "";
     private bool loading = true;
-    private string currentCustomTitle;
+    private string currentCustomTitle = "Custom Title";
     private DisplayGroupedModel roomGroupModel = new DisplayGroupedModel();
 
     protected override async Task OnInitializedAsync()
@@ -399,7 +404,6 @@ else{
     MudMessageBox clearVotesMSG { get; set; }
     private async void clearVotes()
     {
-        customVotingScale = 20;
         bool? result = await clearVotesMSG.Show();
     }
 

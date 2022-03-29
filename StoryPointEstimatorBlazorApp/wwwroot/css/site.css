@@ -8,9 +8,9 @@
     justify-content: center;
 }
 
-    .drawer:hover {
-        color: #75A9FC;
-    }
+.drawer:hover {
+    color: #75A9FC;
+}
 
 .appbar {
     font-size: 24px;
@@ -201,6 +201,7 @@
     padding: 5px;
     display: flex;
     justify-content: left;
+    align-content: center;
 }
 .mud-paper-admin-tools {
     min-width: 750px;
@@ -213,5 +214,15 @@
 
 .custom-voting-tools {
     display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.slider{
+    display: flex;
     flex-direction: column;
+    margin: 10px;
+    font-family: 'Ubuntu';
+    margin-top: 0px;
 }
