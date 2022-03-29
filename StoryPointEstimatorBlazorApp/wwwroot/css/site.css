@@ -93,6 +93,7 @@
 }
 
 .appbar-buttons {
+    background-color: #4B27FE;
     color: white;
     font-family: 'Ubuntu';
     font-size: 20px;
@@ -100,15 +101,23 @@
     padding: 8px;
     border-radius: 10%;
 }
-
-.appbar-buttons:focus {
-    background-color: #21A7EC;
+.appbar-buttons-text {
+    color: white;
+    font-family: 'Ubuntu';
+    font-size: 20px;
+    font-weight: bold;
+}
+.appbar-buttons-timer {
+    background-color: red;
     color: white;
     font-family: 'Ubuntu';
     font-size: 20px;
     font-weight: bold;
     padding: 8px;
-    border-radius: 10px;
+    border-radius: 10%;
+}
+.appbar-buttons:focus {
+    background-color: #21A7EC;
 }
 
 .admin-tools-buttons {
@@ -182,17 +191,38 @@
     font-weight: bold;
     border-radius: 50%;
     padding-top: 140px;
-    padding-left: 70px;
+    padding-left: 65px;
+}
+.timer-display-done {
+    background-color: red;
+    color: white;
+    width: 400px;
+    height: 400px;
+    min-width: 400px;
+    font-size: 40px;
+    font-family: 'Ubuntu';
+    font-weight: bold;
+    border-radius: 50%;
+    padding-top: 140px;
+    padding-left: 65px;
 }
 .timer-display-text {
     font-size: 70px;
     font-family: 'Ubuntu';
     font-weight: bold;
 }
+.timer-notification-text {
+    color: black;
+    font-family: 'Ubuntu';
+    font-size: 20px;
+    font-weight: bold;
+}
 .timer-input {
+    width: 113px;
     padding-top: 10px;
-    padding-right: 300px;
     padding-left: 20px;
+    display: inline-flex;
+    justify-content: start;
 }
 .mud-paper-buttons {
     padding-left: 25px;

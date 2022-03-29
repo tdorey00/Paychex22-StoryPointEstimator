@@ -10,25 +10,26 @@
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
         ScrumSpace - 
         <MudButton OnClick="returnHome" Class="appbar-buttons"> 
-            Home
+            <MudText Class="appbar-buttons-text">Home</MudText>
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(1)" Class="appbar-buttons">
-            Fibonacci Tool
+            <MudText Class="appbar-buttons-text">Fibonacci Tool</MudText>
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(2)" Class="appbar-buttons">
-            Fist of Five
+            <MudText Class="appbar-buttons-text">Fist of Five</MudText>
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(3)" Class="appbar-buttons">
-             T-Shirt Sizing
+            <MudText Class="appbar-buttons-text">T-Shirt Sizing</MudText>
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(4)" Class="appbar-buttons">
-             Custom Voting
+            <MudText Class="appbar-buttons-text">Custom Voting</MudText>
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(5)" Class="appbar-buttons">
-             Timer
-        </MudButton> 
+            @if (_timing) {<MudText Class="appbar-buttons-text"> Timing | @displaytimer </MudText>}
+            else {<MudText Class="appbar-buttons-text"> Timer </MudText>}
+        </MudButton>
         <MudSpacer />
-        <MudText Class="appbar-buttons">@roomGroupModel.userName</MudText>
+        <MudText Class="appbar-buttons-text">@roomGroupModel.userName</MudText>
         <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Inherit" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
             <MudMenuItem @onclick="OpenProfile">User Profile</MudMenuItem>
             <MudMenuItem>Dark Mode</MudMenuItem>
@@ -207,12 +208,11 @@ else{
             @if (Voting_Mode == 5)
                     {
             <MudPaper Class="mud-paper-timer" Height ="650px" Width ="950px" Elevation="0">  
-                    <MudPaper Class="timer-display">    
-                    <MudText Class="timer-display-text"> @displaytimer </MudText>
-                    </MudPaper>
+                    @if (_timerDone) {<MudPaper Class="timer-display"><MudText Class="timer-display-text"> 00:00:00 </MudText></MudPaper>}
+                    else {<MudPaper Class="timer-display"><MudText Class="timer-display-text"> @displaytimer </MudText></MudPaper>}
                     <MudPaper Height ="400px" Width ="400px" Elevation="0">
                     <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
-                        @if (_timing) {<MudText Class="timer-buttons-text">Start</MudText>}
+                        @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
                         else {<MudText Class="timer-buttons-text">Start</MudText>}
                     </MudButton>
                     <MudButton OnClick="pauseTimer" Class="timer-buttons">
@@ -221,7 +221,9 @@ else{
                     <MudButton OnClick="resetTimer" Class="timer-buttons">
                         <MudText Class="timer-buttons-text">Reset</MudText>
                     </MudButton>
-                    <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="1" Max="60" />
+                    <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" Min="0" Max="12" />
+                    <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
+                    <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
                 </MudPaper>
             </MudPaper> 
                     }
@@ -308,6 +310,11 @@ else{
             <MudButton OnClick="CloseAbout">Close</MudButton>
         </DialogActions>
     </MudDialog>
+    @if (Voting_Mode != 5 && _timerDone)
+    {
+        timerNotification();
+        _timerDone = false;
+    }
     <MudMessageBox @ref="returnHomeMSG" Title="Return Home" CancelText="Cancel">
         <MessageContent>
             Do you wish to leave this room and return home?
@@ -340,6 +347,11 @@ else{
             <MudButton >Clear Votes</MudButton>
         </YesButton>
     </MudMessageBox>
+    <MudMessageBox @ref="timerNotificationMSG" YesText="Ok">
+        <MessageContent>
+            <MudText Class="timer-notification-text"> Timer Finished </MudText>  
+        </MessageContent>
+    </MudMessageBox>
     </div>
     </div>
 }
@@ -370,9 +382,6 @@ else{
         currentCustomTitle = roomData.scaleTitle;
 
         loading = false;
-
-        //Timer();
-        //return base.OnInitializedAsync();
     }
 
     //Validation
@@ -473,7 +482,11 @@ else{
     {
         bool? result = await clearVotesMSG.Show();
     }
-
+    MudMessageBox timerNotificationMSG { get; set; }
+    private async void timerNotification()
+    {
+        bool? result = await timerNotificationMSG.Show();
+    }
     //Table
     string[] headings = { "User", "Vote" };
     string[] rows = {
@@ -497,16 +510,20 @@ else{
     }
 
     //Timer
+    public static int Seconds { get; set; } //number of seconds timer will run for
     public static int Minutes { get; set; } //number of minutes timer will run for
+    public static int Hours { get; set; } //number of hours timer will run for
     TimeSpan TimeRemaining;
     string displaytimer = "00:00:00"; //displayed time
     private bool _timing = false;
     private bool _pause = false;
     private bool _reset = false;
+    private bool _timerDone = false;
     async Task Timer()
     {
+        _timerDone = false;
         _timing = true;
-        if(!_pause) TimeRemaining = new TimeSpan(0, Minutes, 0); //if not paused create new timer
+        if(!_pause) TimeRemaining = new TimeSpan(Hours, Minutes, Seconds+1); //if not paused create new timer
         else //resume timer where it left off
         {
             _pause = false;
@@ -525,11 +542,13 @@ else{
                 break;
             }
         }
-        if(!_pause && !_reset) await AfterTime(); //do not display Times Up! When paused or after reset
-        _reset = false;
+        if(!_pause && !_reset) await AfterTime();
+        {//do not display Times Up! When paused or after reset
+            _timerDone = true;
+            _reset = false;
+        }
         StateHasChanged();
     }
-
     void pauseTimer()
     {
         _pause = true;
@@ -537,17 +556,17 @@ else{
     }
     Task AfterTime()
     {
-        displaytimer = "Time's Up!";
+        displaytimer = "00:00:00";
         return Task.CompletedTask;
     }
-
     void resetTimer()
     {
+        _timerDone = false;
         _timing = false;
         _pause = false;
         _reset = true;
         displaytimer = "00:00:00";
-        TimeRemaining = new TimeSpan(0, 0, 0);
+        TimeRemaining = new TimeSpan(0, 0, 1);
     }
 
     //Symbols
