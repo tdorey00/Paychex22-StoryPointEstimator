@@ -10,25 +10,26 @@
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
         ScrumSpace - 
         <MudButton OnClick="returnHome" Class="appbar-buttons"> 
-            Home
+            <MudText Class="appbar-buttons-text">Home</MudText>
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(1)" Class="appbar-buttons">
-            Fibonacci Tool
+            <MudText Class="appbar-buttons-text">Fibonacci Tool</MudText>
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(2)" Class="appbar-buttons">
-            Fist of Five
+            <MudText Class="appbar-buttons-text">Fist of Five</MudText>
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(3)" Class="appbar-buttons">
-             T-Shirt Sizing
+            <MudText Class="appbar-buttons-text">T-Shirt Sizing</MudText>
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(4)" Class="appbar-buttons">
-             Custom Voting
+            <MudText Class="appbar-buttons-text">Custom Voting</MudText>
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(5)" Class="appbar-buttons">
-             Timer
-        </MudButton> 
+            @if (_timing) {<MudText Class="appbar-buttons-text"> Timing | @displaytimer </MudText>}
+            else {<MudText Class="appbar-buttons-text"> Timer </MudText>}
+        </MudButton>
         <MudSpacer />
-        <MudText Class="appbar-buttons">@roomGroupModel.userName</MudText>
+        <MudText Class="appbar-buttons-text">@roomGroupModel.userName</MudText>
         <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Inherit" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
             <MudMenuItem @onclick="OpenProfile">User Profile</MudMenuItem>
             <MudMenuItem>Dark Mode</MudMenuItem>
@@ -43,6 +44,7 @@
 else{
     <div class="mainContainer">
         <div class="button-label-container">
+            @if (Voting_Mode != 5){
             <MudItem xs="12">
             <MudPaper Class="mud-paper-buttons" Height ="650px" Elevation="0">    
                 @if(Voting_Mode==1) 
@@ -151,57 +153,80 @@ else{
                         </MudPaper>
                     </MudItem>
 
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         1</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         2</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         3</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         4</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         5</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         6</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         7</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         8</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         9</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         10</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         11</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         12</MudButton>    
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         13</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         14</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         15</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         16</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         17</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         18</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         19</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         20</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         21</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         22</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         23</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
+                    <MudButton Link="" Class="tool-buttons">
                         24</MudButton>    
                 }
-            </MudPaper>
+                </MudPaper>
             </MudItem>
+            }
+            @if (Voting_Mode == 5)
+                    {
+            <MudPaper Class="mud-paper-timer" Height ="650px" Width ="950px" Elevation="0">  
+                    @if (_timerDone) {<MudPaper Class="timer-display"><MudText Class="timer-display-text"> 00:00:00 </MudText></MudPaper>}
+                    else {<MudPaper Class="timer-display"><MudText Class="timer-display-text"> @displaytimer </MudText></MudPaper>}
+                    <MudPaper Height ="400px" Width ="400px" Elevation="0">
+                    <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
+                        @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
+                        else {<MudText Class="timer-buttons-text">Start</MudText>}
+                    </MudButton>
+                    <MudButton OnClick="pauseTimer" Class="timer-buttons">
+                        <MudText Class="timer-buttons-text">Pause</MudText>
+                    </MudButton>
+                    <MudButton OnClick="resetTimer" Class="timer-buttons">
+                        <MudText Class="timer-buttons-text">Reset</MudText>
+                    </MudButton>
+                    <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" Min="0" Max="12" />
+                    <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
+                    <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
+                </MudPaper>
+            </MudPaper> 
+                    }
             <MudItem xs="12">
             <MudPaper Class="mud-paper-room-labels" Elevation="0">  
                 <MudChip Class="mud-chip" >@roomGroupModel.roomName</MudChip>
@@ -210,49 +235,55 @@ else{
             </MudItem>
         </div>
         <div>
-        @if(@newGroupModel.isAdmin)
-        {
-            <MudPaper Class="mud-paper-admin-tools" Height ="115px" Elevation="0">
-            <MudItem xs="6">
-                <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
-            </MudItem>
-            <MudButton OnClick="clearVotes" Class="btn admin-tools-buttons">Delete Votes</MudButton>
-            <MudButton  Class="btn admin-tools-buttons">Hide Votes</MudButton>
-            <MudButton  Class="btn admin-tools-buttons">Hide Users</MudButton>
-            <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons">Clear Users</MudButton>
-            <MudButton  Class="btn admin-tools-buttons">Save Results</MudButton>
-            <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons">Delete Room</MudButton>    
-        </MudPaper>
-        }
-        <MudItem xs="12">
-        <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
-        <MudItem>
-                <MudText Class="mud-paper-tool-name"> Results</MudText>
-        </MudItem>
-        <MudSimpleTable Style="overflow-x: auto;" Class="table">
-            <thead>
-                <tr>
-                    @foreach (var h in headings)
-                    {
-                        <th>@h</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in rows)
+            @if (@newGroupModel.isAdmin)
+            {
+                @if (Voting_Mode != 5)
                 {
-                    <tr>
-                        @foreach (var x in row.Split())
-                        {
-                            <td>@x</td>
-                        }
-                    </tr>
+                    <MudPaper Class="mud-paper-admin-tools" Height ="115px" Elevation="0">
+                        <MudItem xs="6">
+                            <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
+                        </MudItem>
+                        <MudButton  Class="btn admin-tools-buttons">Hide Votes</MudButton>
+                        <MudButton  Class="btn admin-tools-buttons">Hide Users</MudButton>
+                        <MudButton OnClick="clearVotes" Class="btn admin-tools-buttons">Clear Votes</MudButton>
+                        <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons">Clear Users</MudButton>
+                        <MudButton  Class="btn admin-tools-buttons">Save Results</MudButton>
+                        <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons">Delete Room</MudButton>    
+                    </MudPaper>
                 }
-            </tbody>
-        </MudSimpleTable>
-    </MudPaper>
-    </MudItem>
-    <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
+            }
+            @if (Voting_Mode != 5)
+            {
+                <MudItem xs="12">
+                    <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
+                        <MudItem>
+                            <MudText Class="mud-paper-tool-name"> Results</MudText>
+                        </MudItem>
+                        <MudSimpleTable Style="overflow-x: auto;" Class="table">
+                            <thead>
+                                <tr>
+                                    @foreach (var h in headings)
+                                    {
+                                        <th>@h</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var row in rows)
+                                {
+                                    <tr>
+                                        @foreach (var x in row.Split())
+                                        {
+                                            <td>@x</td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </MudSimpleTable>
+                    </MudPaper>
+                </MudItem>
+            }
+            <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
         <DialogContent>
             <MudText Style="font-size: 30px">User Profile</MudText>
             <MudText Style="font-size: 16px">Current Username: @roomGroupModel.userName</MudText>
@@ -279,6 +310,11 @@ else{
             <MudButton OnClick="CloseAbout">Close</MudButton>
         </DialogActions>
     </MudDialog>
+    @if (_timerDone)
+    {
+        timerNotification();
+        _timerDone = false;
+    }
     <MudMessageBox @ref="returnHomeMSG" Title="Return Home" CancelText="Cancel">
         <MessageContent>
             Do you wish to leave this room and return home?
@@ -310,6 +346,11 @@ else{
         <YesButton>
             <MudButton >Clear Votes</MudButton>
         </YesButton>
+    </MudMessageBox>
+    <MudMessageBox @ref="timerNotificationMSG" YesText="Ok">
+        <MessageContent>
+            <MudText Class="timer-notification-text"> Timer Finished </MudText>  
+        </MessageContent>
     </MudMessageBox>
     </div>
     </div>
@@ -372,7 +413,7 @@ else{
     }
     //Work in progress
     /*private IEnumerable<string> CustomScaleValidation(string ch)
-    {
+         {
          if (!string.IsNullOrEmpty(ch) && 24 < ch?.Length)
          {
          yield return "Too many buttons";
@@ -380,7 +421,7 @@ else{
          else if (!string.IsNullOrEmpty(ch) && 1 > ch?.Length)
              {
              yield return "Too few buttons";
-        }   
+    }   
     }
     */
     //Custom Scale
@@ -441,7 +482,11 @@ else{
     {
         bool? result = await clearVotesMSG.Show();
     }
-
+    MudMessageBox timerNotificationMSG { get; set; }
+    private async void timerNotification()
+    {
+        bool? result = await timerNotificationMSG.Show();
+    }
     //Table
     string[] headings = { "User", "Vote" };
     string[] rows = {
@@ -462,6 +507,66 @@ else{
     string setVote(string val)
     {
         return val;
+    }
+
+    //Timer
+    public static int Seconds { get; set; } //number of seconds timer will run for
+    public static int Minutes { get; set; } //number of minutes timer will run for
+    public static int Hours { get; set; } //number of hours timer will run for
+    TimeSpan TimeRemaining;
+    string displaytimer = "00:00:00"; //displayed time
+    private bool _timing = false;
+    private bool _pause = false;
+    private bool _reset = false;
+    private bool _timerDone = false;
+    async Task Timer()
+    {
+        _timerDone = false;
+        _timing = true;
+        if(!_pause) TimeRemaining = new TimeSpan(Hours, Minutes, Seconds+1); //if not paused create new timer
+        else //resume timer where it left off
+        {
+            _pause = false;
+            TimeRemaining = TimeRemaining.Duration(); //create new timer with previous timer's duration b/c timespan has no resume functionality
+        }
+        while (TimeRemaining > new TimeSpan()) //progress timer until 0
+        {
+            if (!_pause) //if not paused progress timer
+            {
+                await Task.Delay(1000);
+                TimeRemaining = TimeRemaining.Subtract(new TimeSpan(0,0,1));
+                displaytimer = TimeRemaining.ToString();
+                StateHasChanged();
+            }
+            else{ //stop timing when paused
+                break;
+            }
+        }
+        if(!_pause && !_reset) await AfterTime();
+        {//do not display Times Up! When paused or after reset
+            _timerDone = true;
+            _reset = false;
+        }
+        StateHasChanged();
+    }
+    void pauseTimer()
+    {
+        _pause = true;
+        _timing = false;
+    }
+    Task AfterTime()
+    {
+        displaytimer = "00:00:00";
+        return Task.CompletedTask;
+    }
+    void resetTimer()
+    {
+        _timerDone = false;
+        _timing = false;
+        _pause = false;
+        _reset = true;
+        displaytimer = "00:00:00";
+        TimeRemaining = new TimeSpan(0, 0, 1);
     }
 
     //Symbols
