@@ -210,3 +210,8 @@
     margin-right: 25px;
     margin-left: 25px;
 }
+
+.custom-voting-tools {
+    display: flex;
+    flex-direction: column;
+}

@@ -140,16 +140,29 @@ else{
                 }
                 @if(Voting_Mode==4) 
                 {
-                    <MudItem>
+                    <MudItem Class="custom-voting-tools">
                         <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
-                            <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
+                            <MudText Class="mud-paper-custom-scale"> @customVotingScale </MudText>
+                            <MudSlider Min="1" Max="24" Step="1" Value="@customVotingScale" Color="Color.Success" />
                             @if(@newGroupModel.isAdmin){
+                                
                                 <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
                                 <!-- <MudTextField @bind-Value="customScale" Validation="@(new Func<string, IEnumerable<string>>(CustomScaleValidation))" Mask="@mask3" Class="custom-scale-input" Label="Enter Size (1-24)" Variant="Variant.Outlined" Clearable="true"></MudTextField> --> 
-                                <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>
-                            }
+                                <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>                            }
                         </MudPaper>
                     </MudItem>
+
+
+
+
+                    foreach(int x in Enumerable.Range(1, @customVotingScale))
+                    {
+                        <MudButton Variant="Variant.Filled"  Class="tool-buttons">
+                            @x</MudButton>
+                    }
+
+
+                    <!--
 
                     <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
                         1</MudButton>
@@ -198,7 +211,8 @@ else{
                     <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
                         23</MudButton>
                     <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        24</MudButton>    
+                        24</MudButton>  
+                        -->
                 }
             </MudPaper>
             </MudItem>
@@ -315,6 +329,8 @@ else{
     </div>
 }
 @code {
+    int customVotingScale = 10;    
+
     //data
     [Parameter]
     public int roomId{ get; set; }
@@ -372,7 +388,7 @@ else{
     }
     //Work in progress
     /*private IEnumerable<string> CustomScaleValidation(string ch)
-    {
+         {
          if (!string.IsNullOrEmpty(ch) && 24 < ch?.Length)
          {
          yield return "Too many buttons";
@@ -380,7 +396,7 @@ else{
          else if (!string.IsNullOrEmpty(ch) && 1 > ch?.Length)
              {
              yield return "Too few buttons";
-        }   
+    }   
     }
     */
     //Custom Scale
@@ -439,6 +455,7 @@ else{
     MudMessageBox clearVotesMSG { get; set; }
     private async void clearVotes()
     {
+        customVotingScale = 20;
         bool? result = await clearVotesMSG.Show();
     }
 
