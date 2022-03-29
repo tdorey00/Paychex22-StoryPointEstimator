@@ -143,7 +143,7 @@ else{
                     <MudItem Class="custom-voting-tools">
                         <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
                             <MudText Class="mud-paper-custom-scale"> @customVotingScale </MudText>
-                            <MudSlider Min="1" Max="24" Step="1" Value="@customVotingScale" Color="Color.Success" />
+                            <MudSlider Min="1" Max="24" Step="1" @bind-Value="@customVotingScale" Color="Color.Success" />
                             @if(@newGroupModel.isAdmin){
                                 
                                 <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
@@ -152,67 +152,11 @@ else{
                         </MudPaper>
                     </MudItem>
 
-
-
-
                     foreach(int x in Enumerable.Range(1, @customVotingScale))
                     {
                         <MudButton Variant="Variant.Filled"  Class="tool-buttons">
                             @x</MudButton>
                     }
-
-
-                    <!--
-
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        1</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        2</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        3</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        4</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        5</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        6</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        7</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        8</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        9</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        10</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        11</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        12</MudButton>    
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        13</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        14</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        15</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        16</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        17</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        18</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        19</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        20</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        21</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        22</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        23</MudButton>
-                    <MudButton Link="" Variant="Variant.Filled"  Class="tool-buttons">
-                        24</MudButton>  
-                        -->
                 }
             </MudPaper>
             </MudItem>
