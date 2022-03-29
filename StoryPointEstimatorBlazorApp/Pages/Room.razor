@@ -207,15 +207,15 @@ else{
             @if (Voting_Mode == 5)
                     {
             <MudPaper Class="mud-paper-timer" Height ="650px" Width ="950px" Elevation="0">  
-                    <MudPaper Class="timer-display">
-                    <MudText @bind-Value="TimeRemaining" Class="timer-display-text">@TimeRemaining</MudText>
+                    <MudPaper Class="timer-display">    
+                    <MudText Class="timer-display-text"> @displaytimer </MudText>
                     </MudPaper>
                     <MudPaper Height ="400px" Width ="400px" Elevation="0">
                     <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
                         @if (_timing) {<MudText Class="timer-buttons-text">Start</MudText>}
                         else {<MudText Class="timer-buttons-text">Start</MudText>}
                     </MudButton>
-                    <MudButton OnClick="resetTimer" Class="timer-buttons">
+                    <MudButton OnClick="pauseTimer" Class="timer-buttons">
                         <MudText Class="timer-buttons-text">Pause</MudText>
                     </MudButton>
                     <MudButton OnClick="resetTimer" Class="timer-buttons">
@@ -497,21 +497,43 @@ else{
     }
 
     //Timer
-    public static int Minutes { get; set; }
-    TimeSpan TimeRemaining =  new TimeSpan(0,Minutes,0);
-    string displaytimer = "00:00:00";
+    public static int Minutes { get; set; } //number of minutes timer will run for
+    TimeSpan TimeRemaining;
+    string displaytimer = "00:00:00"; //displayed time
     private bool _timing = false;
+    private bool _pause = false;
+    private bool _reset = false;
     async Task Timer()
     {
-        StateHasChanged();
-        while (TimeRemaining > new TimeSpan())
+        _timing = true;
+        if(!_pause) TimeRemaining = new TimeSpan(0, Minutes, 0); //if not paused create new timer
+        else //resume timer where it left off
         {
-            await Task.Delay(1000);
-            TimeRemaining = TimeRemaining.Subtract(new TimeSpan(0,0,1));        
-            StateHasChanged();
+            _pause = false;
+            TimeRemaining = TimeRemaining.Duration(); //create new timer with previous timer's duration b/c timespan has no resume functionality
         }
-        await AfterTime();
+        while (TimeRemaining > new TimeSpan()) //progress timer until 0
+        {
+            if (!_pause) //if not paused progress timer
+            {
+                await Task.Delay(1000);
+                TimeRemaining = TimeRemaining.Subtract(new TimeSpan(0,0,1));
+                displaytimer = TimeRemaining.ToString();
+                StateHasChanged();
+            }
+            else{ //stop timing when paused
+                break;
+            }
+        }
+        if(!_pause && !_reset) await AfterTime(); //do not display Times Up! When paused or after reset
+        _reset = false;
         StateHasChanged();
+    }
+
+    void pauseTimer()
+    {
+        _pause = true;
+        _timing = false;
     }
     Task AfterTime()
     {
@@ -519,17 +541,13 @@ else{
         return Task.CompletedTask;
     }
 
-    void UpdateTimer()
-    {
-        StateHasChanged();
-    }
-    async Task timerToggle()
-    {
-        _timing = true;
-    }
     void resetTimer()
     {
         _timing = false;
+        _pause = false;
+        _reset = true;
+        displaytimer = "00:00:00";
+        TimeRemaining = new TimeSpan(0, 0, 0);
     }
 
     //Symbols
