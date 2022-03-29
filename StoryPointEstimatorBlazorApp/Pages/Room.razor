@@ -208,10 +208,10 @@ else{
                     {
             <MudPaper Class="mud-paper-timer" Height ="650px" Width ="950px" Elevation="0">  
                     <MudPaper Class="timer-display">
-                        <MudText Class="timer-display-text">00:00:00</MudText>
+                    <MudText @bind-Value="TimeRemaining" Class="timer-display-text">@TimeRemaining</MudText>
                     </MudPaper>
                     <MudPaper Height ="400px" Width ="400px" Elevation="0">
-                    <MudButton Disabled="@_timing" OnClick="timerToggle" Variant="Variant.Filled" Class="timer-buttons">
+                    <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
                         @if (_timing) {<MudText Class="timer-buttons-text">Start</MudText>}
                         else {<MudText Class="timer-buttons-text">Start</MudText>}
                     </MudButton>
@@ -221,7 +221,7 @@ else{
                     <MudButton OnClick="resetTimer" Class="timer-buttons">
                         <MudText Class="timer-buttons-text">Reset</MudText>
                     </MudButton>
-                    <MudNumericField @bind-Value="IntValue" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
+                    <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="1" Max="60" />
                 </MudPaper>
             </MudPaper> 
                     }
@@ -370,6 +370,9 @@ else{
         currentCustomTitle = roomData.scaleTitle;
 
         loading = false;
+
+        //Timer();
+        //return base.OnInitializedAsync();
     }
 
     //Validation
@@ -494,8 +497,32 @@ else{
     }
 
     //Timer
+    public static int Minutes { get; set; }
+    TimeSpan TimeRemaining =  new TimeSpan(0,Minutes,0);
+    string displaytimer = "00:00:00";
     private bool _timing = false;
-    public int IntValue { get; set; }
+    async Task Timer()
+    {
+        StateHasChanged();
+        while (TimeRemaining > new TimeSpan())
+        {
+            await Task.Delay(1000);
+            TimeRemaining = TimeRemaining.Subtract(new TimeSpan(0,0,1));        
+            StateHasChanged();
+        }
+        await AfterTime();
+        StateHasChanged();
+    }
+    Task AfterTime()
+    {
+        displaytimer = "Time's Up!";
+        return Task.CompletedTask;
+    }
+
+    void UpdateTimer()
+    {
+        StateHasChanged();
+    }
     async Task timerToggle()
     {
         _timing = true;
