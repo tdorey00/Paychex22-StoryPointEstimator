@@ -310,7 +310,7 @@ else{
             <MudButton OnClick="CloseAbout">Close</MudButton>
         </DialogActions>
     </MudDialog>
-    @if (Voting_Mode != 5 && _timerDone)
+    @if (_timerDone)
     {
         timerNotification();
         _timerDone = false;
