@@ -506,10 +506,10 @@ else{
                 break;
             }
         }
-        if(!_pause && !_reset) await AfterTime();
+        if(!_pause && !_reset)
         {//do not display Times Up! When paused or after reset
-            _timerDone = true;
             _reset = false;
+            await AfterTime();
         }
         StateHasChanged();
     }
@@ -520,6 +520,7 @@ else{
     }
     Task AfterTime()
     {
+        _timerDone = true;
         displaytimer = "00:00:00";
         return Task.CompletedTask;
     }
