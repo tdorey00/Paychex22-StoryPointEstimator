@@ -205,6 +205,10 @@
         {
             newGroupModel.roomId = Int32.Parse(newGroupModel.stringId); //turns stringId into roomId
             isValidId = true;
+            if(newGroupModel.userName == String.Empty)
+            {
+                validSubmit = false;
+            }
             if (validSubmit)
             {
                 if (validateRoomId()) //if room code is valid
