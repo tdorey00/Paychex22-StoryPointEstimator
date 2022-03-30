@@ -142,65 +142,27 @@ else{
                 }
                 @if(Voting_Mode==4) 
                 {
-                    <MudItem>
+                    <MudItem Class="custom-voting-tools">
                         <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
                             <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
+                            
                             @if(@newGroupModel.isAdmin){
+                                <MudItem Class="slider">
+                                    <MudText Class="slider">Number of buttons: @customVotingScale</MudText>
+                                    <MudSlider Min="1" Max="24" Step="1" @bind-Value="@customVotingScale" Style="{color: #4B27FE;}"/>
+                                </MudItem>
                                 <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
                                 <!-- <MudTextField @bind-Value="customScale" Validation="@(new Func<string, IEnumerable<string>>(CustomScaleValidation))" Mask="@mask3" Class="custom-scale-input" Label="Enter Size (1-24)" Variant="Variant.Outlined" Clearable="true"></MudTextField> --> 
-                                <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>
+                                <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>    
+                                
                             }
                         </MudPaper>
                     </MudItem>
-
-                    <MudButton Link="" Class="tool-buttons">
-                        1</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        2</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        3</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        4</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        5</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        6</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        7</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        8</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        9</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        10</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        11</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        12</MudButton>    
-                    <MudButton Link="" Class="tool-buttons">
-                        13</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        14</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        15</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        16</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        17</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        18</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        19</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        20</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        21</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        22</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        23</MudButton>
-                    <MudButton Link="" Class="tool-buttons">
-                        24</MudButton>    
+                    foreach(int x in Enumerable.Range(1, @customVotingScale))
+                    {
+                        <MudButton Variant="Variant.Filled"  Class="tool-buttons">
+                            @x</MudButton>
+                    }
                 }
                 </MudPaper>
             </MudItem>
@@ -356,6 +318,8 @@ else{
     </div>
 }
 @code {
+    int customVotingScale = 24;
+
     //data
     [Parameter]
     public int roomId{ get; set; }
@@ -363,7 +327,7 @@ else{
     public int userId{ get; set; }
     private string tempUsername = "";
     private bool loading = true;
-    private string currentCustomTitle;
+    private string currentCustomTitle = "Custom Title";
     private DisplayGroupedModel roomGroupModel = new DisplayGroupedModel();
 
     protected override async Task OnInitializedAsync()
