@@ -331,14 +331,14 @@ else{
     private string currentCustomTitle = "Custom Title";
     private DisplayGroupedModel roomGroupModel = new DisplayGroupedModel();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync() 
     {
         roomModel roomData = await _dB.GetRoomData(roomId);
         userModel userData = await _dB.GetUserData(userId);
 
         roomGroupModel.userName = userData.userName;
         tempUsername = roomGroupModel.userName;
-        roomGroupModel.isAdmin = userData.isAdmin;
+        roomGroupModel.isAdmin = userData.isAdmin;          //TODO Bind the rest of the data from the roomData and userData to newGroupModel
 
         roomGroupModel.roomName = roomData.roomName;
 
