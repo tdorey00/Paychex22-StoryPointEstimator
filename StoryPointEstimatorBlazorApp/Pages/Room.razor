@@ -274,6 +274,7 @@ else{
     </MudDialog>
     @if (_timerDone)
     {
+        _timing = false;
         timerNotification();
         _timerDone = false;
     }
@@ -506,9 +507,9 @@ else{
                 break;
             }
         }
+        _reset = false;
         if(!_pause && !_reset)
         {//do not display Times Up! When paused or after reset
-            _reset = false;
             await AfterTime();
         }
         StateHasChanged();
