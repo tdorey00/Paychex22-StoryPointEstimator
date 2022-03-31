@@ -163,6 +163,7 @@
 
     private void insertData(){
         submitBtnClicked = true;
+        if (newGroupModel.roomName.Equals(String.Empty) || newGroupModel.userName.Equals(String.Empty)) validSubmit = false;
         if (validSubmit)
         {
             //define roomModel and userModel
@@ -180,10 +181,6 @@
 
             _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
             NavigationManager.NavigateTo("/Room/" + newGroupModel.roomId+ "/" + newGroupModel.userId, true);
-        }
-        else //invalid submit
-        {
-            validSubmit = false;
         }
     }
 }
