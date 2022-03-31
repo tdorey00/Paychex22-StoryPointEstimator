@@ -74,7 +74,7 @@
 
     //Input Masks
     IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
-    IMask mask2 = new RegexMask(@"^[ a-zA-Z0-9_-]+$");
+    IMask mask2 = new RegexMask(@"^[ ""a-zA-Z0-9#$&%!*^,.(){}'/\:;<>?@~`=+_-]+$");
 
     //Validation
     private IEnumerable<string> TextValidation (string ch)

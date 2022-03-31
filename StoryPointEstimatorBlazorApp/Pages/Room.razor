@@ -8,23 +8,23 @@
 
 <div>
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
-        ScrumSpace - 
+        <MudText Class="appbar-buttons-text" Style="width: 120px; min-width:120px;">ScrumSpace</MudText> -
         <MudButton OnClick="returnHome" Class="appbar-buttons"> 
             <MudText Class="appbar-buttons-text">Home</MudText>
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(1)" Class="appbar-buttons">
+        <MudButton OnClick="() => setVotingMode(1)" Class="appbar-buttons" Style="width: 150px; min-width:150px;">
             <MudText Class="appbar-buttons-text">Fibonacci Tool</MudText>
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(2)" Class="appbar-buttons">
+        <MudButton OnClick="() => setVotingMode(2)" Class="appbar-buttons" Style="width: 120px; min-width:120px;">
             <MudText Class="appbar-buttons-text">Fist of Five</MudText>
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(3)" Class="appbar-buttons">
+        <MudButton OnClick="() => setVotingMode(3)" Class="appbar-buttons" Style="width: 140px; min-width:140px;">
             <MudText Class="appbar-buttons-text">T-Shirt Sizing</MudText>
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(4)" Class="appbar-buttons">
+        <MudButton OnClick="() => setVotingMode(4)" Class="appbar-buttons" Style="width: 160px; min-width:160px;">
             <MudText Class="appbar-buttons-text">Custom Voting</MudText>
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(5)" Class="appbar-buttons">
+        <MudButton OnClick="() => setVotingMode(5)" Class="appbar-buttons" Style="width: 80px; min-width:80px;">
             @if (_timing) {<MudText Class="appbar-buttons-text"> Timing | @displaytimer </MudText>}
             else {<MudText Class="appbar-buttons-text"> Timer </MudText>}
         </MudButton>
@@ -351,7 +351,7 @@ else{
 
     //Validation
     IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
-    IMask mask2 = new RegexMask(@"^[ a-zA-Z0-9_-]+$");
+    IMask mask2 = new RegexMask(@"^[ ""a-zA-Z0-9#$&%!*^,.(){}'/\:;<>?@~`=+_-]+$");
     IMask mask3 = new BlockMask(delimiters:" ", new Block('0', 1,2));
 
     private IEnumerable<string> TextValidation(string ch)
