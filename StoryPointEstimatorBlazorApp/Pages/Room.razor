@@ -24,9 +24,9 @@
         <MudButton OnClick="() => setVotingMode(4)" Class="appbar-buttons" Style="width: 160px; min-width:160px;">
             <MudText Class="appbar-buttons-text">Custom Voting</MudText>
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(5)" Class="appbar-buttons" Style="width: 80px; min-width:80px;">
-            @if (_timing) {<MudText Class="appbar-buttons-text"> Timing | @displaytimer </MudText>}
-            else {<MudText Class="appbar-buttons-text"> Timer </MudText>}
+        <MudButton OnClick="() => setVotingMode(5)" Class="appbar-buttons">
+            @if (_timing) {<MudText Class="appbar-buttons-text" Style="width: 180px; min-width:180px;"> Timing | @displaytimer </MudText>}
+            else {<MudText Class="appbar-buttons-text" Style="width: 70px; min-width:70px;"> Timer </MudText>}
         </MudButton>
         <MudSpacer />
         <MudText Class="appbar-buttons-text">@roomGroupModel.userName</MudText>

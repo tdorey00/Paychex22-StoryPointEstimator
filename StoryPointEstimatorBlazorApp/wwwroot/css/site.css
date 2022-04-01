@@ -26,7 +26,7 @@
 .mainContainer {
     display: flex;
     margin-top: 1%;
-    justify-content: start;
+    justify-content: space-between;
 }
 
 .tool-buttons-container {
