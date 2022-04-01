@@ -179,18 +179,12 @@
     padding-top: 140px;
     padding-left: 65px;
 }
-.timer-display-done {
-    background-color: red;
+.timer-display-text-pause {
     color: white;
-    width: 400px;
-    height: 400px;
-    min-width: 400px;
-    font-size: 40px;
+    font-size: 30px;
     font-family: 'Ubuntu';
     font-weight: bold;
-    border-radius: 50%;
-    padding-top: 140px;
-    padding-left: 65px;
+    padding-left: 80px;
 }
 .timer-display-text {
     font-size: 70px;

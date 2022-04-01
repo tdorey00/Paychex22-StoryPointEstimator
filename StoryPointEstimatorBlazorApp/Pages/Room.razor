@@ -25,8 +25,9 @@
             <MudText Class="appbar-buttons-text">Custom Voting</MudText>
         </MudButton> |
         <MudButton OnClick="() => setVotingMode(5)" Class="appbar-buttons">
-            @if (_timing) {<MudText Class="appbar-buttons-text" Style="width: 180px; min-width:180px;"> Timing | @displaytimer </MudText>}
-            else {<MudText Class="appbar-buttons-text" Style="width: 70px; min-width:70px;"> Timer </MudText>}
+            @if (_timing) {<MudText Class="appbar-buttons-text" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
+            else {<MudText Class="appbar-buttons-text" Style="width: 60px; min-width:60px;">Timer</MudText>}
+            @if (_pause) {<MudText Class="appbar-buttons-text" Style="width: 80px; min-width:80px;">| Paused </MudText>}
         </MudButton>
         <MudSpacer />
         <MudText Class="appbar-buttons-text">@roomGroupModel.userName</MudText>
@@ -170,14 +171,16 @@ else{
             @if (Voting_Mode == 5)
                     {
             <MudPaper Class="mud-paper-timer" Height ="650px" Width ="950px" Elevation="0">  
-                    @if (_timerDone) {<MudPaper Class="timer-display"><MudText Class="timer-display-text"> 00:00:00 </MudText></MudPaper>}
-                    else {<MudPaper Class="timer-display"><MudText Class="timer-display-text"> @displaytimer </MudText></MudPaper>}
-                    <MudPaper Height ="400px" Width ="400px" Elevation="0">
+                    <MudPaper Class="timer-display">
+                    @if (_timerDone) {<MudText Class="timer-display-text"> 00:00:00 </MudText>}
+                    else {<MudText Class="timer-display-text"> @displaytimer </MudText>}
+                    @if (_pause) {<MudText Class="timer-display-text-pause" Style="width: 80px; min-width:80px;"> (Paused) </MudText>}
+                    </MudPaper>                    <MudPaper Height ="400px" Width ="400px" Elevation="0">
                     <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
                         @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
                         else {<MudText Class="timer-buttons-text">Start</MudText>}
                     </MudButton>
-                    <MudButton OnClick="pauseTimer" Class="timer-buttons">
+                    <MudButton Disabled="@_pauseDisable" OnClick="pauseTimer" Variant="Variant.Filled" Class="timer-buttons">
                         <MudText Class="timer-buttons-text">Pause</MudText>
                     </MudButton>
                     <MudButton OnClick="resetTimer" Class="timer-buttons">
@@ -480,14 +483,17 @@ else{
     public static int Hours { get; set; } //number of hours timer will run for
     TimeSpan TimeRemaining;
     string displaytimer = "00:00:00"; //displayed time
+    public static int DateTime;
     private bool _timing = false;
     private bool _pause = false;
     private bool _reset = false;
     private bool _timerDone = false;
+    private bool _pauseDisable = true;
     async Task Timer()
     {
         _timerDone = false;
         _timing = true;
+        _pauseDisable = false;
         if(!_pause) TimeRemaining = new TimeSpan(Hours, Minutes, Seconds+1); //if not paused create new timer
         else //resume timer where it left off
         {
@@ -518,6 +524,7 @@ else{
     {
         _pause = true;
         _timing = false;
+        _pauseDisable = true;
     }
     Task AfterTime()
     {
@@ -529,6 +536,7 @@ else{
     {
         _timerDone = false;
         _timing = false;
+        _pauseDisable = true;
         _pause = false;
         _reset = true;
         displaytimer = "00:00:00";
