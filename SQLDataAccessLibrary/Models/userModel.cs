@@ -15,5 +15,23 @@ namespace SQLDataAccessLibrary.Models
         public string scaleVote { get; set; } = "";
         public string fistVote { get; set; } = "";
         public string tshirtVote { get; set; } = "";
+        public override bool Equals(object? obj)
+        {
+            bool success = false;
+            userModel otherUser;
+            try
+            {
+                 otherUser = (userModel)obj;
+                 return userId == otherUser.userId;
+            }
+            catch (InvalidCastException)
+            {
+                return false;
+            }
+            catch (NullReferenceException)
+            {
+                return false;
+            }
+        }
     }
 }

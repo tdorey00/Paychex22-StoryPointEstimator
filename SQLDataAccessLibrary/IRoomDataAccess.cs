@@ -13,5 +13,8 @@ namespace SqlDataAccessLib
         List<roomModel> GetRoomModels();
         void UpdateUsername(int userid, string username);
         void UpdateCustomScale(int roomid, string customtitle);
+        Task<List<userModel>> getConnectedUsers(int roomid);
+        void UpdateAdmin(int userid, bool isAdmin);
+        void UpdateVote(int userid, int voting_mode, string vote);
     }
 }

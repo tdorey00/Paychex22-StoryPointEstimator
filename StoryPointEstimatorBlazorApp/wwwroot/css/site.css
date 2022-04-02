@@ -1,17 +1,3 @@
-.drawer {
-    background-color: #4B27FE;
-    font-family: 'Ubuntu', sans-serif;
-    color: white;
-    font-size: 36px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-    .drawer:hover {
-        color: #75A9FC;
-    }
-
 .appbar {
     font-size: 24px;
     font-family: 'Ubuntu', sans-serif;
@@ -62,20 +48,14 @@
     padding: 23px;
 }
 
+.tool-buttons:hover {
+    background-color: #3e1fdd;
+    color: white;
+}
 .tool-buttons:focus {
     background-color: #21A7EC;
     color: white;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin: 10px;
-    font-size: 36px;
-    font-family: 'Ubuntu', sans-serif;
-    min-width: 100px;
-    padding: 23px;
 }
-
-
 .table-container {
     padding: 5px;
 }
@@ -99,6 +79,7 @@
 }
 
 .appbar-buttons {
+    background-color: #4B27FE;
     color: white;
     font-family: 'Ubuntu';
     font-size: 20px;
@@ -106,23 +87,31 @@
     padding: 8px;
     border-radius: 10%;
 }
-
-.appbar-buttons:focus {
-    background-color: #21A7EC;
+.appbar-buttons-text {
+    color: white;
+    font-family: 'Ubuntu';
+    font-size: 20px;
+    font-weight: bold;
+}
+.appbar-buttons-timer {
+    background-color: red;
     color: white;
     font-family: 'Ubuntu';
     font-size: 20px;
     font-weight: bold;
     padding: 8px;
-    border-radius: 10px;
+    border-radius: 10%;
+}
+.appbar-buttons:focus {
+    background-color: #21A7EC;
 }
 
 .admin-tools-buttons {
     background-color: #4B27FE;
     color: white;
     font-family: 'Ubuntu';
-    font-size: 15px;
-    padding: 8px;
+    font-size: 14px;
+    padding: 7px;
     margin: 5px;
     font-weight: bold;
 }
@@ -150,12 +139,71 @@
     font-weight: bold;
     justify-content: center;
 }
-
     .mud-chip:hover {
         background-color: #4B27FE;
         color: white;
     }
 
+.timer-buttons {
+    background-color: #4B27FE;
+    color: white;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 10px;
+    font-size: 22px;
+    font-family: 'Ubuntu';
+    font-weight: bold;
+    min-width: 100px;
+    padding: 23px;
+}
+    .timer-buttons:hover {
+        background-color: #3e1fdd;
+        color: white;
+    }
+.timer-buttons-text {
+    font-size: 22px;
+    font-family: 'Ubuntu';
+    font-weight: bold;
+}
+.timer-display {
+    background-color: #4B27FE;
+    color: white;
+    width: 400px;
+    height: 400px;
+    min-width: 400px;
+    font-size: 40px;
+    font-family: 'Ubuntu';
+    font-weight: bold;
+    border-radius: 50%;
+    padding-top: 140px;
+    padding-left: 65px;
+}
+.timer-display-text-pause {
+    color: white;
+    font-size: 30px;
+    font-family: 'Ubuntu';
+    font-weight: bold;
+    padding-left: 80px;
+}
+.timer-display-text {
+    font-size: 70px;
+    font-family: 'Ubuntu';
+    font-weight: bold;
+}
+.timer-notification-text {
+    color: black;
+    font-family: 'Ubuntu';
+    font-size: 20px;
+    font-weight: bold;
+}
+.timer-input {
+    width: 113px;
+    padding-top: 10px;
+    padding-left: 20px;
+    display: inline-flex;
+    justify-content: start;
+}
 .mud-paper-buttons {
     padding-left: 25px;
     padding-right: 25px;
@@ -201,6 +249,7 @@
     padding: 5px;
     display: flex;
     justify-content: left;
+    align-content: center;
 }
 .mud-paper-admin-tools {
     min-width: 750px;
@@ -210,3 +259,27 @@
     margin-right: 25px;
     margin-left: 25px;
 }
+
+
+.custom-voting-tools {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.slider{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    font-family: 'Ubuntu';
+    margin-top: 0px;
+}
+
+.mud-paper-timer {
+    margin-left: 40%;
+    padding-top: 100px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
