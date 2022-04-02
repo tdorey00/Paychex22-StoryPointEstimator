@@ -1,4 +1,4 @@
-﻿@page "/Room/{roomId:int}/{userId:int}"
+@page "/Room/{roomId:int}/{userId:int}"
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
@@ -62,7 +62,7 @@ else{
                          0
                     </MudButton>
                     <MudButton OnClick='() => setVote("0.5")' Class="tool-buttons">
-                         @half
+                         @HALF
                     </MudButton>
                     <MudButton OnClick='() => setVote("1")' Class="tool-buttons">
                          1
@@ -91,8 +91,8 @@ else{
                     <MudButton OnClick='() => setVote("100")' Class="tool-buttons">
                          100
                     </MudButton>
-                    <MudButton OnClick='() => setVote("Coffee")' Class="tool-buttons">
-                         @coffee
+                    <MudButton OnClick='() => setVote("coffee")' Class="tool-buttons">
+                         @COFFEE
                     </MudButton> 
                 }
                 @if(Voting_Mode == 2)
@@ -153,7 +153,6 @@ else{
                                     <MudSlider Min="1" Max="24" Step="1" @bind-Value="@customVotingScale" Style="{color: #4B27FE;}"/>
                                 </MudItem>
                                 <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
-                                <!-- <MudTextField @bind-Value="customScale" Validation="@(new Func<string, IEnumerable<string>>(CustomScaleValidation))" Mask="@mask3" Class="custom-scale-input" Label="Enter Size (1-24)" Variant="Variant.Outlined" Clearable="true"></MudTextField> --> 
                                 <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>    
                                 
                             }
@@ -161,7 +160,7 @@ else{
                     </MudItem>
                     foreach(int x in Enumerable.Range(1, @customVotingScale))
                     {
-                        <MudButton Variant="Variant.Filled"  Class="tool-buttons">
+                        <MudButton Variant="Variant.Filled" OnClick='()=> setVote(""+x)' Class="tool-buttons">
                             @x</MudButton>
                     }
                 }
@@ -175,7 +174,8 @@ else{
                     @if (_timerDone) {<MudText Class="timer-display-text"> 00:00:00 </MudText>}
                     else {<MudText Class="timer-display-text"> @displaytimer </MudText>}
                     @if (_pause) {<MudText Class="timer-display-text-pause" Style="width: 80px; min-width:80px;"> (Paused) </MudText>}
-                    </MudPaper>                    <MudPaper Height ="400px" Width ="400px" Elevation="0">
+                    </MudPaper> 
+                    <MudPaper Height ="400px" Width ="400px" Elevation="0">
                     <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
                         @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
                         else {<MudText Class="timer-buttons-text">Start</MudText>}
@@ -208,8 +208,8 @@ else{
                         <MudItem xs="6">
                             <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
                         </MudItem>
-                        <MudButton  Class="btn admin-tools-buttons">Hide Votes</MudButton>
-                        <MudButton  Class="btn admin-tools-buttons">Hide Users</MudButton>
+                        <MudButton  Class="btn admin-tools-buttons" @onclick="hideVotes">Hide Votes</MudButton>
+                        <MudButton  Class="btn admin-tools-buttons" @onclick="hideUsers">Hide Users</MudButton>
                         <MudButton OnClick="clearVotes" Class="btn admin-tools-buttons">Clear Votes</MudButton>
                         <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons">Clear Users</MudButton>
                         <MudButton  Class="btn admin-tools-buttons">Save Results</MudButton>
@@ -224,29 +224,47 @@ else{
                         <MudItem>
                             <MudText Class="mud-paper-tool-name"> Results</MudText>
                         </MudItem>
-                        <MudSimpleTable Style="overflow-x: auto;" Class="table">
-                            <thead>
-                                <tr>
-                                    @foreach (var h in headings)
+                        <MudTable Items="@connectedUsers" Hover="true" Breakpoint="Breakpoint.Sm">
+                            <HeaderContent>
+                                <MudTh><MudTableSortLabel SortBy="new Func<userModel, object>(x=>x.userName)">User</MudTableSortLabel></MudTh>
+                                <MudTh>Vote</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="User">
+                                    @if (!hiddenUsers)
                                     {
-                                        <th>@h</th>
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var row in rows)
-                                {
-                                    <tr>
-                                        @foreach (var x in row.Split())
+                                        @context.userName
+                                        @if (context.isAdmin)
                                         {
-                                            <td>@x</td>
+                                            @STAR
                                         }
-                                    </tr>
-                                }
-                            </tbody>
-                        </MudSimpleTable>
+                                    }
+                                </MudTd>
+                                <MudTd DataLabel="Vote">
+                                    @if (!hiddenVotes)
+                                    {
+                                        @if (Voting_Mode == 1)
+                                        {
+                                            @context.fibVote             
+                                        }
+                                        else if (Voting_Mode == 2)
+                                        {
+                                            @context.fistVote           
+                                        }
+                                        else if (Voting_Mode == 3)
+                                        {
+                                            @context.tshirtVote         
+                                        }
+                                        else
+                                        {
+                                            @context.scaleVote
+                                        }
+                                    }
+                                </MudTd>
+                            </RowTemplate>
+                        </MudTable>
                     </MudPaper>
-                </MudItem>
+                </MudItem>                
             }
             <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
         <DialogContent>
@@ -322,22 +340,24 @@ else{
     </div>
 }
 @code {
-    int customVotingScale = 24;
+        int customVotingScale = 24;
 
-    //data
-    [Parameter]
-    public int roomId{ get; set; }
-    [Parameter]
-    public int userId{ get; set; }
+        //data
+        [Parameter]
+        public int roomId{ get; set; }
+        [Parameter]
+        public int userId{ get; set; }
     private string tempUsername = "";
     private bool loading = true;
     private string currentCustomTitle = "Custom Title";
     private DisplayGroupedModel roomGroupModel = new DisplayGroupedModel();
+    private List<userModel> connectedUsers = new List<userModel>();
 
     protected override async Task OnInitializedAsync() 
     {
         roomModel roomData = await _dB.GetRoomData(roomId);
         userModel userData = await _dB.GetUserData(userId);
+        connectedUsers = await _dB.getConnectedUsers(roomId);
 
         roomGroupModel.userName = userData.userName;
         tempUsername = roomGroupModel.userName;
@@ -379,44 +399,32 @@ else{
             yield return "Too few characters";
         }
     }
-    //Work in progress
-    /*private IEnumerable<string> CustomScaleValidation(string ch)
-         {
-         if (!string.IsNullOrEmpty(ch) && 24 < ch?.Length)
-         {
-         yield return "Too many buttons";
-         }
-         else if (!string.IsNullOrEmpty(ch) && 1 > ch?.Length)
-             {
-             yield return "Too few buttons";
-    }   
-    }
-    */
+
     //Custom Scale
     private string newCustomTitle { get; set; } = "Enter A Title";
-    //private int customScale { get; set; } = 24;
 
     void updateCustomVote()
     {
         if(newCustomTitle.Length > 3 && newCustomTitle.Length < 101)
         {
-            //if(customScale > 1 && customScale < 25)
-            {
-                _dB.UpdateCustomScale(roomId, newCustomTitle);
-                currentCustomTitle = newCustomTitle;
-            }
+            _dB.UpdateCustomScale(roomId, newCustomTitle);
+            currentCustomTitle = newCustomTitle;
         }
     }
+
     //Settings Menu Content
     private bool visibleProfile;
     private void OpenProfile() => visibleProfile = true;
     void CloseProfile() => visibleProfile = false;
-    void SubmitProfile()
+    async void SubmitProfile()
     {
         if(!(tempUsername.Length > 50 || tempUsername.Length < 3)){ //valid submission
             visibleProfile = false;
             _dB.UpdateUsername(userId, tempUsername);
             roomGroupModel.userName = tempUsername;
+            _dB.UpdateAdmin(userId, newGroupModel.isAdmin);
+            connectedUsers = await _dB.getConnectedUsers(roomId);
+            StateHasChanged();
         }
     }
     private DialogOptions dialogProfile = new() { FullWidth = true };
@@ -435,6 +443,8 @@ else{
     }
 
     //Admin Tools
+    private bool hiddenUsers = false;
+    private bool hiddenVotes = false;
     MudMessageBox deleteRoomMSG { get; set; }
     private async void deleteRoom()
     {
@@ -450,21 +460,29 @@ else{
     {
         bool? result = await clearVotesMSG.Show();
     }
-    MudMessageBox timerNotificationMSG { get; set; }
-    private async void timerNotification()
-    {
-        bool? result = await timerNotificationMSG.Show();
+    private void hideUsers(){
+        if(hiddenUsers)
+        {
+            hiddenUsers = false;
+        }
+        else
+        {
+            hiddenUsers = true;
+        }
+    }
+    private void hideVotes(){
+        if(hiddenVotes)
+        {
+            hiddenVotes = false;
+        }
+        else
+        {
+            hiddenVotes = true;
+        }
     }
     //Table
-    string[] headings = { "User", "Vote" };
-    string[] rows = {
-        @"User1 1",
-        @"User2 2",
-        @"User3 3",
-        @"User4 4",
-        @"User5 5",
-        @"User6 6",
-    };
+
+
 
     //Voting Mode
     public int Voting_Mode { get; set; } = 1;
@@ -472,9 +490,39 @@ else{
     void setVotingMode(int mode){
         Voting_Mode = mode;
     }
-    string setVote(string val)
+    void setVote(string val)
     {
-        return val;
+        _dB.UpdateVote(userId, Voting_Mode, val);
+        if(Voting_Mode == 1)//fib vote
+        {
+            userModel found = connectedUsers.Find(x => x.userId == userId);
+            if(val.Equals("coffee")){
+                found.fibVote = ""+COFFEE;
+            }
+            else if (val.Equals("0.5")){
+                found.fibVote = "" + HALF;
+            }
+            else
+            {
+                found.fibVote = val;
+            }
+        }
+        else if (Voting_Mode == 2) //Fist vote
+        {
+            userModel found = connectedUsers.Find(x => x.userId == userId);
+            found.fistVote = val;
+        }
+        else if (Voting_Mode == 3) //Tshirt vote
+        {
+            userModel found = connectedUsers.Find(x => x.userId == userId);
+            found.tshirtVote = val;
+        }
+        else if (Voting_Mode == 4) //custom scale
+        {
+            userModel found = connectedUsers.Find(x => x.userId == userId);
+            found.scaleVote = val;
+        }
+        StateHasChanged();
     }
 
     //Timer
@@ -542,8 +590,14 @@ else{
         displaytimer = "00:00:00";
         TimeRemaining = new TimeSpan(0, 0, 1);
     }
+    MudMessageBox timerNotificationMSG { get; set; }
+    private async void timerNotification()
+    {
+        bool? result = await timerNotificationMSG.Show();
+    }
 
     //Symbols
-    char coffee = '\u2615';
-    char half = '\u00BD';
+    const char COFFEE = '\u2615';
+    const char HALF = '\u00BD';
+    const char STAR = '\u2B50';
 } 
