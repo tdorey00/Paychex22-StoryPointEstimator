@@ -65,6 +65,41 @@ namespace SqlDataAccessLib
             await _dB.SaveDataAsync(sql, parameters);
         }
 
+        public async void UpdateAdmin(int userid, bool isAdmin)
+        {
+            var parameters = new {userId = userid, isAdmin = isAdmin};
+            string sql = "update dbo.userTable set isAdmin = @isAdmin where userId = @userId";
+            await _dB.SaveDataAsync(sql, parameters);
+        }
+
+        public async void UpdateVote(int userid, int voting_mode ,string vote)
+        {
+            if(voting_mode == 1) //fibbonaci
+            {
+                var parameters = new { userId = userid, fibVote = vote };
+                string sql = "update dbo.userTable set fibVote = @fibVote where userId = @userId";
+                await _dB.SaveDataAsync(sql,parameters);
+            }
+            else if (voting_mode == 2) //fist of five
+            {
+                var parameters = new { userId = userid, fistVote = vote };
+                string sql = "update dbo.userTable set fistVote = @fistVote where userId = @userId";
+                await _dB.SaveDataAsync(sql, parameters);
+            }
+            else if (voting_mode == 3) //tshirt vote
+            {
+                var parameters = new { userId = userid, tshirtVote = vote };
+                string sql = "update dbo.userTable set tshirtVote = @tshirtVote where userId = @userId";
+                await _dB.SaveDataAsync(sql, parameters);
+            }
+            else if(voting_mode == 4) //custom vote
+            {
+                var parameters = new { userId = userid, scaleVote = vote };
+                string sql = "update dbo.userTable set scaleVote = @scaleVote where userId = @userId";
+                await _dB.SaveDataAsync(sql, parameters);
+            }
+        }
+
         public async Task<List<userModel>> getConnectedUsers(int roomid)
         {
             var parameters = new { roomId = roomid };
