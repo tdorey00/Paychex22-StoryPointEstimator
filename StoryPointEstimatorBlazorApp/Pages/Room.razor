@@ -224,27 +224,19 @@ else{
                         <MudItem>
                             <MudText Class="mud-paper-tool-name"> Results</MudText>
                         </MudItem>
-                        <MudSimpleTable Style="overflow-x: auto;" Class="table">
-                            <thead>
-                                <tr>
-                                    @foreach (var h in headings)
-                                    {
-                                        <th>@h</th>
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var row in rows)
+                        <MudTable Items="@roomGroupModel" Hover="true" Breakpoint="Breakpoint.Sm">
+                            <HeaderContent>
+                                <MudTh><MudTableSortLabel SortBy="new Func<Element, object>(x=>x.Number)">User</MudTableSortLabel></MudTh>
+                                <MudTh><MudTableSortLabel Enabled="@enabled" SortBy="new Func<Element, object>(x=>x.Sign)">Vote</MudTableSortLabel></MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                @foreach (string userName in )
                                 {
-                                    <tr>
-                                        @foreach (var x in row.Split())
-                                        {
-                                            <td>@x</td>
-                                        }
-                                    </tr>
+                            
+
                                 }
-                            </tbody>
-                        </MudSimpleTable>
+                            </RowTemplate>
+                        </MudTable>
                     </MudPaper>
                 </MudItem>
             }
@@ -456,15 +448,8 @@ else{
         bool? result = await timerNotificationMSG.Show();
     }
     //Table
-    string[] headings = { "User", "Vote" };
-    string[] rows = {
-        @"User1 1",
-        @"User2 2",
-        @"User3 3",
-        @"User4 4",
-        @"User5 5",
-        @"User6 6",
-    };
+
+
 
     //Voting Mode
     public int Voting_Mode { get; set; } = 1;
