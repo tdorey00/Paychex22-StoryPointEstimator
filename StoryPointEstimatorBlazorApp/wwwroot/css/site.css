@@ -115,13 +115,17 @@
     margin: 5px;
     font-weight: bold;
 }
-
     .admin-tools-buttons:hover {
         color: white;
         background-color: lightgrey;
         font-weight: bold;
     }
-
+.admin-tools-text {
+    color: white;
+    font-family: 'Ubuntu';
+    font-size: 14px;
+    font-weight: bold;
+}
 .custom-scale-input {
     min-width: 200px;
     max-width: 200px;
@@ -259,7 +263,6 @@
     margin-right: 25px;
     margin-left: 25px;
 }
-
 
 .custom-voting-tools {
     display: flex;
