@@ -17,7 +17,6 @@ namespace SQLDataAccessLibrary.Models
         public string tshirtVote { get; set; } = "";
         public override bool Equals(object? obj)
         {
-            bool success = false;
             userModel otherUser;
             try
             {

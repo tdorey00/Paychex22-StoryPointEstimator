@@ -2,8 +2,8 @@
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject IRoomDataAccess _dB
-@inject DisplayGroupedModel newGroupModel
 @inject NavigationManager NavigationManager
 <style>
     .inputArea{
@@ -42,14 +42,14 @@
         {
             <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Invalid Submission! Please fix errors.</MudAlert>
         }
-        <EditForm Model="@newGroupModel">
+        <EditForm Model="@newGroupedModel">
 
              <div class = "inputSpacer">
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12"> 
                             <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Username" 
-                      @bind-Value="newGroupModel.userName"  Variant="@Variant.Filled" Clearable />
+                      @bind-Value="newGroupedModel.userName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
@@ -72,14 +72,14 @@
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
                             <MudTextField Mask="@mask2" Label="Room Code" 
-                      @bind-Value="newGroupModel.stringId"  Variant="@Variant.Filled" Clearable />
+                      @bind-Value="newGroupedModel.stringId"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
             </div>
 
             <div class = "inputSpacer">
-                <MudCheckBox @bind-Checked="newGroupModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
+                <MudCheckBox @bind-Checked="newGroupedModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
             </div>
 
             <button @onclick = "@insertData" class="btn btn-primary">Join Room</button>
@@ -124,6 +124,7 @@
     private List<int> userIdList = new List<int>();
     private List<int> roomIdList = new List<int>();
     private bool isValidId = false;
+    DisplayGroupedModel newGroupedModel = new DisplayGroupedModel();
 
     protected override void OnInitialized()
     {
@@ -151,7 +152,7 @@
 
     private bool validateRoomId()
     {
-        int inputId = newGroupModel.roomId; //the id the user inputs into the box
+        int inputId = newGroupedModel.roomId; //the id the user inputs into the box
         roomIdList = _dB.GetRoomIds();
         foreach(int validId in roomIdList)
         {
@@ -195,17 +196,17 @@
         {
             if (tempRoomName.Equals(roomName))
             {
-                newGroupModel.roomId = availableRooms.Find(x => x.roomName.Contains(tempRoomName, StringComparison.InvariantCultureIgnoreCase)).roomId;
-                newGroupModel.stringId = "" + newGroupModel.roomId;
+                newGroupedModel.roomId = availableRooms.Find(x => x.roomName.Contains(tempRoomName, StringComparison.InvariantCultureIgnoreCase)).roomId;
+                newGroupedModel.stringId = "" + newGroupedModel.roomId;
                 break;
             }
         }
 
-        if(newGroupModel.stringId != "")
+        if(newGroupedModel.stringId != "")
         {
-            newGroupModel.roomId = Int32.Parse(newGroupModel.stringId); //turns stringId into roomId
+            newGroupedModel.roomId = Int32.Parse(newGroupedModel.stringId); //turns stringId into roomId
             isValidId = true;
-            if(newGroupModel.userName == String.Empty)
+            if(newGroupedModel.userName == String.Empty)
             {
                 validSubmit = false;
             }
@@ -216,12 +217,14 @@
                     //define model for insertion
                     userModel userInsert = new userModel();
                     //bind data to insertion model
-                    userInsert.isAdmin = newGroupModel.isAdmin;
-                    userInsert.userName = newGroupModel.userName;
+                    userInsert.isAdmin = newGroupedModel.isAdmin;
+                    userInsert.userName = newGroupedModel.userName;
                     userInsert.userId = createUserId();
+                    sessionStorage.SetItemAsync("userId", userInsert.userId);
+
                     //save user model and link user to room based on user input
-                    _dB.joinRoomSaveData(newGroupModel.roomId, userInsert); 
-                    NavigationManager.NavigateTo("/Room/" + newGroupModel.roomId+ "/" + userInsert.userId, true);
+                    _dB.joinRoomSaveData(newGroupedModel.roomId, userInsert); 
+                    NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId, true);
                 }
                 else
                 {

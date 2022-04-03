@@ -1,8 +1,8 @@
-@page "/Room/{roomId:int}/{userId:int}"
+@page "/Room/{roomId:int}"
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
-@inject DisplayGroupedModel newGroupModel
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject IRoomDataAccess _dB
 @inject IDialogService DialogService
 
@@ -32,7 +32,7 @@
             @if (_pause) {<MudText Class="appbar-buttons-text" Style="width: 80px; min-width:80px;">| Paused </MudText>}
         </MudButton>
         <MudSpacer />
-        <MudText Class="appbar-buttons-text">@roomGroupModel.userName</MudText>
+        <MudText Class="appbar-buttons-text">@newGroupedModel.userName</MudText>
         <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Inherit" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
             <MudMenuItem @onclick="OpenProfile">User Profile</MudMenuItem>
             <MudMenuItem>Dark Mode</MudMenuItem>
@@ -149,7 +149,7 @@ else{
                         <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
                             <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
                             
-                            @if(@newGroupModel.isAdmin){
+                            @if(newGroupedModel.isAdmin){
                                 <MudItem Class="slider">
                                     <MudText Class="slider">Number of buttons: @customVotingScale</MudText>
                                     <MudSlider Min="1" Max="24" Step="1" @bind-Value="@customVotingScale" Style="{color: #4B27FE;}"/>
@@ -206,13 +206,13 @@ else{
             }
             <MudItem xs="12">
             <MudPaper Class="mud-paper-room-labels" Elevation="0">  
-                <MudChip Class="mud-chip" >@roomGroupModel.roomName</MudChip>
+                <MudChip Class="mud-chip" >@newGroupedModel.roomName</MudChip>
                 <MudChip Class="mud-chip" >Room Code: @roomId</MudChip>
             </MudPaper>
             </MudItem>
         </div>
         <div>
-            @if (@newGroupModel.isAdmin)
+            @if (newGroupedModel.isAdmin)
             {
                 @if (Voting_Mode != 5)
                 {
@@ -287,10 +287,10 @@ else{
             <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
         <DialogContent>
             <MudText Style="font-size: 30px">User Profile</MudText>
-            <MudText Style="font-size: 16px">Current Username: @roomGroupModel.userName</MudText>
+            <MudText Style="font-size: 16px">Current Username: @newGroupedModel.userName</MudText>
             <MudTextField @bind-Value="tempUsername" Variant="@Variant.Filled" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Change Username"></MudTextField>
             <div class = "inputSpacer">
-                <MudCheckBox @bind-Checked="newGroupModel.isAdmin" Label="Facilitator" Color="Color.Primary"></MudCheckBox>
+                <MudCheckBox @bind-Checked="newGroupedModel.isAdmin" Label="Facilitator" Color="Color.Primary"></MudCheckBox>
             </div>
             </DialogContent>
         <DialogActions>
@@ -367,31 +367,36 @@ else{
     //data
     [Parameter]
     public int roomId{ get; set; }
-    [Parameter]
-    public int userId{ get; set; }
+    private int userId { get; set; }
     private string tempUsername = "";
     private bool loading = true;
     private string currentCustomTitle = "Custom Title";
-    private DisplayGroupedModel roomGroupModel = new DisplayGroupedModel();
     private List<userModel> connectedUsers = new List<userModel>();
+    DisplayGroupedModel newGroupedModel = new DisplayGroupedModel();
 
     protected override async Task OnInitializedAsync() 
     {
         roomModel roomData = await _dB.GetRoomData(roomId);
-        userModel userData = await _dB.GetUserData(userId);
-        connectedUsers = await _dB.getConnectedUsers(roomId);
-
-        roomGroupModel.userName = userData.userName;
-        tempUsername = roomGroupModel.userName;
-        roomGroupModel.isAdmin = userData.isAdmin;          //TODO Bind the rest of the data from the roomData and userData to newGroupModel
-
-        roomGroupModel.roomName = roomData.roomName;
-
-        roomGroupModel.currentScale = roomData.currentScale;
-        roomGroupModel.scaleTitle = roomData.scaleTitle;
         currentCustomTitle = roomData.scaleTitle;
-
+        newGroupedModel.scaleTitle = roomData.scaleTitle;
+        newGroupedModel.roomName = roomData.roomName;
+        newGroupedModel.currentScale = roomData.currentScale;
+        connectedUsers = await _dB.getConnectedUsers(roomId);
         loading = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            userId = await sessionStorage.GetItemAsync<int>("userId");
+            userModel userData = await _dB.GetUserData(userId);
+            newGroupedModel.userId = userData.userId;
+            newGroupedModel.userName = userData.userName;
+            tempUsername = userData.userName;
+            newGroupedModel.isAdmin = userData.isAdmin;
+            StateHasChanged();
+        }
     }
 
     //Validation
@@ -442,9 +447,9 @@ else{
     {
         if(!(tempUsername.Length > 50 || tempUsername.Length < 3)){ //valid submission
             visibleProfile = false;
-            _dB.UpdateUsername(userId, tempUsername);
-            roomGroupModel.userName = tempUsername;
-            _dB.UpdateAdmin(userId, newGroupModel.isAdmin);
+            _dB.UpdateUsername(newGroupedModel.userId, tempUsername);
+            newGroupedModel.userName = tempUsername;
+            _dB.UpdateAdmin(newGroupedModel.userId, newGroupedModel.isAdmin);
             connectedUsers = await _dB.getConnectedUsers(roomId);
             StateHasChanged();
         }
@@ -514,10 +519,10 @@ else{
     }
     void setVote(string val)
     {
-        _dB.UpdateVote(userId, Voting_Mode, val);
+        _dB.UpdateVote(newGroupedModel.userId, Voting_Mode, val);
         if(Voting_Mode == 1)//fib vote
         {
-            userModel found = connectedUsers.Find(x => x.userId == userId);
+            userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
             if(val.Equals("coffee")){
                 found.fibVote = ""+COFFEE;
             }
@@ -531,17 +536,17 @@ else{
         }
         else if (Voting_Mode == 2) //Fist vote
         {
-            userModel found = connectedUsers.Find(x => x.userId == userId);
+            userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
             found.fistVote = val;
         }
         else if (Voting_Mode == 3) //Tshirt vote
         {
-            userModel found = connectedUsers.Find(x => x.userId == userId);
+            userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
             found.tshirtVote = val;
         }
         else if (Voting_Mode == 4) //custom scale
         {
-            userModel found = connectedUsers.Find(x => x.userId == userId);
+            userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
             found.scaleVote = val;
         }
         StateHasChanged();
