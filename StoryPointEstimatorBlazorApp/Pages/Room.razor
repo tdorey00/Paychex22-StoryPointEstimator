@@ -7,6 +7,8 @@
 @inject IDialogService DialogService
 
 <div>
+    @if (_timing) {<head><title>ScrumSpace | @displaytimer </title></head>}
+    else {<head><title>ScrumSpace</title></head>}
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
         <MudText Class="appbar-buttons-text" Style="width: 120px; min-width:120px;">ScrumSpace</MudText> -
         <MudButton OnClick="returnHome" Class="appbar-buttons"> 
@@ -591,6 +593,7 @@ else{
     }
     void pauseTimer()
     {
+        TimeRemaining = TimeRemaining.Add(new TimeSpan(0,0,1));
         _pause = true;
         _timing = false;
         _pauseDisable = true;
