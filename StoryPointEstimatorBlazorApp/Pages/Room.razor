@@ -4,6 +4,7 @@
 @using SQLDataAccessLibrary.Models
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject IRoomDataAccess _dB
+
 @inject IDialogService DialogService
 
 <div>
@@ -466,7 +467,10 @@ else{
     MudMessageBox returnHomeMSG { get; set; }
     private async void returnHome()
     {
-        bool? result = await returnHomeMSG.Show();
+        if (!loading)
+        {
+            bool? result = await returnHomeMSG.Show();
+        }
     }
 
     //Admin Tools
