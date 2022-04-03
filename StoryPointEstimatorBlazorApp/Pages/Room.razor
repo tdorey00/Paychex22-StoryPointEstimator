@@ -169,29 +169,39 @@ else{
             }
             @if (Voting_Mode == 5)
                     {
-            <MudPaper Class="mud-paper-timer" Height ="650px" Width ="950px" Elevation="0">  
-                    <MudPaper Class="timer-display">
+            <MudPaper Class="mud-paper-timer" Height ="550px" Width ="850px" Elevation="0">  
+                <MudPaper Class="timer-display">
                     @if (_timerDone) {<MudText Class="timer-display-text"> 00:00:00 </MudText>}
                     else {<MudText Class="timer-display-text"> @displaytimer </MudText>}
                     @if (_pause) {<MudText Class="timer-display-text-pause" Style="width: 80px; min-width:80px;"> (Paused) </MudText>}
-                    </MudPaper> 
+                </MudPaper> 
                     <MudPaper Height ="400px" Width ="400px" Elevation="0">
-                    <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
-                        @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
-                        else {<MudText Class="timer-buttons-text">Start</MudText>}
-                    </MudButton>
-                    <MudButton Disabled="@_pauseDisable" OnClick="pauseTimer" Variant="Variant.Filled" Class="timer-buttons">
-                        <MudText Class="timer-buttons-text">Pause</MudText>
-                    </MudButton>
-                    <MudButton OnClick="resetTimer" Class="timer-buttons">
-                        <MudText Class="timer-buttons-text">Reset</MudText>
-                    </MudButton>
-                    <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" Min="0" Max="12" />
-                    <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
-                    <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
-                </MudPaper>
+                        <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
+                            @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
+                            else {<MudText Class="timer-buttons-text">Start</MudText>}
+                        </MudButton>
+                        <MudButton Disabled="@_pauseDisable" OnClick="pauseTimer" Variant="Variant.Filled" Class="timer-buttons">
+                            <MudText Class="timer-buttons-text">Pause</MudText>
+                        </MudButton>
+                        <MudButton OnClick="resetTimer" Class="timer-buttons">
+                            <MudText Class="timer-buttons-text">Reset</MudText>
+                        </MudButton>
+                        <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" Min="0" Max="12" />
+                        <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
+                        <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
+                    </MudPaper>
             </MudPaper> 
-                    }
+            <MudPaper Class="" Style="margin-left: 40%;" Height ="115px" Elevation="0">
+                <MudItem xs="6">
+                <MudText Class="mud-paper-tool-name">Timer Tools</MudText>
+                </MudItem>
+                <MudButton Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Stopwatch Mode</MudText></MudButton>
+                <MudButton OnClick="toggleSound" Class="btn admin-tools-buttons" Style="width: 120px;">
+                    @if (_soundOff) {<MudText Class="admin-tools-text" >Turn Sound On</MudText>}
+                    else {<MudText Class="admin-tools-text" >Turn Sound Off</MudText>}
+                </MudButton>
+            </MudPaper>
+            }
             <MudItem xs="12">
             <MudPaper Class="mud-paper-room-labels" Elevation="0">  
                 <MudChip Class="mud-chip" >@roomGroupModel.roomName</MudChip>
@@ -208,12 +218,18 @@ else{
                         <MudItem xs="6">
                             <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
                         </MudItem>
-                        <MudButton  Class="btn admin-tools-buttons" @onclick="hideVotes">Hide Votes</MudButton>
-                        <MudButton  Class="btn admin-tools-buttons" @onclick="hideUsers">Hide Users</MudButton>
-                        <MudButton OnClick="clearVotes" Class="btn admin-tools-buttons">Clear Votes</MudButton>
-                        <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons">Clear Users</MudButton>
-                        <MudButton  Class="btn admin-tools-buttons">Save Results</MudButton>
-                        <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons">Delete Room</MudButton>    
+                        <MudButton OnClick="hideVotes" Class="btn admin-tools-buttons">
+                        @if (hiddenVotes) {<MudText Class="admin-tools-text" >Unhide Votes</MudText>}
+                        else {<MudText Class="admin-tools-text" >Hide Votes</MudText>}
+                        </MudButton>
+                        <MudButton OnClick="hideUsers" Class="btn admin-tools-buttons">
+                        @if (hiddenUsers) {<MudText Class="admin-tools-text" >Unhide Users</MudText>}
+                        else {<MudText Class="admin-tools-text" >Hide Users</MudText>}
+                        </MudButton>
+                        <MudButton OnClick="clearVotes" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Votes</MudText></MudButton>
+                        <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Users</MudText></MudButton>
+                        <MudButton Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Save Results</MudText></MudButton>
+                        <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Delete Room</MudText></MudButton>    
                     </MudPaper>
                 }
             }
@@ -333,20 +349,24 @@ else{
     </MudMessageBox>
     <MudMessageBox @ref="timerNotificationMSG" YesText="Ok">
         <MessageContent>
-            <MudText Class="timer-notification-text"> Timer Finished </MudText>  
+            <MudText Class="timer-notification-text"> Timer Finished </MudText>
+                    @if (!_soundOff)
+                    {
+                    <audio autoplay><source src="/Audio/TimerSound.mp3" /></audio>
+                    }
         </MessageContent>
     </MudMessageBox>
     </div>
     </div>
 }
 @code {
-        int customVotingScale = 24;
+    int customVotingScale = 24;
 
-        //data
-        [Parameter]
-        public int roomId{ get; set; }
-        [Parameter]
-        public int userId{ get; set; }
+    //data
+    [Parameter]
+    public int roomId{ get; set; }
+    [Parameter]
+    public int userId{ get; set; }
     private string tempUsername = "";
     private bool loading = true;
     private string currentCustomTitle = "Custom Title";
@@ -537,6 +557,7 @@ else{
     private bool _reset = false;
     private bool _timerDone = false;
     private bool _pauseDisable = true;
+    private bool _soundOff = true;
     async Task Timer()
     {
         _timerDone = false;
@@ -576,6 +597,7 @@ else{
     }
     Task AfterTime()
     {
+        _pauseDisable = true;
         _timerDone = true;
         displaytimer = "00:00:00";
         return Task.CompletedTask;
@@ -595,7 +617,17 @@ else{
     {
         bool? result = await timerNotificationMSG.Show();
     }
-
+    void toggleSound()
+    {
+        if(_soundOff)
+        {
+            _soundOff = false;
+        }
+        else
+        {
+            _soundOff = true;
+        }    
+    }
     //Symbols
     const char COFFEE = '\u2615';
     const char HALF = '\u00BD';
