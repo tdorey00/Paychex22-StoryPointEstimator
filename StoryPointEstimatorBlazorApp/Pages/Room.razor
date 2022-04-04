@@ -42,15 +42,15 @@
     </MudAppBar>
 </div>
 @if (loading)
-{
-    <MudText>Your Room is loading...</MudText>
+{        
+        <MudText>Your Room is loading...</MudText>
 }
 else{
     <div class="mainContainer">
         <div class="button-label-container">
             @if (Voting_Mode != 5){
             <MudItem xs="12">
-            <MudPaper Class="mud-paper-buttons" Height ="650px" Elevation="0">    
+            <MudPaper Class="mud-paper-buttons" Height ="600px" Elevation="0">    
                 @if(Voting_Mode==1) 
                 {
                     <MudItem xs="6">
@@ -172,7 +172,7 @@ else{
             }
             @if (Voting_Mode == 5)
                     {
-            <MudPaper Class="mud-paper-timer" Height ="550px" Width ="850px" Elevation="0">  
+            <MudPaper Class="mud-paper-timer" Style="justify-content: space-evenly" Height ="515px" Width ="850px" Elevation="0">  
                 <MudPaper Class="timer-display">
                     @if (_timerDone) {<MudText Class="timer-display-text"> 00:00:00 </MudText>}
                     else {<MudText Class="timer-display-text"> @displaytimer </MudText>}
@@ -194,23 +194,19 @@ else{
                         <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
                     </MudPaper>
             </MudPaper> 
-            <MudPaper Class="" Style="margin-left: 40%;" Height ="115px" Elevation="0">
-                <MudItem xs="6">
+            <MudPaper Height="115px" Width ="850px" Elevation="0">
                 <MudText Class="mud-paper-tool-name">Timer Tools</MudText>
-                </MudItem>
-                <MudButton Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Stopwatch Mode</MudText></MudButton>
+                <MudButton Class="btn admin-tools-buttons"> <MudText Class="admin-tools-text" >Stopwatch Mode</MudText></MudButton>
                 <MudButton OnClick="toggleSound" Class="btn admin-tools-buttons" Style="width: 120px;">
                     @if (_soundOff) {<MudText Class="admin-tools-text" >Turn Sound On</MudText>}
                     else {<MudText Class="admin-tools-text" >Turn Sound Off</MudText>}
                 </MudButton>
             </MudPaper>
             }
-            <MudItem xs="12">
             <MudPaper Class="mud-paper-room-labels" Elevation="0">  
                 <MudChip Class="mud-chip" >@newGroupedModel.roomName</MudChip>
                 <MudChip Class="mud-chip" >Room Code: @roomId</MudChip>
             </MudPaper>
-            </MudItem>
         </div>
         <div>
             @if (newGroupedModel.isAdmin)
@@ -239,11 +235,15 @@ else{
             @if (Voting_Mode != 5)
             {
                 <MudItem xs="12">
-                    <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
+                    <MudPaper Class="mud-paper-table" Height ="75px" Elevation="0">
                         <MudItem>
                             <MudText Class="mud-paper-tool-name"> Results</MudText>
                         </MudItem>
-                        <MudTable Items="@connectedUsers" Hover="true" Breakpoint="Breakpoint.Sm">
+                        <MudTable Items="@connectedUsers" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
+                            <ColGroup>
+                                <col style="width: 50%;" />
+                                <col style="width: 50%;" />
+                            </ColGroup>
                             <HeaderContent>
                                 <MudTh><MudTableSortLabel SortBy="new Func<userModel, object>(x=>x.userName)">User</MudTableSortLabel></MudTh>
                                 <MudTh>Vote</MudTh>
@@ -252,11 +252,13 @@ else{
                                 <MudTd DataLabel="User">
                                     @if (!hiddenUsers)
                                     {
+                                        <MudText Class="table-vote-text">
                                         @context.userName
                                         @if (context.isAdmin)
                                         {
                                             @STAR
                                         }
+                                        </MudText>
                                     }
                                 </MudTd>
                                 <MudTd DataLabel="Vote">
@@ -264,19 +266,19 @@ else{
                                     {
                                         @if (Voting_Mode == 1)
                                         {
-                                            @context.fibVote             
+                                            <MudText Class="table-vote-text">@context.fibVote</MudText>
                                         }
                                         else if (Voting_Mode == 2)
                                         {
-                                            @context.fistVote           
+                                            <MudText Class="table-vote-text">@context.fistVote</MudText>                                                      
                                         }
                                         else if (Voting_Mode == 3)
                                         {
-                                            @context.tshirtVote         
+                                            <MudText Class="table-vote-text">@context.tshirtVote</MudText>                                                     
                                         }
                                         else
                                         {
-                                            @context.scaleVote
+                                            <MudText Class="table-vote-text">@context.scaleVote</MudText>                                  
                                         }
                                     }
                                 </MudTd>

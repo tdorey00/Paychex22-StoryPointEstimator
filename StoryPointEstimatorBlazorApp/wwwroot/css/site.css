@@ -26,9 +26,8 @@
 .mainContainer {
     display: flex;
     margin-top: 1%;
-    justify-content: space-between;
+    justify-content: center;
 }
-
 .tool-buttons-container {
     justify-content: space-evenly;
     min-width: 200px;
@@ -217,18 +216,17 @@
 }
 
 .mud-paper-table {
-    min-width: 750px;
-    max-width: 750px;
+    min-width: 650px;
+    max-width: 650px;
     padding: 1px;
     padding-top: 7px;
-    margin-right: 25px;
     margin-left: 25px;
 }
 
 .mud-paper-room-labels {
     padding: 5px;
-    min-width: 500px;
-    max-width: 500px;
+    min-width: 375px;
+    max-width: 375px;
     justify-content: right;
     margin: 10px;
 }
@@ -256,11 +254,10 @@
     align-content: center;
 }
 .mud-paper-admin-tools {
-    min-width: 750px;
-    max-width: 750px;
+    min-width: 650px;
+    max-width: 650px;
     padding: 1px;
     padding-top: 7px;
-    margin-right: 25px;
     margin-left: 25px;
 }
 
@@ -280,9 +277,20 @@
 }
 
 .mud-paper-timer {
-    margin-left: 40%;
     padding-top: 100px;
     display: flex;
     justify-content: space-evenly;
 }
 
+.table-vote-text {
+    font-size: 18px;
+    font-family: 'Ubuntu';
+    font-weight: bold;
+}
+
+.loding-display {
+    background-color: lightgrey;
+    color: black;
+    padding-top: 50%;
+
+}
