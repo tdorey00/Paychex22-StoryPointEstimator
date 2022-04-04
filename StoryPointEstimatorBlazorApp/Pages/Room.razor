@@ -2,8 +2,10 @@
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
+@using Microsoft.AspNetCore.SignalR.Client
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject IRoomDataAccess _dB
+@inject NavigationManager NavigationManager
 
 @inject IDialogService DialogService
 
@@ -365,6 +367,8 @@ else{
     </div>
 }
 @code {
+    private HubConnection? hubConnection;
+
     int customVotingScale = 24;
 
     //data
@@ -386,6 +390,29 @@ else{
         newGroupedModel.currentScale = roomData.currentScale;
         connectedUsers = await _dB.getConnectedUsers(roomId);
         loading = false;
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("VotingHub"))
+            .Build();
+
+        hubConnection.On<int, string, int>("receiveVote", (user, vote, votingMode) =>
+        {
+            userModel found = connectedUsers.Find(x => x.userId == user);
+
+            if (votingMode == 1)
+                found.fibVote = vote;
+            if (votingMode == 2)
+                found.fistVote = vote;
+            if (votingMode == 3)
+                found.tshirtVote = vote;
+            if (votingMode == 4)
+                found.scaleVote = vote;
+
+            StateHasChanged();
+
+        });
+
+        await hubConnection.StartAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
