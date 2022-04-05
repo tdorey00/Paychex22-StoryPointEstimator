@@ -17,7 +17,7 @@
     </div>
     <p>The value is: @Test1</p>
     @code{
-    private string Test1 = "";
+    private string Test1 { get; set; } = "";
     void Update(ChangeEventArgs e)
     {
         if(e is not null && e.Value is not null)
