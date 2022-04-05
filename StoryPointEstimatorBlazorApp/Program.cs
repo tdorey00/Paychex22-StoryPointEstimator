@@ -4,6 +4,9 @@ using SqlDataAccessLib;
 using MudBlazor.Services;
 using StoryPointEstimatorBlazorApp.Models;
 using Blazored.SessionStorage;
+using Microsoft.AspNetCore.ResponseCompression;
+using StoryPointEstimatorBlazorApp.Hubs;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +17,16 @@ builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<IRoomDataAccess, RoomDataAccess>();
 builder.Services.AddMudServices();
 builder.Services.AddBlazoredSessionStorage();
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+               new[] { "application/octet-stream" });
+});
 
 
 
 var app = builder.Build();
+app.UseResponseCompression();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -35,5 +44,7 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+app.MapHub<VotingHub>("VotingHub");
 
 app.Run();

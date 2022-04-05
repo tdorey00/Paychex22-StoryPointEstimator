@@ -2,6 +2,7 @@
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
+@using Microsoft.AspNetCore.SignalR.Client
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject IRoomDataAccess _dB
 @implements IDisposable
@@ -16,22 +17,31 @@
         <MudButton OnClick="returnHome" Class="appbar-buttons"> 
             <MudText Class="appbar-buttons-text">Home</MudText>
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(1)" Class="appbar-buttons" Style="width: 150px; min-width:150px;">
-            <MudText Class="appbar-buttons-text">Fibonacci Tool</MudText>
+        <MudButton Disabled="@_fiboAppBar" OnClick="() => setVotingMode(1)" Class="appbar-buttons" Style="width: 150px; min-width:150px;">
+            @if (_fiboAppBar) {<MudText Class="appbar-buttons-clicked">Fibonacci Tool</MudText>}
+            else {<MudText Class="appbar-buttons-text">Fibonacci Tool</MudText>}
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(2)" Class="appbar-buttons" Style="width: 120px; min-width:120px;">
-            <MudText Class="appbar-buttons-text">Fist of Five</MudText>
+        <MudButton Disabled="@_fistAppBar" OnClick="() => setVotingMode(2)" Class="appbar-buttons" Style="width: 120px; min-width:120px;">
+            @if (_fistAppBar) {<MudText Class="appbar-buttons-clicked">Fist of Five</MudText>}
+            else {<MudText Class="appbar-buttons-text">Fist of Five</MudText>}        
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(3)" Class="appbar-buttons" Style="width: 140px; min-width:140px;">
-            <MudText Class="appbar-buttons-text">T-Shirt Sizing</MudText>
+        <MudButton Disabled="@_tshirtAppBar" OnClick="() => setVotingMode(3)" Class="appbar-buttons" Style="width: 140px; min-width:140px;">
+            @if (_tshirtAppBar) {<MudText Class="appbar-buttons-clicked">T-Shirt Sizing</MudText>}
+            else {<MudText Class="appbar-buttons-text">T-Shirt Sizing</MudText>}        
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(4)" Class="appbar-buttons" Style="width: 160px; min-width:160px;">
-            <MudText Class="appbar-buttons-text">Custom Voting</MudText>
+        <MudButton Disabled="@_customAppBar" OnClick="() => setVotingMode(4)" Class="appbar-buttons" Style="width: 160px; min-width:160px;">
+            @if (_customAppBar) {<MudText Class="appbar-buttons-clicked">Custom Voting</MudText>}
+            else {<MudText Class="appbar-buttons-text">Custom Voting</MudText>}        
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(5)" Class="appbar-buttons">
-            @if (_timing) {<MudText Class="appbar-buttons-text" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
-            else {<MudText Class="appbar-buttons-text" Style="width: 60px; min-width:60px;">Timer</MudText>}
-            @if (_pause) {<MudText Class="appbar-buttons-text" Style="width: 80px; min-width:80px;">| Paused </MudText>}
+        <MudButton Disabled="@_timerAppBar" OnClick="() => setVotingMode(5)" Class="appbar-buttons">
+            @if (_timerAppBar) {
+                @if (_timing) {<MudText Class="appbar-buttons-clicked" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
+                else {<MudText Class="appbar-buttons-clicked" Style="width: 60px; min-width:60px;">Timer</MudText>}
+                @if (_pause) {<MudText Class="appbar-buttons-clicked" Style="width: 80px; min-width:80px;">| Paused </MudText>}}
+            else {
+                @if (_timing) {<MudText Class="appbar-buttons-text" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
+                else {<MudText Class="appbar-buttons-text" Style="width: 60px; min-width:60px;">Timer</MudText>}
+                @if (_pause) {<MudText Class="appbar-buttons-text" Style="width: 80px; min-width:80px;">| Paused </MudText>}}
         </MudButton>
         <MudSpacer />
         <MudText Class="appbar-buttons-text">@newGroupedModel.userName</MudText>
@@ -43,15 +53,15 @@
     </MudAppBar>
 </div>
 @if (loading)
-{
-    <MudText>Your Room is loading...</MudText>
+{        
+        <MudText>Your Room is loading...</MudText>
 }
 else{
     <div class="mainContainer">
         <div class="button-label-container">
             @if (Voting_Mode != 5){
             <MudItem xs="12">
-            <MudPaper Class="mud-paper-buttons" Height ="650px" Elevation="0">    
+            <MudPaper Class="mud-paper-buttons" Height ="600px" Elevation="0">    
                 @if(Voting_Mode==1) 
                 {
                     <MudItem xs="6">
@@ -173,7 +183,7 @@ else{
             }
             @if (Voting_Mode == 5)
                     {
-            <MudPaper Class="mud-paper-timer" Height ="550px" Width ="850px" Elevation="0">  
+            <MudPaper Class="mud-paper-timer" Style="justify-content: space-evenly" Height ="515px" Width ="850px" Elevation="0">  
                 <MudPaper Class="timer-display">
                     @if (_timerDone) {<MudText Class="timer-display-text"> 00:00:00 </MudText>}
                     else {<MudText Class="timer-display-text"> @displaytimer </MudText>}
@@ -195,23 +205,19 @@ else{
                         <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
                     </MudPaper>
             </MudPaper> 
-            <MudPaper Class="" Style="margin-left: 40%;" Height ="115px" Elevation="0">
-                <MudItem xs="6">
+            <MudPaper Height="115px" Width ="850px" Elevation="0">
                 <MudText Class="mud-paper-tool-name">Timer Tools</MudText>
-                </MudItem>
-                <MudButton Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Stopwatch Mode</MudText></MudButton>
+                <MudButton Class="btn admin-tools-buttons"> <MudText Class="admin-tools-text" >Stopwatch Mode</MudText></MudButton>
                 <MudButton OnClick="toggleSound" Class="btn admin-tools-buttons" Style="width: 120px;">
                     @if (_soundOff) {<MudText Class="admin-tools-text" >Turn Sound On</MudText>}
                     else {<MudText Class="admin-tools-text" >Turn Sound Off</MudText>}
                 </MudButton>
             </MudPaper>
             }
-            <MudItem xs="12">
             <MudPaper Class="mud-paper-room-labels" Elevation="0">  
                 <MudChip Class="mud-chip" >@newGroupedModel.roomName</MudChip>
                 <MudChip Class="mud-chip" >Room Code: @roomId</MudChip>
             </MudPaper>
-            </MudItem>
         </div>
         <div>
             @if (newGroupedModel.isAdmin)
@@ -240,11 +246,15 @@ else{
             @if (Voting_Mode != 5)
             {
                 <MudItem xs="12">
-                    <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
+                    <MudPaper Class="mud-paper-table" Height ="75px" Elevation="0">
                         <MudItem>
                             <MudText Class="mud-paper-tool-name"> Results</MudText>
                         </MudItem>
-                        <MudTable Items="@connectedUsers" Hover="true" Breakpoint="Breakpoint.Sm">
+                        <MudTable Items="@connectedUsers" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
+                            <ColGroup>
+                                <col style="width: 50%;" />
+                                <col style="width: 50%;" />
+                            </ColGroup>
                             <HeaderContent>
                                 <MudTh><MudTableSortLabel SortBy="new Func<userModel, object>(x=>x.userName)">User</MudTableSortLabel></MudTh>
                                 <MudTh>Vote</MudTh>
@@ -253,11 +263,13 @@ else{
                                 <MudTd DataLabel="User">
                                     @if (!hiddenUsers)
                                     {
+                                        <MudText Class="table-vote-text">
                                         @context.userName
                                         @if (context.isAdmin)
                                         {
                                             @STAR
                                         }
+                                        </MudText>
                                     }
                                 </MudTd>
                                 <MudTd DataLabel="Vote">
@@ -265,19 +277,19 @@ else{
                                     {
                                         @if (Voting_Mode == 1)
                                         {
-                                            @context.fibVote             
+                                            <MudText Class="table-vote-text">@context.fibVote</MudText>
                                         }
                                         else if (Voting_Mode == 2)
                                         {
-                                            @context.fistVote           
+                                            <MudText Class="table-vote-text">@context.fistVote</MudText>                                                      
                                         }
                                         else if (Voting_Mode == 3)
                                         {
-                                            @context.tshirtVote         
+                                            <MudText Class="table-vote-text">@context.tshirtVote</MudText>                                                     
                                         }
                                         else
                                         {
-                                            @context.scaleVote
+                                            <MudText Class="table-vote-text">@context.scaleVote</MudText>                                  
                                         }
                                     }
                                 </MudTd>
@@ -364,6 +376,8 @@ else{
     </div>
 }
 @code {
+    private HubConnection? hubConnection;
+
     int customVotingScale = 24;
 
     //data
@@ -385,6 +399,29 @@ else{
         newGroupedModel.currentScale = roomData.currentScale;
         connectedUsers = await _dB.getConnectedUsers(roomId);
         loading = false;
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("VotingHub"))
+            .Build();
+
+        hubConnection.On<int, string, int>("receiveVote", (user, vote, votingMode) =>
+        {
+            userModel found = connectedUsers.Find(x => x.userId == user);
+
+            if (votingMode == 1)
+                found.fibVote = vote;
+            if (votingMode == 2)
+                found.fistVote = vote;
+            if (votingMode == 3)
+                found.tshirtVote = vote;
+            if (votingMode == 4)
+                found.scaleVote = vote;
+
+            StateHasChanged();
+
+        });
+
+        await hubConnection.StartAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -523,15 +560,37 @@ else{
             hiddenVotes = true;
         }
     }
-    //Table
-
-
 
     //Voting Mode
     public int Voting_Mode { get; set; } = 1;
 
     void setVotingMode(int mode){
         Voting_Mode = mode;
+        if(Voting_Mode == 1) //fib vote
+        {
+            AppBarEverythingFalse();
+            _fiboAppBar = true;
+        }
+        else if (Voting_Mode == 2) //Fist vote
+        {
+            AppBarEverythingFalse();
+            _fistAppBar = true;
+        }
+        else if (Voting_Mode == 3) //Tshirt vote
+        {
+            AppBarEverythingFalse();
+            _tshirtAppBar = true;
+        }
+        else if (Voting_Mode == 4) //custom scale
+        {
+            AppBarEverythingFalse();
+            _customAppBar = true;
+        }
+        else if (Voting_Mode == 5) //timer
+        {
+            AppBarEverythingFalse();
+            _timerAppBar = true;
+        }
     }
     void setVote(string val)
     {
@@ -651,6 +710,20 @@ else{
         {
             _soundOff = true;
         }    
+    }
+    //AppBar
+    private bool _fiboAppBar = true;
+    private bool _fistAppBar = false;
+    private bool _tshirtAppBar = false;
+    private bool _customAppBar = false;
+    private bool _timerAppBar = false;
+
+    void AppBarEverythingFalse(){
+        _fiboAppBar = false;
+        _fistAppBar = false;
+        _tshirtAppBar = false;
+        _customAppBar = false;
+        _timerAppBar = false;
     }
     //Symbols
     const char COFFEE = '\u2615';
