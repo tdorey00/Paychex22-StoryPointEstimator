@@ -12,5 +12,21 @@
         Join Room</MudButton>
     </div>
 
+    <div>
+        <input value = Test1 onchange="Update"/>
+    </div>
+
+    @code{
+    private string Test1 = "";
+    void Update(ChangeEventArgs e)
+    {
+        if(e is not null && e.Value is not null)
+        {
+            Test1 = e.Value.ToString();
+            StateHasChanged();
+        }  
+    }
+    }
+
 
 
