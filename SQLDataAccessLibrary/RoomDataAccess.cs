@@ -45,6 +45,76 @@ namespace SqlDataAccessLib
             return _dB.LoadListDataSync<int, dynamic>(sql, new { });
         }
 
+        public List<roomModel> GetRoomModels()
+        {
+            string sql = "select * from dbo.roomTable";
+            return _dB.LoadListDataSync<roomModel, dynamic>(sql, new { });
+        }
+
+        public async void UpdateUsername(int userid, string username)
+        {
+            var parameters = new {userID = userid, userName = username };
+            string sql = "update dbo.userTable set userName = @userName where userId = @userID;";
+            await _dB.SaveDataAsync(sql, parameters);
+        }
+
+        public async void UpdateCustomScale(int roomid, string customtitle)
+        {
+            var parameters = new {roomID = roomid, customTitle = customtitle};
+            string sql = "update dbo.roomTable set scaleTitle = @customTitle where roomId = @roomID;";
+            await _dB.SaveDataAsync(sql, parameters);
+        }
+
+        public async void UpdateAdmin(int userid, bool isAdmin)
+        {
+            var parameters = new {userId = userid, isAdmin = isAdmin};
+            string sql = "update dbo.userTable set isAdmin = @isAdmin where userId = @userId";
+            await _dB.SaveDataAsync(sql, parameters);
+        }
+
+        public async void UpdateVote(int userid, int voting_mode ,string vote)
+        {
+            if(voting_mode == 1) //fibbonaci
+            {
+                var parameters = new { userId = userid, fibVote = vote };
+                string sql = "update dbo.userTable set fibVote = @fibVote where userId = @userId";
+                await _dB.SaveDataAsync(sql,parameters);
+            }
+            else if (voting_mode == 2) //fist of five
+            {
+                var parameters = new { userId = userid, fistVote = vote };
+                string sql = "update dbo.userTable set fistVote = @fistVote where userId = @userId";
+                await _dB.SaveDataAsync(sql, parameters);
+            }
+            else if (voting_mode == 3) //tshirt vote
+            {
+                var parameters = new { userId = userid, tshirtVote = vote };
+                string sql = "update dbo.userTable set tshirtVote = @tshirtVote where userId = @userId";
+                await _dB.SaveDataAsync(sql, parameters);
+            }
+            else if(voting_mode == 4) //custom vote
+            {
+                var parameters = new { userId = userid, scaleVote = vote };
+                string sql = "update dbo.userTable set scaleVote = @scaleVote where userId = @userId";
+                await _dB.SaveDataAsync(sql, parameters);
+            }
+        }
+
+        public async Task<List<userModel>> getConnectedUsers(int roomid)
+        {
+            var parameters = new { roomId = roomid };
+            string sql = "select * from dbo.roomUserTable where roomId = @roomId";
+            List<roomUserModel> connections = _dB.LoadListDataSync<roomUserModel, dynamic>(sql, parameters);
+            List<userModel> connectedUsers = new List<userModel>();
+            foreach(roomUserModel data in connections)
+            {
+                var parameters2 = new { userId =  data.userId };
+                sql = "select * from dbo.userTable where userId = @userId";
+                connectedUsers.Add(await _dB.LoadSingleData<userModel, dynamic>(sql, parameters2));
+            }
+            return connectedUsers;
+        }
+
         //insert records of room and user into the database while also linking the records in the roomUser table
         //only used for createRoom page b/c function creates a new room in dB
         //Parameters: room = roomModel with room data from Grouped Model

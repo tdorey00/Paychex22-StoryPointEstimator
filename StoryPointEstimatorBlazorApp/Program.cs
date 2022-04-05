@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using SqlDataAccessLib;
 using MudBlazor.Services;
+using StoryPointEstimatorBlazorApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<IRoomDataAccess, RoomDataAccess>();
 builder.Services.AddMudServices();
+builder.Services.AddSingleton<DisplayGroupedModel>(); //FIGURE OUT HOW TO CHANGE TO SCOPED AND HAVE IT WORK
+
 
 var app = builder.Build();
 

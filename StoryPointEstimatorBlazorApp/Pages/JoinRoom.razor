@@ -3,7 +3,8 @@
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
 @inject IRoomDataAccess _dB
-
+@inject DisplayGroupedModel newGroupModel
+@inject NavigationManager NavigationManager
 <style>
     .inputArea{
         text-align : center;
@@ -35,13 +36,13 @@
 
         @if (!isValidId && submitBtnClicked) //displays an error if the room code is invalid, different from valid id input pls no delete
         {
-             <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">The room code is invalid!</MudAlert>
+             <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">The room code is invalid or a room was not selected!</MudAlert>
         }
         @if (!validSubmit && submitBtnClicked)
         {
             <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Invalid Submission! Please fix errors.</MudAlert>
         }
-        <EditForm Model="@newGroupModel" OnSubmit="@insertData">
+        <EditForm Model="@newGroupModel">
 
              <div class = "inputSpacer">
                 <div class="form-group">
@@ -50,6 +51,18 @@
                             <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Username" 
                       @bind-Value="newGroupModel.userName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
+                    </MudGrid>
+                </div>
+            </div>
+
+            <div class = "inputSpacer">
+                <div class = "form-group">
+                    <MudGrid Class = "justify-space-between" Style = "max-width: 400px;">
+                        <MudItem xs="12">
+                            <MudAutocomplete T="string" Label = "Available Rooms" @bind-Value = "tempRoomName" ResetValueOnEmptyText = "true"
+                                SearchFunc = "@searchRoomNames"/>
+                        </MudItem>
+                        <button @onclick = "@UpdateAvailableRooms" class="btn btn-primary">Refresh Room List</button>
                     </MudGrid>
                 </div>
             </div>
@@ -69,7 +82,7 @@
                 <MudCheckBox @bind-Checked="newGroupModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
             </div>
 
-            <button type="submit" class="btn btn-primary">Join Room</button>
+            <button @onclick = "@insertData" class="btn btn-primary">Join Room</button>
             <a class="btn btn-primary" href="/">Cancel</a>
 
          </EditForm>
@@ -79,7 +92,6 @@
 @code {
 
     //Input Masks
-
     IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
     IMask mask2 = new BlockMask(delimiters:" ", new Block('0', 1,4));
 
@@ -104,11 +116,38 @@
     private bool validSubmit = false;
     private bool submitBtnClicked = false;
 
+    private string tempRoomName = "";
+    private List<roomModel> availableRooms = new List<roomModel>();
+    private string[] availableRoomNames = Array.Empty<string>();
+
     //Datamodels
-    private DisplayGroupedModel newGroupModel = new DisplayGroupedModel();
     private List<int> userIdList = new List<int>();
     private List<int> roomIdList = new List<int>();
-    private bool isValidId = false; 
+    private bool isValidId = false;
+
+    protected override void OnInitialized()
+    {
+        UpdateAvailableRooms();
+    }
+
+    private void UpdateAvailableRooms()
+    {
+        availableRooms = _dB.GetRoomModels();
+        availableRoomNames = new string[availableRooms.Count];
+        int counter = 0;
+        foreach(roomModel room in availableRooms)
+        {
+            availableRoomNames[counter] = room.roomName;
+            counter++;
+        }
+    }
+
+    private async Task<IEnumerable<string>> searchRoomNames (string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return availableRoomNames;
+        return availableRoomNames.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
 
     private bool validateRoomId()
     {
@@ -151,10 +190,25 @@
 
     private void insertData(){
         submitBtnClicked = true;
+
+        foreach(string roomName in availableRoomNames)
+        {
+            if (tempRoomName.Equals(roomName))
+            {
+                newGroupModel.roomId = availableRooms.Find(x => x.roomName.Contains(tempRoomName, StringComparison.InvariantCultureIgnoreCase)).roomId;
+                newGroupModel.stringId = "" + newGroupModel.roomId;
+                break;
+            }
+        }
+
         if(newGroupModel.stringId != "")
         {
             newGroupModel.roomId = Int32.Parse(newGroupModel.stringId); //turns stringId into roomId
             isValidId = true;
+            if(newGroupModel.userName == String.Empty)
+            {
+                validSubmit = false;
+            }
             if (validSubmit)
             {
                 if (validateRoomId()) //if room code is valid
@@ -167,6 +221,7 @@
                     userInsert.userId = createUserId();
                     //save user model and link user to room based on user input
                     _dB.joinRoomSaveData(newGroupModel.roomId, userInsert); 
+                    NavigationManager.NavigateTo("/Room/" + newGroupModel.roomId+ "/" + userInsert.userId, true);
                 }
                 else
                 {
