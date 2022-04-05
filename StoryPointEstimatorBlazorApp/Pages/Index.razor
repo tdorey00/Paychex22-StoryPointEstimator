@@ -12,23 +12,5 @@
         Join Room</MudButton>
     </div>
 
-    <div>
-        <input @bind = "Test1" @bind:event"Update"/>
-    </div>
-    <p>The value is: @Test1</p>
-    @code{
-    private string Test1 { get; set; } = "";
-    void Update(ChangeEventArgs e)
-    {
-        if(e is not null && e.Value is not null)
-        {
-            Test1 = e.Value.ToString();
-            StateHasChanged();
-        }  
-    }
-    }
 
-
-    @code{
-}
 
