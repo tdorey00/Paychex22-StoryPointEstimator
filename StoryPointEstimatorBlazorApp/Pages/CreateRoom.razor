@@ -42,8 +42,8 @@
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
-                            <MudTextField Mask="@mask" Label="Username" 
-                      @bind-Value="newGroupModel.userName"  Variant="@Variant.Filled" Clearable />
+                            <MudTextField Mask="@mask" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Label="Username" 
+                      @bind-Value="testUser"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
@@ -71,7 +71,7 @@
 </div>
 
 @code {
-
+    private string testUser { get; set; } = "";
     //Input Masks
     IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
     IMask mask2 = new RegexMask(@"^[ ""a-zA-Z0-9#$&%!*^,.(){}'/\:;<>?@~`=+_-]+$");
