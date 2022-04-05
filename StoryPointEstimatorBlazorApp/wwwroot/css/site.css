@@ -101,8 +101,14 @@
     padding: 8px;
     border-radius: 10%;
 }
-.appbar-buttons:focus {
+.appbar-buttons-clicked {
     background-color: #21A7EC;
+    color: white;
+    font-family: 'Ubuntu';
+    font-size: 20px;
+    font-weight: bold;
+    padding: 2px;
+    border-radius: 10%;
 }
 
 .admin-tools-buttons {

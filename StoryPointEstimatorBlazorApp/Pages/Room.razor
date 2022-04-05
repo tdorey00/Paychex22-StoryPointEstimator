@@ -17,22 +17,31 @@
         <MudButton OnClick="returnHome" Class="appbar-buttons"> 
             <MudText Class="appbar-buttons-text">Home</MudText>
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(1)" Class="appbar-buttons" Style="width: 150px; min-width:150px;">
-            <MudText Class="appbar-buttons-text">Fibonacci Tool</MudText>
+        <MudButton Disabled="@_fiboAppBar" OnClick="() => setVotingMode(1)" Class="appbar-buttons" Style="width: 150px; min-width:150px;">
+            @if (_fiboAppBar) {<MudText Class="appbar-buttons-clicked">Fibonacci Tool</MudText>}
+            else {<MudText Class="appbar-buttons-text">Fibonacci Tool</MudText>}
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(2)" Class="appbar-buttons" Style="width: 120px; min-width:120px;">
-            <MudText Class="appbar-buttons-text">Fist of Five</MudText>
+        <MudButton Disabled="@_fistAppBar" OnClick="() => setVotingMode(2)" Class="appbar-buttons" Style="width: 120px; min-width:120px;">
+            @if (_fistAppBar) {<MudText Class="appbar-buttons-clicked">Fist of Five</MudText>}
+            else {<MudText Class="appbar-buttons-text">Fist of Five</MudText>}        
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(3)" Class="appbar-buttons" Style="width: 140px; min-width:140px;">
-            <MudText Class="appbar-buttons-text">T-Shirt Sizing</MudText>
+        <MudButton Disabled="@_tshirtAppBar" OnClick="() => setVotingMode(3)" Class="appbar-buttons" Style="width: 140px; min-width:140px;">
+            @if (_tshirtAppBar) {<MudText Class="appbar-buttons-clicked">T-Shirt Sizing</MudText>}
+            else {<MudText Class="appbar-buttons-text">T-Shirt Sizing</MudText>}        
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(4)" Class="appbar-buttons" Style="width: 160px; min-width:160px;">
-            <MudText Class="appbar-buttons-text">Custom Voting</MudText>
+        <MudButton Disabled="@_customAppBar" OnClick="() => setVotingMode(4)" Class="appbar-buttons" Style="width: 160px; min-width:160px;">
+            @if (_customAppBar) {<MudText Class="appbar-buttons-clicked">Custom Voting</MudText>}
+            else {<MudText Class="appbar-buttons-text">Custom Voting</MudText>}        
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(5)" Class="appbar-buttons">
-            @if (_timing) {<MudText Class="appbar-buttons-text" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
-            else {<MudText Class="appbar-buttons-text" Style="width: 60px; min-width:60px;">Timer</MudText>}
-            @if (_pause) {<MudText Class="appbar-buttons-text" Style="width: 80px; min-width:80px;">| Paused </MudText>}
+        <MudButton Disabled="@_timerAppBar" OnClick="() => setVotingMode(5)" Class="appbar-buttons">
+            @if (_timerAppBar) {
+                @if (_timing) {<MudText Class="appbar-buttons-clicked" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
+                else {<MudText Class="appbar-buttons-clicked" Style="width: 60px; min-width:60px;">Timer</MudText>}
+                @if (_pause) {<MudText Class="appbar-buttons-clicked" Style="width: 80px; min-width:80px;">| Paused </MudText>}}
+            else {
+                @if (_timing) {<MudText Class="appbar-buttons-text" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
+                else {<MudText Class="appbar-buttons-text" Style="width: 60px; min-width:60px;">Timer</MudText>}
+                @if (_pause) {<MudText Class="appbar-buttons-text" Style="width: 80px; min-width:80px;">| Paused </MudText>}}
         </MudButton>
         <MudSpacer />
         <MudText Class="appbar-buttons-text">@newGroupedModel.userName</MudText>
@@ -540,15 +549,37 @@ else{
             hiddenVotes = true;
         }
     }
-    //Table
-
-
 
     //Voting Mode
     public int Voting_Mode { get; set; } = 1;
 
     void setVotingMode(int mode){
         Voting_Mode = mode;
+        if(Voting_Mode == 1) //fib vote
+        {
+            AppBarEverythingFalse();
+            _fiboAppBar = true;
+        }
+        else if (Voting_Mode == 2) //Fist vote
+        {
+            AppBarEverythingFalse();
+            _fistAppBar = true;
+        }
+        else if (Voting_Mode == 3) //Tshirt vote
+        {
+            AppBarEverythingFalse();
+            _tshirtAppBar = true;
+        }
+        else if (Voting_Mode == 4) //custom scale
+        {
+            AppBarEverythingFalse();
+            _customAppBar = true;
+        }
+        else if (Voting_Mode == 5) //timer
+        {
+            AppBarEverythingFalse();
+            _timerAppBar = true;
+        }
     }
     void setVote(string val)
     {
@@ -668,6 +699,20 @@ else{
         {
             _soundOff = true;
         }    
+    }
+    //AppBar
+    private bool _fiboAppBar = true;
+    private bool _fistAppBar = false;
+    private bool _tshirtAppBar = false;
+    private bool _customAppBar = false;
+    private bool _timerAppBar = false;
+
+    void AppBarEverythingFalse(){
+        _fiboAppBar = false;
+        _fistAppBar = false;
+        _tshirtAppBar = false;
+        _customAppBar = false;
+        _timerAppBar = false;
     }
     //Symbols
     const char COFFEE = '\u2615';
