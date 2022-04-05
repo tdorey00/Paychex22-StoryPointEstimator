@@ -115,6 +115,16 @@ namespace SqlDataAccessLib
             return connectedUsers;
         }
 
+        public void removeUserData(int roomId, int userId)
+        {
+            var param1 = new { roomId = roomId, userId = userId };
+            string sql1 = "DELETE FROM dbo.roomUserTable WHERE roomId = @roomId AND userId = @userId";
+            var param2 = new {userId = userId };
+            string sql2 = "DELETE from dbo.userTable WHERE userId = @userId";
+            _dB.SaveDataSync(sql1, param1);
+            _dB.SaveDataSync(sql2, param2);
+        }
+
         //insert records of room and user into the database while also linking the records in the roomUser table
         //only used for createRoom page b/c function creates a new room in dB
         //Parameters: room = roomModel with room data from Grouped Model

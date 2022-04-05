@@ -4,8 +4,9 @@
 @using SQLDataAccessLibrary.Models
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject IRoomDataAccess _dB
-
+@implements IDisposable
 @inject IDialogService DialogService
+@inject NavigationManager NavigationManager
 
 <div>
     @if (_timing) {<head><title>ScrumSpace | @displaytimer </title></head>}
@@ -323,7 +324,7 @@ else{
             Do you wish to leave this room and return home?
         </MessageContent>
         <YesButton>
-            <MudButton Link="/">Return Home</MudButton>
+            <MudButton OnClick="removeUserReturnHome">Return Home</MudButton>
         </YesButton>
     </MudMessageBox>
     <MudMessageBox @ref="deleteRoomMSG" Title="Delete Room" CancelText="Cancel">
@@ -400,6 +401,11 @@ else{
         }
     }
 
+    public void Dispose()  //called on page close
+    {
+        _dB.removeUserData(roomId, userId);
+    }
+
     //Validation
     IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
     IMask mask2 = new RegexMask(@"^[ ""a-zA-Z0-9#$&%!*^,.(){}'/\:;<>?@~`=+_-]+$");
@@ -471,6 +477,12 @@ else{
         {
             bool? result = await returnHomeMSG.Show();
         }
+    }
+
+    private void removeUserReturnHome()
+    {
+        _dB.removeUserData(roomId, userId);
+        NavigationManager.NavigateTo("/");
     }
 
     //Admin Tools

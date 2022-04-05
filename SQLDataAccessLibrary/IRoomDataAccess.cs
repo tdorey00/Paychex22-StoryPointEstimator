@@ -16,5 +16,6 @@ namespace SqlDataAccessLib
         Task<List<userModel>> getConnectedUsers(int roomid);
         void UpdateAdmin(int userid, bool isAdmin);
         void UpdateVote(int userid, int voting_mode, string vote);
+        void removeUserData(int roomId, int userId);
     }
 }
