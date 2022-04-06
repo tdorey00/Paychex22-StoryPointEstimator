@@ -61,7 +61,7 @@ else{
         <div class="button-label-container">
             @if (Voting_Mode != 5){
             <MudItem xs="12">
-            <MudPaper Class="mud-paper-buttons" Height ="600px" Elevation="0">    
+            <MudPaper Class="mud-paper-buttons" Height ="620px" Elevation="0">    
                 @if(Voting_Mode==1) 
                 {
                     <MudItem xs="6">
@@ -160,19 +160,19 @@ else{
                     <MudItem Class="custom-voting-tools">
                         <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
                             <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
-                            
-                            @if(newGroupedModel.isAdmin){
-                                <MudItem Class="slider">
-                                    <MudText Class="slider">Number of buttons: @customVotingScale</MudText>
-                                    <MudSlider Min="1" Max="24" Step="1" @bind-Value="@customVotingScale" Style="{color: #4B27FE;}"/>
-                                </MudItem>
-                                <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
-                                <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>    
-                                
-                            }
                         </MudPaper>
                     </MudItem>
-                    foreach(int x in Enumerable.Range(1, @customVotingScale))
+                            @if (newGroupedModel.isAdmin) {
+                                <MudPaper Class="mud-paper-custom-scale" Elevation="0">
+                                    <MudItem Class="slider">
+                                        <MudText Class="slider">Number of buttons: @customVotingScale</MudText>
+                                        <MudSlider Min="1" Max="24" Step="1" @bind-Value="@customVotingScale" Style="{color: #4B27FE;}"/>
+                                    </MudItem>
+                                    <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
+                                    <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>    
+                                </MudPaper>
+                            }
+                            foreach(int x in Enumerable.Range(1, @customVotingScale))
                     {
                         <MudButton Variant="Variant.Filled" OnClick='()=> setVote(""+x)' Class="tool-buttons">
                             @x</MudButton>
@@ -257,7 +257,22 @@ else{
                             </ColGroup>
                             <HeaderContent>
                                 <MudTh><MudTableSortLabel SortBy="new Func<userModel, object>(x=>x.userName)">User</MudTableSortLabel></MudTh>
-                                <MudTh>Vote</MudTh>
+                                        @if (Voting_Mode == 1)
+                                        {
+                                                <MudTh>Story Points</MudTh>
+                                        }
+                                        else if (Voting_Mode == 2)
+                                        {
+                                                <MudTh>Fingers</MudTh>
+                                        }
+                                        else if (Voting_Mode == 3)
+                                        {
+                                                <MudTh>Size</MudTh>
+                                        }
+                                        else
+                                        {
+                                                <MudTh>@currentCustomTitle</MudTh>
+                                        }
                             </HeaderContent>
                             <RowTemplate>
                                 <MudTd DataLabel="User">
@@ -275,22 +290,26 @@ else{
                                 <MudTd DataLabel="Vote">
                                     @if (!hiddenVotes)
                                     {
-                                        @if (Voting_Mode == 1)
-                                        {
-                                            <MudText Class="table-vote-text">@context.fibVote</MudText>
+                                        @if (Voting_Mode == 1) {
+                                            @if (context.fibVote != "") {
+                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.fibVote</MudText></MudPaper>   
+                                            }   
                                         }
-                                        else if (Voting_Mode == 2)
-                                        {
-                                            <MudText Class="table-vote-text">@context.fistVote</MudText>                                                      
+                                        else if (Voting_Mode == 2) {
+                                            @if (context.fistVote != "") {
+                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.fistVote</MudText></MudPaper>   
+                                            }   
                                         }
-                                        else if (Voting_Mode == 3)
-                                        {
-                                            <MudText Class="table-vote-text">@context.tshirtVote</MudText>                                                     
+                                        else if (Voting_Mode == 3) {
+                                            @if (context.tshirtVote != "") {
+                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.tshirtVote</MudText></MudPaper>   
+                                            }   
                                         }
-                                        else
-                                        {
-                                            <MudText Class="table-vote-text">@context.scaleVote</MudText>                                  
-                                        }
+                                        else {
+                                            @if (context.scaleVote != "") {
+                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.scaleVote</MudText></MudPaper>   
+                                            }   
+                                        }                                        
                                     }
                                 </MudTd>
                             </RowTemplate>
@@ -489,7 +508,7 @@ else{
     }
     private IEnumerable<string> CustomTitleValidation(string ch)
     {
-        if (!string.IsNullOrEmpty(ch) && 100 < ch?.Length)
+        if (!string.IsNullOrEmpty(ch) && 30 < ch?.Length)
         {
             yield return "Too many characters";
         }
