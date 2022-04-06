@@ -12,5 +12,9 @@ namespace StoryPointEstimatorBlazorApp.Hubs
         {
             await Clients.All.SendAsync("receiveVote", user, vote, votingMode, new CancellationToken());
         }
+        public async Task userConnected(int user,int room)
+        {
+            await Clients.All.SendAsync("connectUser", user, room);
+        }
     }
 }

@@ -5,7 +5,7 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject IRoomDataAccess _dB
-@implements IDisposable
+<!--implements IDisposable-->
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
@@ -238,7 +238,7 @@ else{
                         </MudButton>
                         <MudButton OnClick="clearVotes" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Votes</MudText></MudButton>
                         <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Users</MudText></MudButton>
-                        <MudButton Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Save Results</MudText></MudButton>
+                        <!-- <MudButton Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Save Results</MudText></MudButton> -->
                         <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Delete Room</MudText></MudButton>    
                     </MudPaper>
                 }
@@ -407,41 +407,72 @@ else{
         hubConnection.On<int, string, int>("receiveVote", (user, vote, votingMode) =>
         {
             userModel found = connectedUsers.Find(x => x.userId == user);
-
-            if (votingMode == 1)
-                found.fibVote = vote;
-            if (votingMode == 2)
-                found.fistVote = vote;
-            if (votingMode == 3)
-                found.tshirtVote = vote;
-            if (votingMode == 4)
-                found.scaleVote = vote;
-
-            StateHasChanged();
-
+            if(found is not null)
+            {
+                if (votingMode == 1)
+                {
+                    if(vote.Equals("coffee")){
+                        found.fibVote = ""+COFFEE;
+                    }
+                    else if (vote.Equals("0.5")){
+                        found.fibVote = "" + HALF;
+                    }
+                    else{
+                        found.fibVote = vote;
+                    }
+                } 
+                if (votingMode == 2)
+                    found.fistVote = vote;
+                if (votingMode == 3)
+                    found.tshirtVote = vote;
+                if (votingMode == 4)
+                    found.scaleVote = vote;
+                StateHasChanged();
+            }
         });
-
+        /*hubConnection.On<int, int>("connectUser", async (user, room) =>
+            {
+            Thread.Sleep(10);
+            if(room == roomId && newGroupedModel.userId != user)
+                {
+                connectedUsers.Add(await _dB.GetUserData(user));
+                StateHasChanged();
+                Console.Write("recieved from" + newGroupedModel.userName);
+        }
+        });*/
         await hubConnection.StartAsync();
+        
     }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             userId = await sessionStorage.GetItemAsync<int>("userId");
             userModel userData = await _dB.GetUserData(userId);
+            Thread.Sleep(10);
             newGroupedModel.userId = userData.userId;
             newGroupedModel.userName = userData.userName;
             tempUsername = userData.userName;
             newGroupedModel.isAdmin = userData.isAdmin;
+            
+            /*
+            if(hubConnection is not null)
+            {
+                await hubConnection.SendAsync("userConnected", newGroupedModel.userId, roomId);
+                Console.Write("Sent from " + newGroupedModel.userName);
+            }
+            else{
+                Console.Write("Not connected Yet dumbass");
+            }
+            */
             StateHasChanged();
         }
     }
 
-    public void Dispose()  //called on page close
-    {
-        _dB.removeUserData(roomId, userId);
-    }
+    //public void Dispose() //called on page close
+    //{
+    //    _dB.removeUserData(roomId, userId);
+    //}
 
     //Validation
     IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
@@ -470,7 +501,6 @@ else{
             yield return "Too few characters";
         }
     }
-
     //Custom Scale
     private string newCustomTitle { get; set; } = "Enter A Title";
 
@@ -482,7 +512,6 @@ else{
             currentCustomTitle = newCustomTitle;
         }
     }
-
     //Settings Menu Content
     private bool visibleProfile;
     private void OpenProfile() => visibleProfile = true;
@@ -505,7 +534,6 @@ else{
     private string AboutProduct = "This is a story point estimating tool for aid in the agile development process. This tool will (hopefully) serve as the ideal aid for Paychex agile development teams as it was created specifically with that in mind. Included are several different agile development voting systems, a timer for general use, and a room creation and joining feature. All aspects of the tool are designed to be as intuitive and simple as possible to provide the quickest and easiest solution to story point estimation and agile development collaboration.";
     private string AboutUs = "This product was created by a team of four aspiring software engineers from SUNY Fredonia consisting of Derek Zeplowitz, Rick Corsi, Peyton Miller, and Tyler Dorey. All of us are extremely grateful to have the oppurtunity to work on this project as it has provided us with experience in agile development in a real world setting. We hope you have a great experience using our tool!";
     private DialogOptions dialogAbout = new() { FullWidth = true };
-
     //Return Home Warning
     MudMessageBox returnHomeMSG { get; set; }
     private async void returnHome()
@@ -521,7 +549,6 @@ else{
         _dB.removeUserData(roomId, userId);
         NavigationManager.NavigateTo("/");
     }
-
     //Admin Tools
     private bool hiddenUsers = false;
     private bool hiddenVotes = false;
@@ -560,7 +587,6 @@ else{
             hiddenVotes = true;
         }
     }
-
     //Voting Mode
     public int Voting_Mode { get; set; } = 1;
 
@@ -624,16 +650,18 @@ else{
             userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
             found.scaleVote = val;
         }
+        if(hubConnection is not null)
+        {
+            hubConnection.SendAsync("updateVote", newGroupedModel.userId, val, Voting_Mode);
+        }
         StateHasChanged();
     }
-
     //Timer
     public static int Seconds { get; set; } //number of seconds timer will run for
     public static int Minutes { get; set; } //number of minutes timer will run for
     public static int Hours { get; set; } //number of hours timer will run for
     TimeSpan TimeRemaining;
     string displaytimer = "00:00:00"; //displayed time
-    public static int DateTime;
     private bool _timing = false;
     private bool _pause = false;
     private bool _reset = false;

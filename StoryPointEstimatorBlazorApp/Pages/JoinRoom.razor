@@ -22,6 +22,7 @@
         margin-top: 0px;
         margin-bottom: 0px;
     }
+
     .inputSpacer{
         padding-top:10px;
         padding-bottom:10px;
@@ -33,15 +34,16 @@
 
 <div class="inputArea">
     <div class="inputText">
-
-        @if (!isValidId && submitBtnClicked) //displays an error if the room code is invalid, different from valid id input pls no delete
-        {
-             <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">The room code is invalid or a room was not selected!</MudAlert>
-        }
-        @if (!validSubmit && submitBtnClicked)
-        {
-            <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Invalid Submission! Please fix errors.</MudAlert>
-        }
+        <div>
+             @if (!isValidId && submitBtnClicked) //displays an error if the room code is invalid, different from valid id input pls no delete
+            {
+                 <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">The room code is invalid or a room was not selected!</MudAlert>
+            }
+            @if (!validSubmit && submitBtnClicked)
+            {
+                <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Invalid Submission! Please fix errors.</MudAlert>
+            }
+        </div>
         <EditForm Model="@newGroupedModel">
 
              <div class = "inputSpacer">
@@ -59,7 +61,7 @@
                 <div class = "form-group">
                     <MudGrid Class = "justify-space-between" Style = "max-width: 400px;">
                         <MudItem xs="12">
-                            <MudAutocomplete T="string" Label = "Available Rooms" @bind-Value = "tempRoomName" ResetValueOnEmptyText = "true"
+                            <MudAutocomplete T="string" MaxItems="null" Label = "Available Rooms" @bind-Value = "tempRoomName" ResetValueOnEmptyText = "true"
                                 SearchFunc = "@searchRoomNames"/>
                         </MudItem>
                         <button @onclick = "@UpdateAvailableRooms" class="btn btn-primary">Refresh Room List</button>
@@ -100,18 +102,13 @@
     {
         if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
         {
-            validSubmit = false;
             yield return "Too many characters";
         }
         else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
         {
-            validSubmit = false;
             yield return "Too few characters";
         }
-        else
-        {
-            validSubmit = true;
-        }
+        
     }
     private bool validSubmit = false;
     private bool submitBtnClicked = false;
@@ -191,7 +188,7 @@
 
     private void insertData(){
         submitBtnClicked = true;
-
+        validSubmit = true;
         foreach(string roomName in availableRoomNames)
         {
             if (tempRoomName.Equals(roomName))
@@ -206,7 +203,7 @@
         {
             newGroupedModel.roomId = Int32.Parse(newGroupedModel.stringId); //turns stringId into roomId
             isValidId = true;
-            if(newGroupedModel.userName == String.Empty)
+            if(newGroupedModel.userName == String.Empty || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 3)
             {
                 validSubmit = false;
             }
