@@ -2,7 +2,7 @@
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+<!--inject Blazored.SessionStorage.ISessionStorageService sessionStorage-->
 @inject IRoomDataAccess _dB
 @inject NavigationManager NavigationManager
 <style>
@@ -217,11 +217,11 @@
                     userInsert.isAdmin = newGroupedModel.isAdmin;
                     userInsert.userName = newGroupedModel.userName;
                     userInsert.userId = createUserId();
-                    sessionStorage.SetItemAsync("userId", userInsert.userId);
+                    //sessionStorage.SetItemAsync("userId", userInsert.userId);
 
                     //save user model and link user to room based on user input
                     _dB.joinRoomSaveData(newGroupedModel.roomId, userInsert); 
-                    NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId, true);
+                    NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, true);
                 }
                 else
                 {

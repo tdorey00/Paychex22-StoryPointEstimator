@@ -16,7 +16,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<IRoomDataAccess, RoomDataAccess>();
 builder.Services.AddMudServices();
-builder.Services.AddBlazoredSessionStorage();
+//builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddResponseCompression(opts =>
 {
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
