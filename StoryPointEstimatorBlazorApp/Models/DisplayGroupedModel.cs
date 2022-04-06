@@ -11,7 +11,6 @@ namespace StoryPointEstimatorBlazorApp.Models
         [Required]
         [Range(1000, 9999, ErrorMessage = "Room Code invalid (1000-9999).")]
         public int roomId { get; set; }
-        public string stringId { get; set; } = ""; //Used for Input box on joinRoom then convered to roomId
         public string scaleTitle { get; set; } = "Enter A Title"; //1-24 scale title
         public int currentScale { get; set; }
         //USER MODEL

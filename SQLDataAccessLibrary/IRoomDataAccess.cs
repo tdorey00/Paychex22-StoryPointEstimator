@@ -8,6 +8,7 @@ namespace SqlDataAccessLib
         public Task<roomModel> GetRoomData(int roomId);
         List<int> GetUserIds();
         List<int> GetRoomIds();
+        List<string> GetRoomNames();
         void createRoomSaveData(roomModel room, userModel user);
         void joinRoomSaveData(int roomId, userModel user);
         List<roomModel> GetRoomModels();

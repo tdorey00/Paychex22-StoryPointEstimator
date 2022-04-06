@@ -35,10 +35,6 @@
 <div class="inputArea">
     <div class="inputText">
         <div>
-             @if (!isValidId && submitBtnClicked) //displays an error if the room code is invalid, different from valid id input pls no delete
-            {
-                 <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">The room code is invalid or a room was not selected!</MudAlert>
-            }
             @if (!validSubmit && submitBtnClicked)
             {
                 <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Invalid Submission! Please fix errors.</MudAlert>
@@ -69,16 +65,6 @@
                 </div>
             </div>
 
-            <div class = "inputSpacer">
-                <div class="form-group">
-                    <MudGrid Class="justify-space-between" Style="max-width: 400px;">
-                        <MudItem xs="12">
-                            <MudTextField Mask="@mask2" Label="Room Code" 
-                      @bind-Value="newGroupedModel.stringId"  Variant="@Variant.Filled" Clearable />
-                        </MudItem>
-                    </MudGrid>
-                </div>
-            </div>
 
             <div class = "inputSpacer">
                 <MudCheckBox @bind-Checked="newGroupedModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
@@ -95,7 +81,6 @@
 
     //Input Masks
     IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
-    IMask mask2 = new BlockMask(delimiters:" ", new Block('0', 1,4));
 
     //Validation
     private IEnumerable<string> TextValidation(string ch)
@@ -169,19 +154,19 @@
         userIdList = _dB.GetUserIds(); //pull userId list from the db
         while (!unique)
         {
-            foreach(int id in userIdList){
-                if(id == possibleId)
-                {
-                    possibleId = rand.Next(1000, 10000); //randomize again                     
-                    unique = false;          
-                    userIdList = _dB.GetUserIds(); //refresh userId list                                                     
-                    break;  //if ids match recompare entire list
-                }
-                else
-                {
-                    unique = true;
-                }
-            }
+            int found = roomIdList.Find(x => x == possibleId);
+            if(found != 0) // if found id is not unique
+            {
+                possibleId = rand.Next(1000, 10000); //randomize again                     
+                unique = false;          
+                userIdList = _dB.GetUserIds(); //refresh userId list                                                     
+
+             }
+             else
+             {
+                 unique = true;
+             }
+            
         }
         return possibleId;
     }
@@ -194,15 +179,11 @@
             if (tempRoomName.Equals(roomName))
             {
                 newGroupedModel.roomId = availableRooms.Find(x => x.roomName.Contains(tempRoomName, StringComparison.InvariantCultureIgnoreCase)).roomId;
-                newGroupedModel.stringId = "" + newGroupedModel.roomId;
                 break;
             }
         }
-
-        if(newGroupedModel.stringId != "")
+        if(newGroupedModel.roomId != 0)
         {
-            newGroupedModel.roomId = Int32.Parse(newGroupedModel.stringId); //turns stringId into roomId
-            isValidId = true;
             if(newGroupedModel.userName == String.Empty || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 3)
             {
                 validSubmit = false;

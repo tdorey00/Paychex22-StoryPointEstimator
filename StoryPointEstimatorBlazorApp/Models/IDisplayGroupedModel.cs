@@ -5,7 +5,6 @@
         //ROOM MODEL
         string roomName { get; set; }
         public int roomId { get; set; }
-        string stringId { get; set; }
         string scaleTitle { get; set; }
         public int currentScale { get; set; }
         //USER MODEL

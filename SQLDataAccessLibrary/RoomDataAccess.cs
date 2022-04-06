@@ -45,6 +45,11 @@ namespace SqlDataAccessLib
             return _dB.LoadListDataSync<int, dynamic>(sql, new { });
         }
 
+        public List<string> GetRoomNames()
+        {
+            string sql = "select roomName from dbo.roomTable";
+            return _dB.LoadListDataSync<string, dynamic>(sql, new { });
+        }
         public List<roomModel> GetRoomModels()
         {
             string sql = "select * from dbo.roomTable";

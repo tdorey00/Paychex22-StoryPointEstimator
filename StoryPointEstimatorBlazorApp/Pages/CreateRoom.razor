@@ -38,6 +38,10 @@
         {
             <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Invalid Submission! Please fix errors.</MudAlert>
         }
+        @if(alreadyExists && submitBtnClicked)
+        {
+            <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Room Already Exists! Please use a different name.</MudAlert>
+        }
         <EditForm Model="@newGroupedModel" OnSubmit="@insertData">
             <div class = "inputSpacer">
                 <div class="form-group">
@@ -92,6 +96,7 @@
     }
     private bool validSubmit = false;
     private bool submitBtnClicked = false;
+    private bool alreadyExists = false;
 
     //Data Models
     private List<int> userIdList = new List<int>(); 
@@ -105,26 +110,19 @@
         int randomId = rand.Next(1000, 10000); //generates a random user ID between 1000 and 9999
         bool unique = false;
         roomIdList = _dB.GetRoomIds(); //pull roomId list from dB
-        if(roomIdList == null)
-        {
-            return randomId;
-        }
         while (!unique)
         {
-            foreach(int id in roomIdList)
+            int found = roomIdList.Find(x => x == randomId);
+            if(found != 0)
             {
-                if(id == randomId)
-                {
-                    randomId = rand.Next(1000, 10000);
-                    unique = false;
-                    roomIdList = _dB.GetRoomIds(); //refresh roomId list
-                    break; //if ids match recompare entire list
-                }
-                else
-                {
-                    unique = true;
-                }
+                randomId = rand.Next(1000, 10000);
+                unique = false;
+                roomIdList = _dB.GetRoomIds(); //refresh roomId list
             }
+            else
+            {
+                unique = true;
+            } 
         }
         return randomId;
     }
@@ -135,38 +133,45 @@
         int possibleId = rand.Next(1000, 10000); //generates a random room code between 1000 and 9999
         bool unique = false;
         userIdList = _dB.GetUserIds(); //pull userId list from the db
-        if(userIdList == null)
-        {
-            return possibleId;
-        }
         while (!unique)
         {
-            foreach(int id in userIdList){
-                if(id == possibleId)
-                {
-                    possibleId = rand.Next(1000, 10000); //randomize again                     
-                    unique = false;          
-                    userIdList = _dB.GetUserIds(); //refresh userId list                                                     
-                    break;  //if ids match recompare entire list
-                }
-                else
-                {
-                    unique = true;
-                }
-            }
+            int found = roomIdList.Find(x => x == possibleId);
+            if(found != 0) // if found id is not unique
+            {
+                possibleId = rand.Next(1000, 10000); //randomize again                     
+                unique = false;          
+                userIdList = _dB.GetUserIds(); //refresh userId list                                                     
+
+             }
+             else
+             {
+                 unique = true;
+             }
+            
         }
         return possibleId;
     }
+    
 
     private void insertData(){
         submitBtnClicked = true;
+        List<string> roomNames = _dB.GetRoomNames();
         if (newGroupedModel.roomName.Equals(String.Empty) || newGroupedModel.userName.Equals(String.Empty)
             || newGroupedModel.roomName.Length > 50 || newGroupedModel.roomName.Length < 3 || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 3)
             validSubmit = false;
         else
             validSubmit = true;
 
-        if (validSubmit)
+        string found = roomNames.Find(x => x.Equals(newGroupedModel.roomName));
+        if(found is not null)
+        {
+            alreadyExists = true;
+        }
+        else
+        {
+            alreadyExists = false;
+        }
+        if (validSubmit && !alreadyExists)
         {
             //define roomModel and userModel
             roomModel roomInsert = new roomModel();
