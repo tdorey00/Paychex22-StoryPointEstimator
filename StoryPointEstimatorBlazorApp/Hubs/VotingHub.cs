@@ -16,5 +16,9 @@ namespace StoryPointEstimatorBlazorApp.Hubs
         {
             await Clients.All.SendAsync("connectUser", user, room);
         }
+        public async Task userDisconnect(int user, int room)
+        {
+            await Clients.All.SendAsync("disconnectUser", user, room);
+        }
     }
 }

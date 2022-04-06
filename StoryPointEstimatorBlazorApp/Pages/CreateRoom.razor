@@ -2,7 +2,7 @@
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+<!--inject Blazored.SessionStorage.ISessionStorageService sessionStorage-->
 @inject IRoomDataAccess _dB
 
 @inject NavigationManager NavigationManager
@@ -82,18 +82,13 @@
     {
         if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
         {
-            validSubmit = false;
             yield return "Too many characters";
         }
         else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
         {
-            validSubmit = false;
             yield return "Too few characters";
         }
-        else
-        {
-            validSubmit = true;
-        }
+
     }
     private bool validSubmit = false;
     private bool submitBtnClicked = false;
@@ -165,7 +160,12 @@
 
     private void insertData(){
         submitBtnClicked = true;
-        if (newGroupedModel.roomName.Equals(String.Empty) || newGroupedModel.userName.Equals(String.Empty)) validSubmit = false;
+        if (newGroupedModel.roomName.Equals(String.Empty) || newGroupedModel.userName.Equals(String.Empty)
+            || newGroupedModel.roomName.Length > 50 || newGroupedModel.roomName.Length < 3 || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 3)
+            validSubmit = false;
+        else
+            validSubmit = true;
+
         if (validSubmit)
         {
             //define roomModel and userModel
@@ -179,10 +179,10 @@
             userInsert.userId = createUserId();
             userInsert.userName = newGroupedModel.userName;
             userInsert.isAdmin = newGroupedModel.isAdmin;
-            sessionStorage.SetItemAsync("userId", userInsert.userId);
+            //sessionStorage.SetItemAsync("userId", userInsert.userId);
 
             _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
-            NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId, true);
+            NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, true);
         }
     }
 }

@@ -1,9 +1,9 @@
-@page "/Room/{roomId:int}"
+@page "/Room/{roomId:int}/{userId:int}"
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
 @using Microsoft.AspNetCore.SignalR.Client
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+<!--inject Blazored.SessionStorage.ISessionStorageService sessionStorage-->
 @inject IRoomDataAccess _dB
 <!--implements IDisposable-->
 @inject IDialogService DialogService
@@ -383,7 +383,8 @@ else{
     //data
     [Parameter]
     public int roomId{ get; set; }
-    private int userId { get; set; }
+    [Parameter]
+    public int userId { get; set; }
     private string tempUsername = "";
     private bool loading = true;
     private string currentCustomTitle = "Custom Title";
@@ -398,7 +399,12 @@ else{
         newGroupedModel.roomName = roomData.roomName;
         newGroupedModel.currentScale = roomData.currentScale;
         connectedUsers = await _dB.getConnectedUsers(roomId);
-        loading = false;
+        userModel userData = await _dB.GetUserData(userId);
+        newGroupedModel.userId = userData.userId;
+        newGroupedModel.userName = userData.userName;
+        tempUsername = userData.userName;
+        newGroupedModel.isAdmin = userData.isAdmin;
+
 
         hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("VotingHub"))
@@ -430,43 +436,34 @@ else{
                 StateHasChanged();
             }
         });
-        /*hubConnection.On<int, int>("connectUser", async (user, room) =>
+        hubConnection.On<int, int>("connectUser", async (user, room) =>
             {
-            Thread.Sleep(10);
-            if(room == roomId && newGroupedModel.userId != user)
+                Thread.Sleep(10);
+                userModel found = connectedUsers.Find(x => x.userId == user);
+                if(room == roomId && newGroupedModel.userId != user && (found is null))
                 {
-                connectedUsers.Add(await _dB.GetUserData(user));
-                StateHasChanged();
-                Console.Write("recieved from" + newGroupedModel.userName);
-        }
-        });*/
+                    connectedUsers.Add(await _dB.GetUserData(user));
+                    StateHasChanged();
+                }
+            });
+
+        hubConnection.On<int, int>("disconnectUser", async (user, room) =>
+          {
+              userModel found = connectedUsers.Find(x => x.userId == user);
+              if (found is not null)
+              {
+                  bool work= connectedUsers.Remove(found);
+                  Console.WriteLine(work);
+                  StateHasChanged();
+              }
+          });
+
         await hubConnection.StartAsync();
-        
-    }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
+        if(hubConnection is not null)
         {
-            userId = await sessionStorage.GetItemAsync<int>("userId");
-            userModel userData = await _dB.GetUserData(userId);
-            Thread.Sleep(10);
-            newGroupedModel.userId = userData.userId;
-            newGroupedModel.userName = userData.userName;
-            tempUsername = userData.userName;
-            newGroupedModel.isAdmin = userData.isAdmin;
-            
-            /*
-            if(hubConnection is not null)
-            {
-                await hubConnection.SendAsync("userConnected", newGroupedModel.userId, roomId);
-                Console.Write("Sent from " + newGroupedModel.userName);
-            }
-            else{
-                Console.Write("Not connected Yet dumbass");
-            }
-            */
-            StateHasChanged();
+            await hubConnection.SendAsync("userConnected", userId, roomId);
         }
+        loading = false;
     }
 
     //public void Dispose() //called on page close
@@ -547,6 +544,10 @@ else{
     private void removeUserReturnHome()
     {
         _dB.removeUserData(roomId, userId);
+        if(hubConnection is not null)
+        {
+            hubConnection.SendAsync("userDisconnect", userId, roomId);
+        }
         NavigationManager.NavigateTo("/");
     }
     //Admin Tools
