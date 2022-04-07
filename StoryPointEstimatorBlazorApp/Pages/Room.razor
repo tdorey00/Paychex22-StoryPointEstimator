@@ -292,7 +292,17 @@ else{
                                     {
                                         @if (Voting_Mode == 1) {
                                             @if (context.fibVote != "") {
-                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.fibVote</MudText></MudPaper>   
+                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">
+                                                @if(context.fibVote.Equals("coffee")){
+                                                    @COFFEE
+                                                }
+                                                else if(context.fibVote.Equals("half")){
+                                                    @HALF
+                                                }
+                                                else{
+                                                    @context.fibVote
+                                                }
+                                                </MudText></MudPaper>   
                                             }   
                                         }
                                         else if (Voting_Mode == 2) {
