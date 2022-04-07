@@ -9,6 +9,8 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+
 <div>
     @if (_timing) {<head><title>ScrumSpace | @displaytimer </title></head>}
     else {<head><title>ScrumSpace</title></head>}
@@ -60,7 +62,6 @@ else{
     <div class="mainContainer">
         <div class="button-label-container">
             @if (Voting_Mode != 5){
-            <MudItem xs="12">
             <MudPaper Class="mud-paper-buttons" Height ="620px" Elevation="0">    
                 @if(Voting_Mode==1) 
                 {
@@ -179,7 +180,6 @@ else{
                     }
                 }
                 </MudPaper>
-            </MudItem>
             }
             @if (Voting_Mode == 5)
                     {
@@ -208,7 +208,7 @@ else{
             <MudPaper Height="115px" Width ="850px" Elevation="0">
                 <MudText Class="mud-paper-tool-name">Timer Tools</MudText>
                 <MudButton Class="btn admin-tools-buttons"> <MudText Class="admin-tools-text" >Stopwatch Mode</MudText></MudButton>
-                <MudButton OnClick="toggleSound" Class="btn admin-tools-buttons" Style="width: 120px;">
+                <MudButton OnClick="toggleSound" Class="admin-tools-buttons" Style="width: 120px;">
                     @if (_soundOff) {<MudText Class="admin-tools-text" >Turn Sound On</MudText>}
                     else {<MudText Class="admin-tools-text" >Turn Sound Off</MudText>}
                 </MudButton>
@@ -246,9 +246,12 @@ else{
             @if (Voting_Mode != 5)
             {
                 <MudItem xs="12">
-                    <MudPaper Class="mud-paper-table" Height ="75px" Elevation="0">
+                    <MudPaper Class="mud-paper-table" Height ="50%" Elevation="0">
                         <MudItem>
-                            <MudText Class="mud-paper-tool-name"> Results</MudText>
+                            <MudText Class="mud-paper-tool-name"> Results <MudButton OnClick='() => setVote("")' Class="admin-tools-buttons">
+                            <MudText Class="admin-tools-text">Clear My Vote</MudText>
+                            </MudButton> 
+                            </MudText>
                         </MudItem>
                         <MudTable Items="@connectedUsers" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
                             <ColGroup>
@@ -283,6 +286,10 @@ else{
                                         @if (context.isAdmin)
                                         {
                                             @STAR
+                                        }
+                                        @if (@newGroupedModel.userName == @context.userName)
+                                        {
+                                            @Me
                                         }
                                         </MudText>
                                     }
@@ -787,4 +794,6 @@ else{
     const char COFFEE = '\u2615';
     const char HALF = '\u00BD';
     const char STAR = '\u2B50';
+    //Strings
+    private string Me = " (Me)";
 } 
