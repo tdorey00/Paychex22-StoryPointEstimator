@@ -63,17 +63,38 @@ namespace SqlDataAccessLib
             await _dB.SaveDataAsync(sql, parameters);
         }
 
-        public async void UpdateCustomScale(int roomid, string customtitle)
+        public async void UpdateCustomScaleTitle(int roomid, string customtitle)
         {
             var parameters = new {roomID = roomid, customTitle = customtitle};
             string sql = "update dbo.roomTable set scaleTitle = @customTitle where roomId = @roomID;";
             await _dB.SaveDataAsync(sql, parameters);
         }
 
+        public async void UpdateCustomScale(int roomid, int scale)
+        {
+            var parameters = new {roomID = roomid, scale = scale};
+            string sql = "update dbo.roomTable set currentScale = @scale where roomId = @roomID";
+            await _dB.SaveDataAsync(sql,parameters);
+        }
+
         public async void UpdateAdmin(int userid, bool isAdmin)
         {
             var parameters = new {userId = userid, isAdmin = isAdmin};
             string sql = "update dbo.userTable set isAdmin = @isAdmin where userId = @userId";
+            await _dB.SaveDataAsync(sql, parameters);
+        }
+
+        public async void UpdateHideVotes(int roomid, bool status)
+        {
+            var parameters = new { roomId = roomid, hideVotes = status };
+            string sql = "update dbo.roomTable set hideVotes = @hideVotes where roomId = @roomId";
+            await _dB.SaveDataAsync(sql,parameters);
+        }
+
+        public async void UpdateHideUsers(int roomid, bool status)
+        {
+            var parameters = new { roomId = roomid, hideUsers = status };
+            string sql = "update dbo.roomTable set hideUsers = @hideUsers where roomId = @roomId";
             await _dB.SaveDataAsync(sql, parameters);
         }
 
@@ -128,6 +149,15 @@ namespace SqlDataAccessLib
             string sql2 = "DELETE from dbo.userTable WHERE userId = @userId";
             _dB.SaveDataSync(sql1, param1);
             _dB.SaveDataSync(sql2, param2);
+        }
+
+        public void removeRoomData(int roomId)
+        {
+            var parameters = new {roomId = roomId};
+            string sql1 = "DELETE FROM dbo.roomUserTable WHERE roomId = @roomId";
+            string sql2 = "DELETE FROM dbo.roomTable WHERE roomId = @roomId";
+            _dB.SaveDataSync(sql1, parameters);
+            _dB.SaveDataSync(sql2, parameters);
         }
 
         //insert records of room and user into the database while also linking the records in the roomUser table
