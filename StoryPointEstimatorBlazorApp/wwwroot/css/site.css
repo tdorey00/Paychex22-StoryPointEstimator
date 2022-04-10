@@ -8,7 +8,7 @@
     margin: auto;
     width: 50%;
     display: flex;
-    justify-content: center;
+    justify-content: start;
 }
 
 .buttons {
@@ -55,19 +55,6 @@
     background-color: #21A7EC;
     color: white;
 }
-.table-container {
-    padding: 5px;
-}
-
-.table {
-}
-
-.voting-area {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin-top: 20%;
-}
 
 .roomLabel {
     background-color: #4B27FE;
@@ -84,7 +71,7 @@
     font-size: 20px;
     font-weight: bold;
     padding: 8px;
-    border-radius: 10%;
+    border-radius: 5px;
 }
 .appbar-buttons-text {
     color: white;
@@ -108,7 +95,7 @@
     font-size: 20px;
     font-weight: bold;
     padding: 2px;
-    border-radius: 10%;
+    border-radius: 5px;
 }
 
 .admin-tools-buttons {
@@ -201,7 +188,7 @@
     font-weight: bold;
 }
 .timer-notification-text {
-    color: black;
+    
     font-family: 'Ubuntu';
     font-size: 20px;
     font-weight: bold;
@@ -217,38 +204,36 @@
     padding-left: 25px;
     padding-right: 25px;
     padding-bottom: 25px;
-    min-width: 850px;
-    max-width: 850px;
+    min-width: 50%;
+    max-width: 50%;
+    width: 50%;
+    height: 120%;
 }
 
 .mud-paper-table {
-    min-width: 650px;
-    max-width: 650px;
+    width: 50%;
+    min-width: 50%;
+    max-width: 50%;
     padding: 1px;
     padding-top: 7px;
-    margin-left: 25px;
 }
 
 .mud-paper-room-labels {
     padding: 5px;
-    min-width: 375px;
-    max-width: 375px;
     justify-content: right;
     margin: 10px;
 }
 
 .mud-paper-tool-name {
-    color: black;
     font-family: 'Ubuntu';
     font-size: 30px;
     font-weight: bold;
     min-height: 60px;
     max-height: 70px;
     padding: 5px;
-    justify-content: right;
+    justify-content: left;
 }
 .mud-paper-custom-scale {
-    color: black;
     font-family: 'Ubuntu';
     font-size: 30px;
     font-weight: bold;
@@ -260,11 +245,11 @@
     align-content: center;
 }
 .mud-paper-admin-tools {
-    min-width: 650px;
-    max-width: 650px;
+    width: 50%;
+    min-width: 50%;
+    max-width: 50%;
     padding: 1px;
     padding-top: 7px;
-    margin-left: 25px;
 }
 
 .custom-voting-tools {
@@ -303,4 +288,9 @@
     padding-top: 5px;
     display: flex;
     justify-content: center;
+}
+
+.table-area {
+    display: flex;
+    justify-content: right;
 }
