@@ -5,12 +5,13 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoryPointEstimatorBlazorApp", "StoryPointEstimatorBlazorApp\StoryPointEstimatorBlazorApp.csproj", "{96C1983F-81B4-4C5C-A33E-BC4CE261406A}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Paychex_StoryPointDB", "Paychex_StoryPointDB\Paychex_StoryPointDB.sqlproj", "{75E26DE5-32B8-4106-8640-F86C19D2A5FE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLDataAccessLibrary", "SQLDataAccessLibrary\SQLDataAccessLibrary.csproj", "{C254C9D6-8E4B-4C40-8082-9C0093481628}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		DB_Exclusion|Any CPU = DB_Exclusion|Any CPU
+		DB_Exclusion|x64 = DB_Exclusion|x64
+		DB_Exclusion|x86 = DB_Exclusion|x86
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
@@ -19,6 +20,12 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{96C1983F-81B4-4C5C-A33E-BC4CE261406A}.DB_Exclusion|Any CPU.ActiveCfg = DB_Exclusion|Any CPU
+		{96C1983F-81B4-4C5C-A33E-BC4CE261406A}.DB_Exclusion|Any CPU.Build.0 = DB_Exclusion|Any CPU
+		{96C1983F-81B4-4C5C-A33E-BC4CE261406A}.DB_Exclusion|x64.ActiveCfg = DB_Exclusion|Any CPU
+		{96C1983F-81B4-4C5C-A33E-BC4CE261406A}.DB_Exclusion|x64.Build.0 = DB_Exclusion|Any CPU
+		{96C1983F-81B4-4C5C-A33E-BC4CE261406A}.DB_Exclusion|x86.ActiveCfg = DB_Exclusion|Any CPU
+		{96C1983F-81B4-4C5C-A33E-BC4CE261406A}.DB_Exclusion|x86.Build.0 = DB_Exclusion|Any CPU
 		{96C1983F-81B4-4C5C-A33E-BC4CE261406A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{96C1983F-81B4-4C5C-A33E-BC4CE261406A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96C1983F-81B4-4C5C-A33E-BC4CE261406A}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -31,24 +38,12 @@ Global
 		{96C1983F-81B4-4C5C-A33E-BC4CE261406A}.Release|x64.Build.0 = Release|Any CPU
 		{96C1983F-81B4-4C5C-A33E-BC4CE261406A}.Release|x86.ActiveCfg = Release|Any CPU
 		{96C1983F-81B4-4C5C-A33E-BC4CE261406A}.Release|x86.Build.0 = Release|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Debug|x64.Build.0 = Debug|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Debug|x64.Deploy.0 = Debug|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Debug|x86.Build.0 = Debug|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Debug|x86.Deploy.0 = Debug|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Release|x64.ActiveCfg = Release|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Release|x64.Build.0 = Release|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Release|x64.Deploy.0 = Release|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Release|x86.ActiveCfg = Release|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Release|x86.Build.0 = Release|Any CPU
-		{75E26DE5-32B8-4106-8640-F86C19D2A5FE}.Release|x86.Deploy.0 = Release|Any CPU
+		{C254C9D6-8E4B-4C40-8082-9C0093481628}.DB_Exclusion|Any CPU.ActiveCfg = DB_Exclusion|Any CPU
+		{C254C9D6-8E4B-4C40-8082-9C0093481628}.DB_Exclusion|Any CPU.Build.0 = DB_Exclusion|Any CPU
+		{C254C9D6-8E4B-4C40-8082-9C0093481628}.DB_Exclusion|x64.ActiveCfg = DB_Exclusion|Any CPU
+		{C254C9D6-8E4B-4C40-8082-9C0093481628}.DB_Exclusion|x64.Build.0 = DB_Exclusion|Any CPU
+		{C254C9D6-8E4B-4C40-8082-9C0093481628}.DB_Exclusion|x86.ActiveCfg = DB_Exclusion|Any CPU
+		{C254C9D6-8E4B-4C40-8082-9C0093481628}.DB_Exclusion|x86.Build.0 = DB_Exclusion|Any CPU
 		{C254C9D6-8E4B-4C40-8082-9C0093481628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C254C9D6-8E4B-4C40-8082-9C0093481628}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C254C9D6-8E4B-4C40-8082-9C0093481628}.Debug|x64.ActiveCfg = Debug|Any CPU
