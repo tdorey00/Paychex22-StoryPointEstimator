@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace StoryPointEstimatorBlazorApp.Models
 {
-    public class DisplayGroupedModel
+    public class DisplayGroupedModel : IDisplayGroupedModel
     {
         //ROOM MODEL
         [Required]
@@ -11,8 +11,6 @@ namespace StoryPointEstimatorBlazorApp.Models
         [Required]
         [Range(1000, 9999, ErrorMessage = "Room Code invalid (1000-9999).")]
         public int roomId { get; set; }
-        public string stringId { get; set; } = ""; //Used for Input box on joinRoom then convered to roomId
-        public int currentTab { get; set; }
         public string scaleTitle { get; set; } = "Enter A Title"; //1-24 scale title
         public int currentScale { get; set; }
         //USER MODEL

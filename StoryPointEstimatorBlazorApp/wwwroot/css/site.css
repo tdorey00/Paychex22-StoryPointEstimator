@@ -26,9 +26,8 @@
 .mainContainer {
     display: flex;
     margin-top: 1%;
-    justify-content: space-between;
+    justify-content: center;
 }
-
 .tool-buttons-container {
     justify-content: space-evenly;
     min-width: 200px;
@@ -102,8 +101,14 @@
     padding: 8px;
     border-radius: 10%;
 }
-.appbar-buttons:focus {
+.appbar-buttons-clicked {
     background-color: #21A7EC;
+    color: white;
+    font-family: 'Ubuntu';
+    font-size: 20px;
+    font-weight: bold;
+    padding: 2px;
+    border-radius: 10%;
 }
 
 .admin-tools-buttons {
@@ -217,18 +222,17 @@
 }
 
 .mud-paper-table {
-    min-width: 750px;
-    max-width: 750px;
+    min-width: 650px;
+    max-width: 650px;
     padding: 1px;
     padding-top: 7px;
-    margin-right: 25px;
     margin-left: 25px;
 }
 
 .mud-paper-room-labels {
     padding: 5px;
-    min-width: 500px;
-    max-width: 500px;
+    min-width: 375px;
+    max-width: 375px;
     justify-content: right;
     margin: 10px;
 }
@@ -256,11 +260,10 @@
     align-content: center;
 }
 .mud-paper-admin-tools {
-    min-width: 750px;
-    max-width: 750px;
+    min-width: 650px;
+    max-width: 650px;
     padding: 1px;
     padding-top: 7px;
-    margin-right: 25px;
     margin-left: 25px;
 }
 
@@ -280,9 +283,24 @@
 }
 
 .mud-paper-timer {
-    margin-left: 40%;
     padding-top: 100px;
     display: flex;
     justify-content: space-evenly;
 }
 
+.table-vote-text {
+    font-size: 16px;
+    font-family: 'Ubuntu';
+    font-weight: bold;
+}
+
+.vote-background {
+    background-color: #4B27FE;
+    color: white;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    padding-top: 5px;
+    display: flex;
+    justify-content: center;
+}

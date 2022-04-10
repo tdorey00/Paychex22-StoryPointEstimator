@@ -1,0 +1,22 @@
+﻿@page "/RoomDeleted/{wasDeleted:bool}"
+<style>
+    .infoArea{
+        text-align : center;
+    }
+</style>
+ <img src="/css/LogoExample3.png" width=100 height=100/>
+ <div class ="infoArea">
+     @if (wasDeleted)
+    {
+        <h3>Your Room has been Deleted by a Facilitator.</h3>
+    }
+    else
+    {
+        <h3>Your Room was cleared of all users.</h3>
+    }
+    <a class="btn btn-primary" href="/">Return Home</a>
+ </div>
+@code {
+    [Parameter]
+    public bool wasDeleted { get; set; }
+}

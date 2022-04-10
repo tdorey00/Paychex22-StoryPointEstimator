@@ -2,8 +2,9 @@
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
+<!--inject Blazored.SessionStorage.ISessionStorageService sessionStorage-->
 @inject IRoomDataAccess _dB
-@inject DisplayGroupedModel newGroupModel
+
 @inject NavigationManager NavigationManager
 
 <style>
@@ -37,13 +38,17 @@
         {
             <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Invalid Submission! Please fix errors.</MudAlert>
         }
-        <EditForm Model="@newGroupModel" OnSubmit="@insertData">
+        @if(alreadyExists && submitBtnClicked)
+        {
+            <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Room Already Exists! Please use a different name.</MudAlert>
+        }
+        <EditForm Model="@newGroupedModel" OnSubmit="@insertData">
             <div class = "inputSpacer">
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
                             <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Username" 
-                      @bind-Value="newGroupModel.userName"  Variant="@Variant.Filled" Clearable />
+                      @bind-Value="newGroupedModel.userName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
@@ -54,14 +59,14 @@
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
                             <MudTextField Immediate = "true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask2" Label="Room Name" 
-                      @bind-Value="newGroupModel.roomName"  Variant="@Variant.Filled" Clearable />
+                      @bind-Value="newGroupedModel.roomName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
             </div>
 
             <div class = "inputSpacer">
-                <MudCheckBox @bind-Checked="newGroupModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
+                <MudCheckBox @bind-Checked="newGroupedModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
             </div>
 
             <button type="submit" class="btn btn-primary">Create Room</button>
@@ -81,25 +86,22 @@
     {
         if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
         {
-            validSubmit = false;
             yield return "Too many characters";
         }
         else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
         {
-            validSubmit = false;
             yield return "Too few characters";
         }
-        else
-        {
-            validSubmit = true;
-        }
+
     }
     private bool validSubmit = false;
     private bool submitBtnClicked = false;
+    private bool alreadyExists = false;
 
     //Data Models
     private List<int> userIdList = new List<int>(); 
     private List<int> roomIdList = new List<int>();
+    private DisplayGroupedModel newGroupedModel = new DisplayGroupedModel();
 
     private int createRoomCode()
     {
@@ -108,26 +110,19 @@
         int randomId = rand.Next(1000, 10000); //generates a random user ID between 1000 and 9999
         bool unique = false;
         roomIdList = _dB.GetRoomIds(); //pull roomId list from dB
-        if(roomIdList == null)
-        {
-            return randomId;
-        }
         while (!unique)
         {
-            foreach(int id in roomIdList)
+            int found = roomIdList.Find(x => x == randomId);
+            if(found != 0)
             {
-                if(id == randomId)
-                {
-                    randomId = rand.Next(1000, 10000);
-                    unique = false;
-                    roomIdList = _dB.GetRoomIds(); //refresh roomId list
-                    break; //if ids match recompare entire list
-                }
-                else
-                {
-                    unique = true;
-                }
+                randomId = rand.Next(1000, 10000);
+                unique = false;
+                roomIdList = _dB.GetRoomIds(); //refresh roomId list
             }
+            else
+            {
+                unique = true;
+            } 
         }
         return randomId;
     }
@@ -138,49 +133,61 @@
         int possibleId = rand.Next(1000, 10000); //generates a random room code between 1000 and 9999
         bool unique = false;
         userIdList = _dB.GetUserIds(); //pull userId list from the db
-        if(userIdList == null)
-        {
-            return possibleId;
-        }
         while (!unique)
         {
-            foreach(int id in userIdList){
-                if(id == possibleId)
-                {
-                    possibleId = rand.Next(1000, 10000); //randomize again                     
-                    unique = false;          
-                    userIdList = _dB.GetUserIds(); //refresh userId list                                                     
-                    break;  //if ids match recompare entire list
-                }
-                else
-                {
-                    unique = true;
-                }
-            }
+            int found = roomIdList.Find(x => x == possibleId);
+            if(found != 0) // if found id is not unique
+            {
+                possibleId = rand.Next(1000, 10000); //randomize again                     
+                unique = false;          
+                userIdList = _dB.GetUserIds(); //refresh userId list                                                     
+
+             }
+             else
+             {
+                 unique = true;
+             }
+            
         }
         return possibleId;
     }
+    
 
     private void insertData(){
         submitBtnClicked = true;
-        if (newGroupModel.roomName.Equals(String.Empty) || newGroupModel.userName.Equals(String.Empty)) validSubmit = false;
-        if (validSubmit)
+        List<string> roomNames = _dB.GetRoomNames();
+        if (newGroupedModel.roomName.Equals(String.Empty) || newGroupedModel.userName.Equals(String.Empty)
+            || newGroupedModel.roomName.Length > 50 || newGroupedModel.roomName.Length < 3 || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 3)
+            validSubmit = false;
+        else
+            validSubmit = true;
+
+        string found = roomNames.Find(x => x.Equals(newGroupedModel.roomName));
+        if(found is not null)
+        {
+            alreadyExists = true;
+        }
+        else
+        {
+            alreadyExists = false;
+        }
+        if (validSubmit && !alreadyExists)
         {
             //define roomModel and userModel
             roomModel roomInsert = new roomModel();
             userModel userInsert = new userModel();
             //bind all data from GroupModel to the above models
             roomInsert.roomId = createRoomCode();
-            newGroupModel.roomId = roomInsert.roomId;
-            roomInsert.roomName = newGroupModel.roomName;
+            newGroupedModel.roomId = roomInsert.roomId;
+            roomInsert.roomName = newGroupedModel.roomName;
 
             userInsert.userId = createUserId();
-            newGroupModel.userId = userInsert.userId;
-            userInsert.userName = newGroupModel.userName;
-            userInsert.isAdmin = newGroupModel.isAdmin;
+            userInsert.userName = newGroupedModel.userName;
+            userInsert.isAdmin = newGroupedModel.isAdmin;
+            //sessionStorage.SetItemAsync("userId", userInsert.userId);
 
             _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
-            NavigationManager.NavigateTo("/Room/" + newGroupModel.roomId+ "/" + newGroupModel.userId, true);
+            NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, true);
         }
     }
 }
