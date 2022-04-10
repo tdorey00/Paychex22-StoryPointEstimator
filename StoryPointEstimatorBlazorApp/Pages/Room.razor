@@ -2,35 +2,51 @@
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
-@inject DisplayGroupedModel newGroupModel
+@using Microsoft.AspNetCore.SignalR.Client
+<!--inject Blazored.SessionStorage.ISessionStorageService sessionStorage-->
 @inject IRoomDataAccess _dB
+<!--implements IDisposable-->
 @inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
 
 <div>
+    @if (_timing) {<head><title>ScrumSpace | @displaytimer </title></head>}
+    else {<head><title>ScrumSpace</title></head>}
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
         <MudText Class="appbar-buttons-text" Style="width: 120px; min-width:120px;">ScrumSpace</MudText> -
         <MudButton OnClick="returnHome" Class="appbar-buttons"> 
             <MudText Class="appbar-buttons-text">Home</MudText>
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(1)" Class="appbar-buttons" Style="width: 150px; min-width:150px;">
-            <MudText Class="appbar-buttons-text">Fibonacci Tool</MudText>
+        <MudButton Disabled="@_fiboAppBar" OnClick="() => setVotingMode(1)" Class="appbar-buttons" Style="width: 150px; min-width:150px;">
+            @if (_fiboAppBar) {<MudText Class="appbar-buttons-clicked">Fibonacci Tool</MudText>}
+            else {<MudText Class="appbar-buttons-text">Fibonacci Tool</MudText>}
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(2)" Class="appbar-buttons" Style="width: 120px; min-width:120px;">
-            <MudText Class="appbar-buttons-text">Fist of Five</MudText>
+        <MudButton Disabled="@_fistAppBar" OnClick="() => setVotingMode(2)" Class="appbar-buttons" Style="width: 120px; min-width:120px;">
+            @if (_fistAppBar) {<MudText Class="appbar-buttons-clicked">Fist of Five</MudText>}
+            else {<MudText Class="appbar-buttons-text">Fist of Five</MudText>}        
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(3)" Class="appbar-buttons" Style="width: 140px; min-width:140px;">
-            <MudText Class="appbar-buttons-text">T-Shirt Sizing</MudText>
+        <MudButton Disabled="@_tshirtAppBar" OnClick="() => setVotingMode(3)" Class="appbar-buttons" Style="width: 140px; min-width:140px;">
+            @if (_tshirtAppBar) {<MudText Class="appbar-buttons-clicked">T-Shirt Sizing</MudText>}
+            else {<MudText Class="appbar-buttons-text">T-Shirt Sizing</MudText>}        
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(4)" Class="appbar-buttons" Style="width: 160px; min-width:160px;">
-            <MudText Class="appbar-buttons-text">Custom Voting</MudText>
+        <MudButton Disabled="@_customAppBar" OnClick="() => setVotingMode(4)" Class="appbar-buttons" Style="width: 160px; min-width:160px;">
+            @if (_customAppBar) {<MudText Class="appbar-buttons-clicked">Custom Voting</MudText>}
+            else {<MudText Class="appbar-buttons-text">Custom Voting</MudText>}        
         </MudButton> |
-        <MudButton OnClick="() => setVotingMode(5)" Class="appbar-buttons">
-            @if (_timing) {<MudText Class="appbar-buttons-text" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
-            else {<MudText Class="appbar-buttons-text" Style="width: 60px; min-width:60px;">Timer</MudText>}
-            @if (_pause) {<MudText Class="appbar-buttons-text" Style="width: 80px; min-width:80px;">| Paused </MudText>}
+        <MudButton Disabled="@_timerAppBar" OnClick="() => setVotingMode(5)" Class="appbar-buttons">
+            @if (_timerAppBar) {
+                @if (_timing) {<MudText Class="appbar-buttons-clicked" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
+                else {<MudText Class="appbar-buttons-clicked" Style="width: 60px; min-width:60px;">Timer</MudText>}
+                @if (_pause) {<MudText Class="appbar-buttons-clicked" Style="width: 80px; min-width:80px;">| Paused </MudText>}}
+            else {
+                @if (_timing) {<MudText Class="appbar-buttons-text" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
+                else {<MudText Class="appbar-buttons-text" Style="width: 60px; min-width:60px;">Timer</MudText>}
+                @if (_pause) {<MudText Class="appbar-buttons-text" Style="width: 80px; min-width:80px;">| Paused </MudText>}}
         </MudButton>
         <MudSpacer />
-        <MudText Class="appbar-buttons-text">@roomGroupModel.userName</MudText>
+        <MudText Class="appbar-buttons-text">@newGroupedModel.userName</MudText>
         <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Inherit" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
             <MudMenuItem @onclick="OpenProfile">User Profile</MudMenuItem>
             <MudMenuItem>Dark Mode</MudMenuItem>
@@ -39,15 +55,14 @@
     </MudAppBar>
 </div>
 @if (loading)
-{
-    <MudText>Your Room is loading...</MudText>
+{        
+        <MudText>Your Room is loading...</MudText>
 }
 else{
     <div class="mainContainer">
         <div class="button-label-container">
             @if (Voting_Mode != 5){
-            <MudItem xs="12">
-            <MudPaper Class="mud-paper-buttons" Height ="650px" Elevation="0">    
+            <MudPaper Class="mud-paper-buttons" Height ="620px" Elevation="0">    
                 @if(Voting_Mode==1) 
                 {
                     <MudItem xs="6">
@@ -146,61 +161,65 @@ else{
                     <MudItem Class="custom-voting-tools">
                         <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
                             <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
-                            
-                            @if(@newGroupModel.isAdmin){
-                                <MudItem Class="slider">
-                                    <MudText Class="slider">Number of buttons: @customVotingScale</MudText>
-                                    <MudSlider Min="1" Max="24" Step="1" @bind-Value="@customVotingScale" Style="{color: #4B27FE;}"/>
-                                </MudItem>
-                                <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
-                                <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>    
-                                
-                            }
                         </MudPaper>
                     </MudItem>
-                    foreach(int x in Enumerable.Range(1, @customVotingScale))
+                    @if (newGroupedModel.isAdmin) {
+                        <MudPaper Class="mud-paper-custom-scale" Elevation="0">
+                            <MudItem Class="slider">
+                                <MudText Class="slider">Number of buttons: @currentCustomScale</MudText>
+                                <MudSlider Min="1" Max="24" Step="1" @bind-Value="@tempCustomScale" Style="{color: #4B27FE;}"/>
+                            </MudItem>
+                            <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
+                            <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>    
+                        </MudPaper>
+                    }
+                    foreach(int x in Enumerable.Range(1, @currentCustomScale))
                     {
-                        <MudButton Variant="Variant.Filled" OnClick='()=> setVote(""+x)' Class="tool-buttons">
-                            @x</MudButton>
+                        <MudButton Variant="Variant.Filled" OnClick='()=> setVote(""+x)' Class="tool-buttons">@x</MudButton>
                     }
                 }
                 </MudPaper>
-            </MudItem>
             }
             @if (Voting_Mode == 5)
                     {
-            <MudPaper Class="mud-paper-timer" Height ="650px" Width ="950px" Elevation="0">  
-                    <MudPaper Class="timer-display">
+            <MudPaper Class="mud-paper-timer" Style="justify-content: space-evenly" Height ="515px" Width ="850px" Elevation="0">  
+                <MudPaper Class="timer-display">
                     @if (_timerDone) {<MudText Class="timer-display-text"> 00:00:00 </MudText>}
                     else {<MudText Class="timer-display-text"> @displaytimer </MudText>}
                     @if (_pause) {<MudText Class="timer-display-text-pause" Style="width: 80px; min-width:80px;"> (Paused) </MudText>}
-                    </MudPaper> 
+                </MudPaper> 
                     <MudPaper Height ="400px" Width ="400px" Elevation="0">
-                    <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
-                        @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
-                        else {<MudText Class="timer-buttons-text">Start</MudText>}
-                    </MudButton>
-                    <MudButton Disabled="@_pauseDisable" OnClick="pauseTimer" Variant="Variant.Filled" Class="timer-buttons">
-                        <MudText Class="timer-buttons-text">Pause</MudText>
-                    </MudButton>
-                    <MudButton OnClick="resetTimer" Class="timer-buttons">
-                        <MudText Class="timer-buttons-text">Reset</MudText>
-                    </MudButton>
-                    <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" Min="0" Max="12" />
-                    <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
-                    <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
-                </MudPaper>
+                        <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
+                            @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
+                            else {<MudText Class="timer-buttons-text">Start</MudText>}
+                        </MudButton>
+                        <MudButton Disabled="@_pauseDisable" OnClick="pauseTimer" Variant="Variant.Filled" Class="timer-buttons">
+                            <MudText Class="timer-buttons-text">Pause</MudText>
+                        </MudButton>
+                        <MudButton OnClick="resetTimer" Class="timer-buttons">
+                            <MudText Class="timer-buttons-text">Reset</MudText>
+                        </MudButton>
+                        <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" Min="0" Max="12" />
+                        <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
+                        <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
+                    </MudPaper>
             </MudPaper> 
-                    }
-            <MudItem xs="12">
+            <MudPaper Height="115px" Width ="850px" Elevation="0">
+                <MudText Class="mud-paper-tool-name">Timer Tools</MudText>
+                <MudButton Class="btn admin-tools-buttons"> <MudText Class="admin-tools-text" >Stopwatch Mode</MudText></MudButton>
+                <MudButton OnClick="toggleSound" Class="admin-tools-buttons" Style="width: 120px;">
+                    @if (_soundOff) {<MudText Class="admin-tools-text" >Turn Sound On</MudText>}
+                    else {<MudText Class="admin-tools-text" >Turn Sound Off</MudText>}
+                </MudButton>
+            </MudPaper>
+            }
             <MudPaper Class="mud-paper-room-labels" Elevation="0">  
-                <MudChip Class="mud-chip" >@roomGroupModel.roomName</MudChip>
+                <MudChip Class="mud-chip" >@newGroupedModel.roomName</MudChip>
                 <MudChip Class="mud-chip" >Room Code: @roomId</MudChip>
             </MudPaper>
-            </MudItem>
         </div>
         <div>
-            @if (@newGroupModel.isAdmin)
+            @if (newGroupedModel.isAdmin)
             {
                 @if (Voting_Mode != 5)
                 {
@@ -208,57 +227,105 @@ else{
                         <MudItem xs="6">
                             <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
                         </MudItem>
-                        <MudButton  Class="btn admin-tools-buttons" @onclick="hideVotes">Hide Votes</MudButton>
-                        <MudButton  Class="btn admin-tools-buttons" @onclick="hideUsers">Hide Users</MudButton>
-                        <MudButton OnClick="clearVotes" Class="btn admin-tools-buttons">Clear Votes</MudButton>
-                        <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons">Clear Users</MudButton>
-                        <MudButton  Class="btn admin-tools-buttons">Save Results</MudButton>
-                        <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons">Delete Room</MudButton>    
+                        <MudButton OnClick="hideVotes" Class="btn admin-tools-buttons">
+                        @if (hiddenVotes) {<MudText Class="admin-tools-text" >Unhide Votes</MudText>}
+                        else {<MudText Class="admin-tools-text" >Hide Votes</MudText>}
+                        </MudButton>
+                        <MudButton OnClick="hideUsers" Class="btn admin-tools-buttons">
+                        @if (hiddenUsers) {<MudText Class="admin-tools-text" >Unhide Users</MudText>}
+                        else {<MudText Class="admin-tools-text" >Hide Users</MudText>}
+                        </MudButton>
+                        <MudButton OnClick="clearVotes" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Votes</MudText></MudButton>
+                        <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Users</MudText></MudButton>
+                        <!-- <MudButton Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Save Results</MudText></MudButton> -->
+                        <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Delete Room</MudText></MudButton>    
                     </MudPaper>
                 }
             }
             @if (Voting_Mode != 5)
             {
                 <MudItem xs="12">
-                    <MudPaper Class="mud-paper-table" Height ="500px" Elevation="0">
+                    <MudPaper Class="mud-paper-table" Height ="50%" Elevation="0">
                         <MudItem>
-                            <MudText Class="mud-paper-tool-name"> Results</MudText>
+                            <MudText Class="mud-paper-tool-name"> Results <MudButton OnClick='() => setVote("")' Class="admin-tools-buttons">
+                            <MudText Class="admin-tools-text">Clear My Vote</MudText>
+                            </MudButton> 
+                            </MudText>
                         </MudItem>
-                        <MudTable Items="@connectedUsers" Hover="true" Breakpoint="Breakpoint.Sm">
+                        <MudTable Items="@connectedUsers" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
+                            <ColGroup>
+                                <col style="width: 50%;" />
+                                <col style="width: 50%;" />
+                            </ColGroup>
                             <HeaderContent>
                                 <MudTh><MudTableSortLabel SortBy="new Func<userModel, object>(x=>x.userName)">User</MudTableSortLabel></MudTh>
-                                <MudTh>Vote</MudTh>
+                                        @if (Voting_Mode == 1)
+                                        {
+                                                <MudTh>Story Points</MudTh>
+                                        }
+                                        else if (Voting_Mode == 2)
+                                        {
+                                                <MudTh>Fingers</MudTh>
+                                        }
+                                        else if (Voting_Mode == 3)
+                                        {
+                                                <MudTh>Size</MudTh>
+                                        }
+                                        else
+                                        {
+                                                <MudTh>@currentCustomTitle</MudTh>
+                                        }
                             </HeaderContent>
                             <RowTemplate>
                                 <MudTd DataLabel="User">
                                     @if (!hiddenUsers)
                                     {
+                                        <MudText Class="table-vote-text">
                                         @context.userName
                                         @if (context.isAdmin)
                                         {
                                             @STAR
                                         }
+                                        @if (@newGroupedModel.userName == @context.userName)
+                                        {
+                                            @Me
+                                        }
+                                        </MudText>
                                     }
                                 </MudTd>
                                 <MudTd DataLabel="Vote">
                                     @if (!hiddenVotes)
                                     {
-                                        @if (Voting_Mode == 1)
-                                        {
-                                            @context.fibVote             
+                                        @if (Voting_Mode == 1) {
+                                            @if (context.fibVote != "") {
+                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">
+                                                @if(context.fibVote.Equals("coffee")){
+                                                    @COFFEE
+                                                }
+                                                else if(context.fibVote.Equals("half")){
+                                                    @HALF
+                                                }
+                                                else{
+                                                    @context.fibVote
+                                                }
+                                                </MudText></MudPaper>   
+                                            }   
                                         }
-                                        else if (Voting_Mode == 2)
-                                        {
-                                            @context.fistVote           
+                                        else if (Voting_Mode == 2) {
+                                            @if (context.fistVote != "") {
+                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.fistVote</MudText></MudPaper>   
+                                            }   
                                         }
-                                        else if (Voting_Mode == 3)
-                                        {
-                                            @context.tshirtVote         
+                                        else if (Voting_Mode == 3) {
+                                            @if (context.tshirtVote != "") {
+                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.tshirtVote</MudText></MudPaper>   
+                                            }   
                                         }
-                                        else
-                                        {
-                                            @context.scaleVote
-                                        }
+                                        else {
+                                            @if (context.scaleVote != "") {
+                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.scaleVote</MudText></MudPaper>   
+                                            }   
+                                        }                                        
                                     }
                                 </MudTd>
                             </RowTemplate>
@@ -269,10 +336,10 @@ else{
             <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
         <DialogContent>
             <MudText Style="font-size: 30px">User Profile</MudText>
-            <MudText Style="font-size: 16px">Current Username: @roomGroupModel.userName</MudText>
+            <MudText Style="font-size: 16px">Current Username: @newGroupedModel.userName</MudText>
             <MudTextField @bind-Value="tempUsername" Variant="@Variant.Filled" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Change Username"></MudTextField>
             <div class = "inputSpacer">
-                <MudCheckBox @bind-Checked="newGroupModel.isAdmin" Label="Facilitator" Color="Color.Primary"></MudCheckBox>
+                <MudCheckBox @bind-Checked="tempAdmin" Label="Facilitator" Color="Color.Primary"></MudCheckBox>
             </div>
             </DialogContent>
         <DialogActions>
@@ -304,7 +371,7 @@ else{
             Do you wish to leave this room and return home?
         </MessageContent>
         <YesButton>
-            <MudButton Link="/">Return Home</MudButton>
+            <MudButton OnClick="removeUserReturnHome">Return Home</MudButton>
         </YesButton>
     </MudMessageBox>
     <MudMessageBox @ref="deleteRoomMSG" Title="Delete Room" CancelText="Cancel">
@@ -312,7 +379,7 @@ else{
             Are you sure?
         </MessageContent>
         <YesButton>
-            <MudButton >Delete Room</MudButton>
+            <MudButton OnClick="deleteRoomConfirmed">Delete Room</MudButton>
         </YesButton>
     </MudMessageBox>
     <MudMessageBox @ref="clearUsersMSG" Title="Clear Users" CancelText="Cancel">
@@ -320,7 +387,7 @@ else{
             Are you sure?
         </MessageContent>
         <YesButton>
-            <MudButton >Clear Users</MudButton>
+            <MudButton OnClick="clearUsersConfirmed">Clear Users</MudButton>
         </YesButton>
     </MudMessageBox>
     <MudMessageBox @ref="clearVotesMSG" Title="Clear Votes" CancelText="Cancel">
@@ -333,44 +400,176 @@ else{
     </MudMessageBox>
     <MudMessageBox @ref="timerNotificationMSG" YesText="Ok">
         <MessageContent>
-            <MudText Class="timer-notification-text"> Timer Finished </MudText>  
+            <MudText Class="timer-notification-text"> Timer Finished </MudText>
+                    @if (!_soundOff)
+                    {
+                    <audio autoplay><source src="/Audio/TimerSound.mp3" /></audio>
+                    }
         </MessageContent>
     </MudMessageBox>
     </div>
     </div>
 }
 @code {
-        int customVotingScale = 24;
+    private HubConnection? hubConnection;
 
-        //data
-        [Parameter]
-        public int roomId{ get; set; }
-        [Parameter]
-        public int userId{ get; set; }
+    //data
+    [Parameter]
+    public int roomId{ get; set; }
+    [Parameter]
+    public int userId { get; set; }
     private string tempUsername = "";
+    private bool tempAdmin;
     private bool loading = true;
     private string currentCustomTitle = "Custom Title";
-    private DisplayGroupedModel roomGroupModel = new DisplayGroupedModel();
     private List<userModel> connectedUsers = new List<userModel>();
+    DisplayGroupedModel newGroupedModel = new DisplayGroupedModel();
 
     protected override async Task OnInitializedAsync() 
     {
         roomModel roomData = await _dB.GetRoomData(roomId);
-        userModel userData = await _dB.GetUserData(userId);
-        connectedUsers = await _dB.getConnectedUsers(roomId);
-
-        roomGroupModel.userName = userData.userName;
-        tempUsername = roomGroupModel.userName;
-        roomGroupModel.isAdmin = userData.isAdmin;          //TODO Bind the rest of the data from the roomData and userData to newGroupModel
-
-        roomGroupModel.roomName = roomData.roomName;
-
-        roomGroupModel.currentScale = roomData.currentScale;
-        roomGroupModel.scaleTitle = roomData.scaleTitle;
         currentCustomTitle = roomData.scaleTitle;
+        currentCustomScale = roomData.currentScale;
+        tempCustomScale = roomData.currentScale;
+        newGroupedModel.scaleTitle = roomData.scaleTitle;
+        newGroupedModel.roomName = roomData.roomName;
+        newGroupedModel.currentScale = roomData.currentScale;
+        hiddenUsers = roomData.hideUsers;
+        hiddenVotes = roomData.hideVotes;
+        connectedUsers = await _dB.getConnectedUsers(roomId);
+        userModel userData = await _dB.GetUserData(userId);
+        newGroupedModel.userId = userData.userId;
+        newGroupedModel.userName = userData.userName;
+        tempUsername = userData.userName;
+        tempAdmin = userData.isAdmin;
+        newGroupedModel.isAdmin = userData.isAdmin;
 
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("VotingHub"))
+            .Build();
+
+        hubConnection.On<int, string, int>("receiveVote", (user, vote, votingMode) =>
+        {
+            userModel found = connectedUsers.Find(x => x.userId == user);
+            if(found is not null)
+            {
+                if (votingMode == 1)
+                {
+                    if(vote.Equals("coffee")){
+                        found.fibVote = ""+COFFEE;
+                    }
+                    else if (vote.Equals("0.5")){
+                        found.fibVote = "" + HALF;
+                    }
+                    else{
+                        found.fibVote = vote;
+                    }
+                } 
+                if (votingMode == 2)
+                    found.fistVote = vote;
+                if (votingMode == 3)
+                    found.tshirtVote = vote;
+                if (votingMode == 4)
+                    found.scaleVote = vote;
+                StateHasChanged();
+            }
+        });
+        hubConnection.On<int, int>("connectUser", async (user, room) =>
+            {
+                Thread.Sleep(10);
+                userModel found = connectedUsers.Find(x => x.userId == user); 
+                if(room == roomId && userId != user && (found is null))
+                {
+                    connectedUsers.Add(await _dB.GetUserData(user));
+                    StateHasChanged();
+                }
+            });
+
+        hubConnection.On<int, int>("disconnectUser", async (user, room) =>
+          {
+              userModel found = connectedUsers.Find(x => x.userId == user);
+              if (found is not null)
+              {
+                  connectedUsers.Remove(found);
+                  StateHasChanged();
+              }
+          });
+
+        hubConnection.On<int, string, bool>("updateProfileRecieve", async (user, name, admin) =>
+        {
+            userModel found = connectedUsers.Find(x => x.userId == user);
+            if(found is not null)
+            {
+                found.userName = name;
+                found.isAdmin = admin;
+                StateHasChanged();
+            }
+        });
+
+        hubConnection.On<int, string, int>("recieveScale", async(room, scaleName, scale)=>
+        {
+            if(room == roomId)
+            {
+                currentCustomScale = scale;
+                currentCustomTitle = scaleName;
+                StateHasChanged();
+            }
+        });
+
+        hubConnection.On<int, bool>("removeUser", async (room, everyone) =>
+        {
+            if(roomId == room)
+            {
+                if(everyone) //everyone is true then remove everyone regardless of admin status (for room delete)
+            {
+                    _dB.removeUserData(roomId, userId);
+                    NavigationManager.NavigateTo("/RoomDeleted/true");
+                }
+                else if(!everyone && !newGroupedModel.isAdmin)//not everyone and user is not an admin (clear users)
+            {
+                    _dB.removeUserData(roomId, userId);
+                    NavigationManager.NavigateTo("/RoomDeleted/false");
+                }
+                else if(!everyone && newGroupedModel.isAdmin) //not everyone and user is an admin (clear users)
+            {
+                    Thread.Sleep(100);
+                    connectedUsers = await _dB.getConnectedUsers(roomId);
+                    StateHasChanged();
+                }
+            }
+        });
+
+        hubConnection.On<int, bool>("recieveHideVotes", async(room, status) =>
+        {
+            if(roomId == room)
+            {
+                hiddenVotes = status;
+                StateHasChanged();
+            }
+        });
+
+        hubConnection.On<int, bool>("recieveHideUsers", async(room, status) =>
+        {
+            if(roomId == room)
+            {
+                hiddenUsers = status;
+                StateHasChanged();
+            }
+        });
+
+        await hubConnection.StartAsync();
+        if(hubConnection is not null)
+        {
+            await hubConnection.SendAsync("userConnected", userId, roomId);
+        }
         loading = false;
     }
+
+    //public void Dispose() //called on page close
+    //{
+    //    _dB.removeUserData(roomId, userId);
+    //}
 
     //Validation
     IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
@@ -390,7 +589,7 @@ else{
     }
     private IEnumerable<string> CustomTitleValidation(string ch)
     {
-        if (!string.IsNullOrEmpty(ch) && 100 < ch?.Length)
+        if (!string.IsNullOrEmpty(ch) && 30 < ch?.Length)
         {
             yield return "Too many characters";
         }
@@ -399,19 +598,27 @@ else{
             yield return "Too few characters";
         }
     }
-
     //Custom Scale
     private string newCustomTitle { get; set; } = "Enter A Title";
+    private int currentCustomScale;
+    private int tempCustomScale;
 
-    void updateCustomVote()
+    async void updateCustomVote()
     {
         if(newCustomTitle.Length > 3 && newCustomTitle.Length < 101)
         {
-            _dB.UpdateCustomScale(roomId, newCustomTitle);
+            _dB.UpdateCustomScaleTitle(roomId, newCustomTitle);
             currentCustomTitle = newCustomTitle;
         }
+        if(tempCustomScale != currentCustomScale){
+            _dB.UpdateCustomScale(roomId, tempCustomScale);
+            currentCustomScale = tempCustomScale;
+        }
+        if(hubConnection is not null)
+        {
+            await hubConnection.SendAsync("updateScale", roomId, currentCustomTitle, currentCustomScale);
+        }
     }
-
     //Settings Menu Content
     private bool visibleProfile;
     private void OpenProfile() => visibleProfile = true;
@@ -420,11 +627,16 @@ else{
     {
         if(!(tempUsername.Length > 50 || tempUsername.Length < 3)){ //valid submission
             visibleProfile = false;
-            _dB.UpdateUsername(userId, tempUsername);
-            roomGroupModel.userName = tempUsername;
-            _dB.UpdateAdmin(userId, newGroupModel.isAdmin);
+            _dB.UpdateUsername(newGroupedModel.userId, tempUsername);
+            newGroupedModel.userName = tempUsername;
+            newGroupedModel.isAdmin = tempAdmin;
+            _dB.UpdateAdmin(newGroupedModel.userId, newGroupedModel.isAdmin);
             connectedUsers = await _dB.getConnectedUsers(roomId);
             StateHasChanged();
+            if(hubConnection is not null)
+            {
+                await hubConnection.SendAsync("updateUserProfile", userId, newGroupedModel.userName, newGroupedModel.isAdmin);
+            }
         }
     }
     private DialogOptions dialogProfile = new() { FullWidth = true };
@@ -434,26 +646,58 @@ else{
     private string AboutProduct = "This is a story point estimating tool for aid in the agile development process. This tool will (hopefully) serve as the ideal aid for Paychex agile development teams as it was created specifically with that in mind. Included are several different agile development voting systems, a timer for general use, and a room creation and joining feature. All aspects of the tool are designed to be as intuitive and simple as possible to provide the quickest and easiest solution to story point estimation and agile development collaboration.";
     private string AboutUs = "This product was created by a team of four aspiring software engineers from SUNY Fredonia consisting of Derek Zeplowitz, Rick Corsi, Peyton Miller, and Tyler Dorey. All of us are extremely grateful to have the oppurtunity to work on this project as it has provided us with experience in agile development in a real world setting. We hope you have a great experience using our tool!";
     private DialogOptions dialogAbout = new() { FullWidth = true };
-
     //Return Home Warning
     MudMessageBox returnHomeMSG { get; set; }
     private async void returnHome()
     {
-        bool? result = await returnHomeMSG.Show();
+        if (!loading)
+        {
+            bool? result = await returnHomeMSG.Show();
+        }
     }
 
+    private void removeUserReturnHome()
+    {
+        _dB.removeUserData(roomId, userId);
+        if(hubConnection is not null)
+        {
+            hubConnection.SendAsync("userDisconnect", userId, roomId);
+        }
+        NavigationManager.NavigateTo("/");
+    }
     //Admin Tools
     private bool hiddenUsers = false;
-    private bool hiddenVotes = false;
+    private bool hiddenVotes = true;
     MudMessageBox deleteRoomMSG { get; set; }
     private async void deleteRoom()
     {
         bool? result = await deleteRoomMSG.Show();
     }
+
+    private void deleteRoomConfirmed()
+    {
+        if(hubConnection is not null){
+            hubConnection.SendAsync("userRemoval", roomId, true);
+            _dB.removeRoomData(roomId);
+            _dB.removeUserData(roomId, userId);
+            NavigationManager.NavigateTo("/RoomDeleted/true");
+        }
+    }
+
     MudMessageBox clearUsersMSG { get; set; }
     private async void clearUsers()
     {
         bool? result = await clearUsersMSG.Show();
+    }
+
+    private async void clearUsersConfirmed(){
+        if(hubConnection is not null)
+        {
+            await hubConnection.SendAsync("userRemoval", roomId, false);
+            Thread.Sleep(100);
+            connectedUsers = await _dB.getConnectedUsers(roomId);
+            StateHasChanged();
+        }
     }
     MudMessageBox clearVotesMSG { get; set; }
     private async void clearVotes()
@@ -469,6 +713,11 @@ else{
         {
             hiddenUsers = true;
         }
+        if(hubConnection is not null)
+        {
+            hubConnection.SendAsync("sendHideUsers", roomId, hiddenUsers);
+            _dB.UpdateHideUsers(roomId, hiddenUsers);
+        }
     }
     private void hideVotes(){
         if(hiddenVotes)
@@ -479,23 +728,49 @@ else{
         {
             hiddenVotes = true;
         }
+        if(hubConnection is not null)
+        {
+            hubConnection.SendAsync("sendHideVotes", roomId, hiddenVotes);
+            _dB.UpdateHideVotes(roomId, hiddenVotes);
+        }
     }
-    //Table
-
-
-
     //Voting Mode
     public int Voting_Mode { get; set; } = 1;
 
     void setVotingMode(int mode){
         Voting_Mode = mode;
+        if(Voting_Mode == 1) //fib vote
+        {
+            AppBarEverythingFalse();
+            _fiboAppBar = true;
+        }
+        else if (Voting_Mode == 2) //Fist vote
+        {
+            AppBarEverythingFalse();
+            _fistAppBar = true;
+        }
+        else if (Voting_Mode == 3) //Tshirt vote
+        {
+            AppBarEverythingFalse();
+            _tshirtAppBar = true;
+        }
+        else if (Voting_Mode == 4) //custom scale
+        {
+            AppBarEverythingFalse();
+            _customAppBar = true;
+        }
+        else if (Voting_Mode == 5) //timer
+        {
+            AppBarEverythingFalse();
+            _timerAppBar = true;
+        }
     }
     void setVote(string val)
     {
-        _dB.UpdateVote(userId, Voting_Mode, val);
+        _dB.UpdateVote(newGroupedModel.userId, Voting_Mode, val);
         if(Voting_Mode == 1)//fib vote
         {
-            userModel found = connectedUsers.Find(x => x.userId == userId);
+            userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
             if(val.Equals("coffee")){
                 found.fibVote = ""+COFFEE;
             }
@@ -509,34 +784,37 @@ else{
         }
         else if (Voting_Mode == 2) //Fist vote
         {
-            userModel found = connectedUsers.Find(x => x.userId == userId);
+            userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
             found.fistVote = val;
         }
         else if (Voting_Mode == 3) //Tshirt vote
         {
-            userModel found = connectedUsers.Find(x => x.userId == userId);
+            userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
             found.tshirtVote = val;
         }
         else if (Voting_Mode == 4) //custom scale
         {
-            userModel found = connectedUsers.Find(x => x.userId == userId);
+            userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
             found.scaleVote = val;
+        }
+        if(hubConnection is not null)
+        {
+            hubConnection.SendAsync("updateVote", newGroupedModel.userId, val, Voting_Mode);
         }
         StateHasChanged();
     }
-
     //Timer
     public static int Seconds { get; set; } //number of seconds timer will run for
     public static int Minutes { get; set; } //number of minutes timer will run for
     public static int Hours { get; set; } //number of hours timer will run for
     TimeSpan TimeRemaining;
     string displaytimer = "00:00:00"; //displayed time
-    public static int DateTime;
     private bool _timing = false;
     private bool _pause = false;
     private bool _reset = false;
     private bool _timerDone = false;
     private bool _pauseDisable = true;
+    private bool _soundOff = true;
     async Task Timer()
     {
         _timerDone = false;
@@ -570,12 +848,14 @@ else{
     }
     void pauseTimer()
     {
+        TimeRemaining = TimeRemaining.Add(new TimeSpan(0,0,1));
         _pause = true;
         _timing = false;
         _pauseDisable = true;
     }
     Task AfterTime()
     {
+        _pauseDisable = true;
         _timerDone = true;
         displaytimer = "00:00:00";
         return Task.CompletedTask;
@@ -595,9 +875,35 @@ else{
     {
         bool? result = await timerNotificationMSG.Show();
     }
+    void toggleSound()
+    {
+        if(_soundOff)
+        {
+            _soundOff = false;
+        }
+        else
+        {
+            _soundOff = true;
+        }    
+    }
+    //AppBar
+    private bool _fiboAppBar = true;
+    private bool _fistAppBar = false;
+    private bool _tshirtAppBar = false;
+    private bool _customAppBar = false;
+    private bool _timerAppBar = false;
 
+    void AppBarEverythingFalse(){
+        _fiboAppBar = false;
+        _fistAppBar = false;
+        _tshirtAppBar = false;
+        _customAppBar = false;
+        _timerAppBar = false;
+    }
     //Symbols
     const char COFFEE = '\u2615';
     const char HALF = '\u00BD';
     const char STAR = '\u2B50';
+    //Strings
+    private string Me = " (Me)";
 } 
