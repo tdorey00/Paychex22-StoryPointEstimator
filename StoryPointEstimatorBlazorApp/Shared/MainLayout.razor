@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -8,10 +8,17 @@
     <MudAppBar Class="appbar">
         ScrumSpace 
     </MudAppBar>
+
     <MudMainContent>
         @Body
     </MudMainContent>
+
+        <MudToggleIconButton Style="position: fixed; bottom: 0; right: 0;" @bind-Toggled="@_isDarkMode"
+        Icon="@Icons.Filled.DarkMode" Color="@Color.Tertiary"
+        ToggledIcon="@Icons.Filled.DarkMode" ToggledColor="@Color.Warning"/>
+
 </MudLayout>
 @code {
-
+        private MudTheme _theme = new();
+        private bool _isDarkMode;
 }
