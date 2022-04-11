@@ -12,13 +12,12 @@
         text-align : center;
     }
     .inputText{
-        background-color: #EDEDED;
-        display:inline-block;
+        display:flex;
+        justify-content: center;
         padding-left:30px;
         padding-right:30px;
         padding-top:30px;
         padding-bottom:30px;
-        margin:150px;
         max-width: 265px;
         min-width: 265px;
         margin-top: 0px;
@@ -32,7 +31,8 @@
 <head><title>ScrumSpace</title></head>
 <img src="/css/LogoExample3.png" width=100 height=100/>
 
-<div class="inputArea">
+<div style="display: flex; justify-content: center;">
+<MudPaper Class="inputArea" Width="265px" Elevation="3">
     <div class="inputText">
         @if (!validSubmit && submitBtnClicked)
         {
@@ -47,7 +47,6 @@
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
-
                             <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Username" 
                       @bind-Value="newGroupedModel.userName"  Variant="@Variant.Filled" Clearable />
                         </MudItem>
@@ -74,6 +73,7 @@
             <a class="btn btn-primary" href="/">Cancel</a>
         </EditForm>
     </div>
+</MudPaper>
 </div>
 
 @code {

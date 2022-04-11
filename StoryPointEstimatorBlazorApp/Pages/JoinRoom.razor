@@ -10,19 +10,17 @@
         text-align : center;
     }
     .inputText{
-        background-color: #EDEDED;
-        display:inline-block;
+        display:flex;
+        justify-content: center;
         padding-left:30px;
         padding-right:30px;
         padding-top:30px;
         padding-bottom:30px;
-        margin:150px;
         max-width: 265px;
         min-width: 265px;
         margin-top: 0px;
         margin-bottom: 0px;
     }
-
     .inputSpacer{
         padding-top:10px;
         padding-bottom:10px;
@@ -32,7 +30,8 @@
 <img src="/css/LogoExample3.png" width=100 height=100/>
 
 
-<div class="inputArea">
+<div style="display: flex; justify-content: center;">
+    <MudPaper Class="inputArea" Width="265px" Elevation="3">
     <div class="inputText">
         <div>
             @if (!validSubmit && submitBtnClicked)
@@ -47,7 +46,7 @@
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12"> 
                             <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Username" 
-                      @bind-Value="newGroupedModel.userName"  Variant="@Variant.Filled" Clearable />
+                      @bind-Value="newGroupedModel.userName" Variant="@Variant.Filled" Clearable />
                         </MudItem>
                     </MudGrid>
                 </div>
@@ -60,7 +59,7 @@
                             <MudAutocomplete T="string" MaxItems="null" Label = "Available Rooms" @bind-Value = "tempRoomName" ResetValueOnEmptyText = "true"
                                 SearchFunc = "@searchRoomNames"/>
                         </MudItem>
-                        <button @onclick = "@UpdateAvailableRooms" class="btn btn-primary">Refresh Room List</button>
+                        <button @onclick = "@UpdateAvailableRooms" class="btn btn-primary" style="width: 183px; margin-left: 22px;" >Refresh Room List</button>
                     </MudGrid>
                 </div>
             </div>
@@ -75,8 +74,8 @@
 
          </EditForm>
     </div>
+</MudPaper>
 </div>
-
 @code {
 
     //Input Masks
