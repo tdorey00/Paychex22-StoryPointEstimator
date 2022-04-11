@@ -506,6 +506,7 @@ else{
 
         hubConnection.On<int, bool>("removeUser", async (room, everyone) =>
         {
+            //To fix FRED-406 pull newest admin value from db here and use that instead of newGroupedModel.isAdmin
             if(roomId == room)
             {
                 if(everyone) //everyone is true then remove everyone regardless of admin status (for room delete)
