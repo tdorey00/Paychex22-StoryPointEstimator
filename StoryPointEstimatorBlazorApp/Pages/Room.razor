@@ -10,7 +10,11 @@
 @inject NavigationManager NavigationManager
 
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
-
+<style>
+    :root {
+         --mud-palette-primary: #4B27FE;
+    }
+</style>
 <div>
     @if (_timing) {<head><title>ScrumSpace | @displaytimer </title></head>}
     else {<head><title>ScrumSpace</title></head>}
@@ -64,11 +68,7 @@ else{
             <MudPaper Class="mud-paper-buttons" Elevation="0">    
                 @if(Voting_Mode==1) 
                 {
-                    <MudItem xs="6">
-                        <MudPaper Class="mud-paper-tool-name" Elevation="0">    
-                            <MudText Class="mud-paper-tool-name"> Fibonacci Tool</MudText>
-                        </MudPaper>
-                    </MudItem>
+                    <MudText Class="mud-paper-tool-name"> Fibonacci Tool</MudText>
                     <MudButton OnClick='() => setVote("?")' Class="tool-buttons">
                          ?
                     </MudButton>
@@ -111,11 +111,7 @@ else{
                 }
                 @if(Voting_Mode == 2)
                 {
-                    <MudItem xs="6">
-                        <MudPaper Class="mud-paper-tool-name" Elevation="0">    
-                            <MudText Class="mud-paper-tool-name"> Fist of Five</MudText>
-                        </MudPaper>
-                    </MudItem>
+                    <MudText Class="mud-paper-tool-name"> Fist of Five</MudText>
                     <MudButton OnClick='() => setVote("1")' Class="tool-buttons">
                          1
                     </MudButton>
@@ -134,11 +130,7 @@ else{
                 }
                 @if(Voting_Mode == 3)
                 {
-                    <MudItem xs="6">
-                        <MudPaper Class="mud-paper-tool-name" Elevation="0">    
-                            <MudText Class="mud-paper-tool-name"> T-Shirt Sizing</MudText>
-                        </MudPaper>
-                    </MudItem>                
+                    <MudText Class="mud-paper-tool-name"> T-Shirt Sizing</MudText>
                     <MudButton OnClick='() => setVote("XS")' Class="tool-buttons">
                          XS
                     </MudButton>
@@ -157,13 +149,9 @@ else{
                 }
                 @if(Voting_Mode==4) 
                 {
-                    <MudItem Class="custom-voting-tools">
-                        <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
-                            <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
-                        </MudPaper>
-                    </MudItem>
+                    <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
                     @if (newGroupedModel.isAdmin) {
-                        <MudPaper Class="mud-paper-custom-scale" Elevation="0">
+                        <MudPaper Style="background: rgba(0,0,0,0.0);" Class="mud-paper-custom-scale" Elevation="0">
                             <MudItem Class="slider">
                                 <MudText Class="slider">Number of buttons: @currentCustomScale</MudText>
                                 <MudSlider Min="1" Max="24" Step="1" @bind-Value="@tempCustomScale" Style="{color: #4B27FE;}"/>
@@ -189,7 +177,7 @@ else{
                     else {<MudText Class="timer-display-text"> @displaytimer </MudText>}
                     @if (_pause) {<MudText Class="timer-display-text-pause" Style="width: 80px; min-width:80px;"> (Paused) </MudText>}
                 </MudPaper> 
-                    <MudPaper Height ="400px" Width ="400px" Elevation="0">
+                    <MudPaper Style="background: rgba(0,0,0,0.0);" Height ="400px" Width ="400px" Elevation="0">
                         <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
                             @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
                             else {<MudText Class="timer-buttons-text">Start</MudText>}
@@ -200,12 +188,12 @@ else{
                         <MudButton OnClick="resetTimer" Class="timer-buttons">
                             <MudText Class="timer-buttons-text">Reset</MudText>
                         </MudButton>
-                        <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" Min="0" Max="12" />
+                        <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" AdornmentColor="Color.Primary" Min="0" Max="12" />
                         <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
                         <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
                     </MudPaper>
             </MudPaper> 
-            <MudPaper Elevation="0">
+            <MudPaper Style="background: rgba(0,0,0,0.0);" Elevation="0">
                 <MudText Class="mud-paper-tool-name">Timer Tools</MudText>
                 <MudButton Class="btn admin-tools-buttons"> <MudText Class="admin-tools-text" >Stopwatch Mode</MudText></MudButton>
                 <MudButton OnClick="toggleSound" Class="admin-tools-buttons" Style="width: 120px;">
@@ -221,9 +209,7 @@ else{
                 @if (Voting_Mode != 5)
                 {
                     <MudPaper Class="mud-paper-admin-tools" Elevation="0">
-                        <MudItem xs="6">
-                            <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
-                        </MudItem>
+                        <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
                         <MudButton OnClick="hideVotes" Class="btn admin-tools-buttons">
                         @if (hiddenVotes) {<MudText Class="admin-tools-text" >Unhide Votes</MudText>}
                         else {<MudText Class="admin-tools-text" >Hide Votes</MudText>}
@@ -248,7 +234,7 @@ else{
                             </MudButton> 
                             </MudText>
                         </MudItem>
-                        <MudTable Items="@connectedUsers" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
+                        <MudTable Items="@connectedUsers" Style="background: rgba(0,0,0,0.0);" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
                             <ColGroup>
                                 <col style="width: 50%;" />
                                 <col style="width: 50%;" />

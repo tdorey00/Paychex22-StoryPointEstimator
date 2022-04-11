@@ -214,14 +214,14 @@
     min-width: 650px;
     max-width: 650px;
     margin-right: 10px;
+    background: rgba(0,0,0,0.0);
 }
 
 .mud-paper-table {
     width: 600px;
     min-width: 600px;
     max-width: 600px;
-    padding: 1px;
-    padding-top: 7px;
+    background: rgba(0,0,0,0.0);
 }
 
 .mud-paper-room-labels {
@@ -253,8 +253,8 @@
     width: 600px;
     min-width: 600px;
     max-width: 600px;
-    padding: 1px;
-    padding-top: 7px;
+    background: rgba(0,0,0,0.0);
+
 }
 
 .custom-voting-tools {
@@ -276,6 +276,7 @@
     padding-top: 100px;
     display: flex;
     justify-content: space-evenly;
+    background: rgba(0,0,0,0.0);
 }
 
 .table-vote-text {
