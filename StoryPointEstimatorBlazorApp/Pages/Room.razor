@@ -49,7 +49,6 @@
         <MudText Class="appbar-buttons-text">@newGroupedModel.userName</MudText>
         <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Inherit" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
             <MudMenuItem @onclick="OpenProfile">User Profile</MudMenuItem>
-            <MudMenuItem>Dark Mode</MudMenuItem>
             <MudMenuItem @onclick="OpenAbout">About</MudMenuItem>
         </MudMenu>
     </MudAppBar>
@@ -59,15 +58,14 @@
         <MudText>Your Room is loading...</MudText>
 }
 else{
-    <div class="mainContainer">
-        <div>
-        <div class="button-label-container">
+<div class="mainContainer">
             @if (Voting_Mode != 5){
-            <MudPaper Class="mud-paper-buttons" Elevation="3">    
+            <div>
+            <MudPaper Class="mud-paper-buttons" Elevation="0">    
                 @if(Voting_Mode==1) 
                 {
                     <MudItem xs="6">
-                        <MudPaper Class="mud-paper-tool-name" Elevation="3">    
+                        <MudPaper Class="mud-paper-tool-name" Elevation="0">    
                             <MudText Class="mud-paper-tool-name"> Fibonacci Tool</MudText>
                         </MudPaper>
                     </MudItem>
@@ -114,7 +112,7 @@ else{
                 @if(Voting_Mode == 2)
                 {
                     <MudItem xs="6">
-                        <MudPaper Class="mud-paper-tool-name" Elevation="3">    
+                        <MudPaper Class="mud-paper-tool-name" Elevation="0">    
                             <MudText Class="mud-paper-tool-name"> Fist of Five</MudText>
                         </MudPaper>
                     </MudItem>
@@ -137,7 +135,7 @@ else{
                 @if(Voting_Mode == 3)
                 {
                     <MudItem xs="6">
-                        <MudPaper Class="mud-paper-tool-name" Elevation="3">    
+                        <MudPaper Class="mud-paper-tool-name" Elevation="0">    
                             <MudText Class="mud-paper-tool-name"> T-Shirt Sizing</MudText>
                         </MudPaper>
                     </MudItem>                
@@ -160,12 +158,12 @@ else{
                 @if(Voting_Mode==4) 
                 {
                     <MudItem Class="custom-voting-tools">
-                        <MudPaper Class="mud-paper-custom-scale" Elevation="3">    
+                        <MudPaper Class="mud-paper-custom-scale" Elevation="0">    
                             <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
                         </MudPaper>
                     </MudItem>
                     @if (newGroupedModel.isAdmin) {
-                        <MudPaper Class="mud-paper-custom-scale" Elevation="3">
+                        <MudPaper Class="mud-paper-custom-scale" Elevation="0">
                             <MudItem Class="slider">
                                 <MudText Class="slider">Number of buttons: @currentCustomScale</MudText>
                                 <MudSlider Min="1" Max="24" Step="1" @bind-Value="@tempCustomScale" Style="{color: #4B27FE;}"/>
@@ -180,16 +178,18 @@ else{
                     }
                 }
                 </MudPaper>
+            </div>
             }
             @if (Voting_Mode == 5)
                     {
-            <MudPaper Class="mud-paper-timer" Style="justify-content: space-evenly" Height ="515px" Width ="850px" Elevation="3">  
+            <div>
+            <MudPaper Class="mud-paper-timer" Style="justify-content: space-evenly" Height ="515px" Width ="850px" Elevation="0">  
                 <MudPaper Class="timer-display">
                     @if (_timerDone) {<MudText Class="timer-display-text"> 00:00:00 </MudText>}
                     else {<MudText Class="timer-display-text"> @displaytimer </MudText>}
                     @if (_pause) {<MudText Class="timer-display-text-pause" Style="width: 80px; min-width:80px;"> (Paused) </MudText>}
                 </MudPaper> 
-                    <MudPaper Height ="400px" Width ="400px" Elevation="3">
+                    <MudPaper Height ="400px" Width ="400px" Elevation="0">
                         <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
                             @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
                             else {<MudText Class="timer-buttons-text">Start</MudText>}
@@ -205,7 +205,7 @@ else{
                         <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
                     </MudPaper>
             </MudPaper> 
-            <MudPaper Height="115px" Width ="850px" Elevation="3">
+            <MudPaper Elevation="0">
                 <MudText Class="mud-paper-tool-name">Timer Tools</MudText>
                 <MudButton Class="btn admin-tools-buttons"> <MudText Class="admin-tools-text" >Stopwatch Mode</MudText></MudButton>
                 <MudButton OnClick="toggleSound" Class="admin-tools-buttons" Style="width: 120px;">
@@ -213,14 +213,14 @@ else{
                     else {<MudText Class="admin-tools-text" >Turn Sound Off</MudText>}
                 </MudButton>
             </MudPaper>
+            </div>
             }
-        </div>
-<div class="table-area">
+        <div>
             @if (newGroupedModel.isAdmin)
             {
                 @if (Voting_Mode != 5)
                 {
-                    <MudPaper Class="mud-paper-admin-tools" Elevation="3">
+                    <MudPaper Class="mud-paper-admin-tools" Elevation="0">
                         <MudItem xs="6">
                             <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
                         </MudItem>
@@ -241,8 +241,7 @@ else{
             }
             @if (Voting_Mode != 5)
             {
-                <MudItem xs="12">
-                    <MudPaper Class="mud-paper-table" Elevation="3">
+                    <MudPaper Class="mud-paper-table" Elevation="0">
                         <MudItem>
                             <MudText Class="mud-paper-tool-name"> Results <MudButton OnClick='() => setVote("")' Class="admin-tools-buttons">
                             <MudText Class="admin-tools-text">Clear My Vote</MudText>
@@ -328,19 +327,19 @@ else{
                             </RowTemplate>
                         </MudTable>
                     </MudPaper>
-                </MudItem>                
             }
+            </div>
 </div>
-<div>
-                <MudPaper Class="mud-paper-room-labels" Elevation="3">  
+                @if (Voting_Mode != 5) {
+
+                <div style="position: fixed; bottom: 2%; left: 1%;">
                 <MudChip Class="mud-chip" >@newGroupedModel.roomName</MudChip>
                 <MudChip Class="mud-chip" >Room Code: @roomId</MudChip>
-            </MudPaper>
 </div>
+}
             <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
         <DialogContent>
             <MudText Style="font-size: 30px">User Profile</MudText>
-            <MudText Style="font-size: 16px">Current Username: @newGroupedModel.userName</MudText>
             <MudTextField @bind-Value="tempUsername" Variant="@Variant.Filled" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Change Username"></MudTextField>
             <div class = "inputSpacer">
                 <MudCheckBox @bind-Checked="tempAdmin" Label="Facilitator" Color="Color.Primary"></MudCheckBox>
@@ -411,8 +410,6 @@ else{
                     }
         </MessageContent>
     </MudMessageBox>
-    </div>
-    </div>
 }
 @code {
     private HubConnection? hubConnection;

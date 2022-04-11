@@ -5,10 +5,11 @@
 }
 
 .buttons-container {
+    padding-top: 50px;
     margin: auto;
     width: 50%;
     display: flex;
-    justify-content: start;
+    justify-content: center;
 }
 
 .buttons {
@@ -18,11 +19,16 @@
     height: 200px;
     border-radius: 50%;
     padding: 5px;
-    font-size: 36px;
-    font-family: 'Ubuntu', sans-serif;
     min-width: 200px
 }
-
+    .buttons:hover {
+        background-color: #21A7EC;
+        color: white;
+    }
+    .buttons:focus {
+        background-color: #21A7EC;
+        color: white;
+    }
 .mainContainer {
     display: flex;
     margin-top: 1%;
@@ -37,13 +43,13 @@
 .tool-buttons {
     background-color: #4B27FE;
     color: white;
-    width: 100px;
-    height: 100px;
+    width: 81px;
+    height: 81px;
     border-radius: 50%;
     margin: 10px;
     font-size: 36px;
     font-family: 'Ubuntu', sans-serif;
-    min-width: 100px;
+    min-width: 81px;
     padding: 23px;
 }
 
@@ -126,7 +132,7 @@
 }
 
 .mud-chip {
-    min-width: 50px;
+    min-width: 40px;
     padding: 25px;
     background-color: #4B27FE;
     color: white;
@@ -155,7 +161,7 @@
 }
     .timer-buttons:hover {
         background-color: #3e1fdd;
-        color: white;
+        color: #4B27FE;
     }
 .timer-buttons-text {
     font-size: 22px;
@@ -201,26 +207,25 @@
     justify-content: start;
 }
 .mud-paper-buttons {
-    padding-left: 25px;
-    padding-right: 25px;
-    padding-bottom: 25px;
-    min-width: 50%;
-    max-width: 50%;
-    width: 50%;
-    height: 120%;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    width: 650px;
+    min-width: 650px;
+    max-width: 650px;
+    margin-right: 10px;
 }
 
 .mud-paper-table {
-    width: 50%;
-    min-width: 50%;
-    max-width: 50%;
+    width: 600px;
+    min-width: 600px;
+    max-width: 600px;
     padding: 1px;
     padding-top: 7px;
 }
 
 .mud-paper-room-labels {
     padding: 5px;
-    justify-content: right;
     margin: 10px;
 }
 
@@ -245,9 +250,9 @@
     align-content: center;
 }
 .mud-paper-admin-tools {
-    width: 50%;
-    min-width: 50%;
-    max-width: 50%;
+    width: 600px;
+    min-width: 600px;
+    max-width: 600px;
     padding: 1px;
     padding-top: 7px;
 }
