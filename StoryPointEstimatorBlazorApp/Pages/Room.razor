@@ -694,10 +694,22 @@ else{
     private async void clearUsersConfirmed(){
         if(hubConnection is not null)
         {
-            await hubConnection.SendAsync("userRemoval", roomId, false);
-            Thread.Sleep(100);
-            connectedUsers = await _dB.getConnectedUsers(roomId);
-            StateHasChanged();
+            try
+            {
+                await hubConnection.SendAsync("userRemoval", roomId, false);
+                Thread.Sleep(500); //wait for clients to recieve message before regrabbing list of users
+                connectedUsers = await _dB.getConnectedUsers(roomId);
+                StateHasChanged();
+            }
+            catch (InvalidOperationException)//issue where admin clears room while many server calls are being made
+            {
+                 _dB.removeUserData(userId, roomId); //ensure user data is removed
+                if(hubConnection is not null)
+                {
+                    await hubConnection.SendAsync("userDisconnect", userId, roomId); 
+                }
+                NavigationManager.NavigateTo("Error");
+            }
         }
     }
     MudMessageBox clearVotesMSG { get; set; }
