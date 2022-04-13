@@ -560,9 +560,21 @@ else{
                 }
                 else if(!everyone && currentAdminStatus) //not everyone and user is an admin (clear users)
             {
-                    Thread.Sleep(100);
-                    connectedUsers = await _dB.getConnectedUsers(roomId);
-                    StateHasChanged();
+                    try
+                    {
+                        Thread.Sleep(500);
+                        connectedUsers = await _dB.getConnectedUsers(roomId);
+                        StateHasChanged();
+                    }
+                    catch (InvalidOperationException) //possible failure to grab new list
+                    {
+                        _dB.removeUserData(userId, roomId); //ensure user data is removed
+                        if(hubConnection is not null)
+                        {
+                            await hubConnection.SendAsync("userDisconnect", userId, roomId); 
+                        }
+                        NavigationManager.NavigateTo("Error");
+                    }
                 }
             }
         });
