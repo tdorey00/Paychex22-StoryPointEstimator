@@ -22,5 +22,6 @@ namespace SqlDataAccessLib
         void UpdateVote(int userid, int voting_mode, string vote);
         void removeUserData(int roomId, int userId);
         void removeRoomData(int roomId);
+        bool getAdminStatus(int userId);
     }
 }
