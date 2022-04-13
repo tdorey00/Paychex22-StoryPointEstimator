@@ -2,7 +2,6 @@
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
-<!--inject Blazored.SessionStorage.ISessionStorageService sessionStorage-->
 @inject IRoomDataAccess _dB
 
 @inject NavigationManager NavigationManager
@@ -12,13 +11,12 @@
         text-align : center;
     }
     .inputText{
-        background-color: #EDEDED;
-        display:inline-block;
+        display:flex;
+        justify-content: center;
         padding-left:30px;
         padding-right:30px;
         padding-top:30px;
         padding-bottom:30px;
-        margin:150px;
         max-width: 265px;
         min-width: 265px;
         margin-top: 0px;
@@ -32,7 +30,8 @@
 <head><title>ScrumSpace</title></head>
 <img src="/css/LogoExample3.png" width=100 height=100/>
 
-<div class="inputArea">
+<div style="display: flex; justify-content: center;">
+<MudPaper Class="inputArea" Width="265px" Elevation="3">
     <div class="inputText">
         @if (!validSubmit && submitBtnClicked)
         {
@@ -47,9 +46,8 @@
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
-
-                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Username" 
-                      @bind-Value="newGroupedModel.userName"  Variant="@Variant.Filled" Clearable />
+                            <MudText Class="table-vote-text">Username: </MudText>
+                            <input class="join-create-text-fields" type="text" @bind-value="newGroupedModel.userName" />
                         </MudItem>
                     </MudGrid>
                 </div>
@@ -59,8 +57,8 @@
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12">
-                            <MudTextField Immediate = "true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask2" Label="Room Name" 
-                      @bind-Value="newGroupedModel.roomName"  Variant="@Variant.Filled" Clearable />
+                            <MudText Class="table-vote-text">Room Name: </MudText>
+                            <input class="join-create-text-fields" type="text" @bind-value="newGroupedModel.roomName" />
                         </MudItem>
                     </MudGrid>
                 </div>
@@ -72,29 +70,17 @@
 
             <button type="submit" class="btn btn-primary">Create Room</button>
             <a class="btn btn-primary" href="/">Cancel</a>
+            <div class = "inputSpacer">
+                <p>Username must be between 3 and 50 characters. Room name must be between 4 and 50 characters.</p>
+            </div>
         </EditForm>
     </div>
+</MudPaper>
 </div>
 
 @code {
 
-    //Input Masks
-    IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
-    IMask mask2 = new RegexMask(@"^[ ""a-zA-Z0-9#$&%!*^,.(){}'/\:;<>?@~`=+_-]+$");
-
     //Validation
-    private IEnumerable<string> TextValidation (string ch)
-    {
-        if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
-        {
-            yield return "Too many characters";
-        }
-        else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
-        {
-            yield return "Too few characters";
-        }
-
-    }
     private bool validSubmit = false;
     private bool submitBtnClicked = false;
     private bool alreadyExists = false;
@@ -158,7 +144,7 @@
         submitBtnClicked = true;
         List<string> roomNames = _dB.GetRoomNames();
         if (newGroupedModel.roomName.Equals(String.Empty) || newGroupedModel.userName.Equals(String.Empty)
-            || newGroupedModel.roomName.Length > 50 || newGroupedModel.roomName.Length < 3 || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 3)
+            || newGroupedModel.roomName.Length > 50 || newGroupedModel.roomName.Length < 3 || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 2)
             validSubmit = false;
         else
             validSubmit = true;
@@ -185,7 +171,7 @@
             userInsert.userId = createUserId();
             userInsert.userName = newGroupedModel.userName;
             userInsert.isAdmin = newGroupedModel.isAdmin;
-            //sessionStorage.SetItemAsync("userId", userInsert.userId);
+
 
             _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
             NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, true);

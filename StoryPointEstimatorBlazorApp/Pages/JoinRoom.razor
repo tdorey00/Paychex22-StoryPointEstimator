@@ -10,19 +10,17 @@
         text-align : center;
     }
     .inputText{
-        background-color: #EDEDED;
-        display:inline-block;
+        display:flex;
+        justify-content: center;
         padding-left:30px;
         padding-right:30px;
         padding-top:30px;
         padding-bottom:30px;
-        margin:150px;
         max-width: 265px;
         min-width: 265px;
         margin-top: 0px;
         margin-bottom: 0px;
     }
-
     .inputSpacer{
         padding-top:10px;
         padding-bottom:10px;
@@ -32,7 +30,8 @@
 <img src="/css/LogoExample3.png" width=100 height=100/>
 
 
-<div class="inputArea">
+<div style="display: flex; justify-content: center;">
+    <MudPaper Class="inputArea" Width="265px" Elevation="3">
     <div class="inputText">
         <div>
             @if (!validSubmit && submitBtnClicked)
@@ -46,8 +45,8 @@
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
                         <MudItem xs="12"> 
-                            <MudTextField Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Username" 
-                      @bind-Value="newGroupedModel.userName"  Variant="@Variant.Filled" Clearable />
+                            <MudText Class="table-vote-text">Username: </MudText>
+                            <input class="join-create-text-fields" type="text" @bind-value="newGroupedModel.userName" />
                         </MudItem>
                     </MudGrid>
                 </div>
@@ -60,7 +59,7 @@
                             <MudAutocomplete T="string" MaxItems="null" Label = "Available Rooms" @bind-Value = "tempRoomName" ResetValueOnEmptyText = "true"
                                 SearchFunc = "@searchRoomNames"/>
                         </MudItem>
-                        <button @onclick = "@UpdateAvailableRooms" class="btn btn-primary">Refresh Room List</button>
+                        <button @onclick = "@UpdateAvailableRooms" class="btn btn-primary" style="width: 183px; margin-left: 22px;" >Refresh Room List</button>
                     </MudGrid>
                 </div>
             </div>
@@ -73,31 +72,20 @@
             <button @onclick = "@insertData" class="btn btn-primary">Join Room</button>
             <a class="btn btn-primary" href="/">Cancel</a>
 
+            <div class = "inputSpacer">
+                <p>Username must be between 3 and 50 characters.</p>
+            </div>
          </EditForm>
     </div>
+</MudPaper>
 </div>
-
 @code {
 
-    //Input Masks
-    IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
-
     //Validation
-    private IEnumerable<string> TextValidation(string ch)
-    {
-        if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
-        {
-            yield return "Too many characters";
-        }
-        else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
-        {
-            yield return "Too few characters";
-        }
-        
-    }
     private bool validSubmit = false;
     private bool submitBtnClicked = false;
 
+    //Drop Down Data
     private string tempRoomName = "";
     private List<roomModel> availableRooms = new List<roomModel>();
     private string[] availableRoomNames = Array.Empty<string>();
@@ -184,7 +172,7 @@
         }
         if(newGroupedModel.roomId != 0)
         {
-            if(newGroupedModel.userName == String.Empty || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 3)
+            if(newGroupedModel.userName == String.Empty || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 2)
             {
                 validSubmit = false;
             }

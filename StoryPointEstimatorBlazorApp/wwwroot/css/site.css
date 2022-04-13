@@ -5,6 +5,7 @@
 }
 
 .buttons-container {
+    padding-top: 50px;
     margin: auto;
     width: 50%;
     display: flex;
@@ -18,11 +19,16 @@
     height: 200px;
     border-radius: 50%;
     padding: 5px;
-    font-size: 36px;
-    font-family: 'Ubuntu', sans-serif;
     min-width: 200px
 }
-
+    .buttons:hover {
+        background-color: #21A7EC;
+        color: white;
+    }
+    .buttons:focus {
+        background-color: #21A7EC;
+        color: white;
+    }
 .mainContainer {
     display: flex;
     margin-top: 1%;
@@ -37,13 +43,13 @@
 .tool-buttons {
     background-color: #4B27FE;
     color: white;
-    width: 100px;
-    height: 100px;
+    width: 81px;
+    height: 81px;
     border-radius: 50%;
     margin: 10px;
     font-size: 36px;
     font-family: 'Ubuntu', sans-serif;
-    min-width: 100px;
+    min-width: 81px;
     padding: 23px;
 }
 
@@ -54,19 +60,6 @@
 .tool-buttons:focus {
     background-color: #21A7EC;
     color: white;
-}
-.table-container {
-    padding: 5px;
-}
-
-.table {
-}
-
-.voting-area {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin-top: 20%;
 }
 
 .roomLabel {
@@ -84,7 +77,7 @@
     font-size: 20px;
     font-weight: bold;
     padding: 8px;
-    border-radius: 10%;
+    border-radius: 5px;
 }
 .appbar-buttons-text {
     color: white;
@@ -108,7 +101,7 @@
     font-size: 20px;
     font-weight: bold;
     padding: 2px;
-    border-radius: 10%;
+    border-radius: 5px;
 }
 
 .admin-tools-buttons {
@@ -139,7 +132,7 @@
 }
 
 .mud-chip {
-    min-width: 50px;
+    min-width: 40px;
     padding: 25px;
     background-color: #4B27FE;
     color: white;
@@ -168,7 +161,7 @@
 }
     .timer-buttons:hover {
         background-color: #3e1fdd;
-        color: white;
+        color: #4B27FE;
     }
 .timer-buttons-text {
     font-size: 22px;
@@ -201,7 +194,7 @@
     font-weight: bold;
 }
 .timer-notification-text {
-    color: black;
+    
     font-family: 'Ubuntu';
     font-size: 20px;
     font-weight: bold;
@@ -214,41 +207,38 @@
     justify-content: start;
 }
 .mud-paper-buttons {
-    padding-left: 25px;
-    padding-right: 25px;
-    padding-bottom: 25px;
-    min-width: 850px;
-    max-width: 850px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    width: 650px;
+    min-width: 650px;
+    max-width: 650px;
+    margin-right: 10px;
+    background: rgba(0,0,0,0.0);
 }
 
 .mud-paper-table {
-    min-width: 650px;
-    max-width: 650px;
-    padding: 1px;
-    padding-top: 7px;
-    margin-left: 25px;
+    width: 600px;
+    min-width: 600px;
+    max-width: 600px;
+    background: rgba(0,0,0,0.0);
 }
 
 .mud-paper-room-labels {
     padding: 5px;
-    min-width: 375px;
-    max-width: 375px;
-    justify-content: right;
     margin: 10px;
 }
 
 .mud-paper-tool-name {
-    color: black;
     font-family: 'Ubuntu';
     font-size: 30px;
     font-weight: bold;
     min-height: 60px;
     max-height: 70px;
     padding: 5px;
-    justify-content: right;
+    justify-content: left;
 }
 .mud-paper-custom-scale {
-    color: black;
     font-family: 'Ubuntu';
     font-size: 30px;
     font-weight: bold;
@@ -260,11 +250,11 @@
     align-content: center;
 }
 .mud-paper-admin-tools {
-    min-width: 650px;
-    max-width: 650px;
-    padding: 1px;
-    padding-top: 7px;
-    margin-left: 25px;
+    width: 600px;
+    min-width: 600px;
+    max-width: 600px;
+    background: rgba(0,0,0,0.0);
+
 }
 
 .custom-voting-tools {
@@ -286,6 +276,7 @@
     padding-top: 100px;
     display: flex;
     justify-content: space-evenly;
+    background: rgba(0,0,0,0.0);
 }
 
 .table-vote-text {
@@ -303,4 +294,14 @@
     padding-top: 5px;
     display: flex;
     justify-content: center;
+}
+
+.table-area {
+    display: flex;
+    justify-content: right;
+}
+
+.join-create-text-fields {
+    border: black 1px solid;
+    font-size: large;
 }

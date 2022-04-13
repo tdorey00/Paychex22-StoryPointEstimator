@@ -31,6 +31,17 @@ namespace SqlDataAccessLib
                 return data.First<T>();
             }
         }
+        //returns a single row of a table synchronously 
+        public T LoadSingleDataSync<T, U>(string sql, U parameters)
+        {
+            string connectionString = _config.GetConnectionString(ConnectionStringName);
+
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                var data = connection.Query<T>(sql, parameters);
+                return data.First<T>();
+            }
+        }
         //Returns a list of Rows from a table Asynchronously 
         public async Task<List<T>> LoadListDataAsync<T, U>(string sql, U parameters)
         {
