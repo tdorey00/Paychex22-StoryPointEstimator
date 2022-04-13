@@ -219,7 +219,7 @@ else{
                         @if (hiddenUsers) {<MudText Class="admin-tools-text" >Unhide Users</MudText>}
                         else {<MudText Class="admin-tools-text" >Hide Users</MudText>}
                         </MudButton>
-                        <MudButton OnClick="clearVotes" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Votes</MudText></MudButton>
+                        <MudButton OnClick="clearVotesMsg" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Votes</MudText></MudButton>
                         <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Users</MudText></MudButton>
                         <!-- <MudButton Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Save Results</MudText></MudButton> -->
                         <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Delete Room</MudText></MudButton>    
@@ -280,6 +280,9 @@ else{
                                     @if (!hiddenVotes)
                                     {
                                         @if (Voting_Mode == 1) {
+                                            @if (@votesCleared) {
+                                            context.fibVote = "";
+                                        }
                                             @if (context.fibVote != "") {
                                             <MudPaper Class="vote-background"><MudText Class="table-vote-text">
                                                 @if(context.fibVote.Equals("coffee")){
@@ -295,16 +298,25 @@ else{
                                             }   
                                         }
                                         else if (Voting_Mode == 2) {
+                                            @if (@votesCleared) {
+                                            context.fistVote = "";
+                                        }
                                             @if (context.fistVote != "") {
                                             <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.fistVote</MudText></MudPaper>   
                                             }   
                                         }
                                         else if (Voting_Mode == 3) {
+                                            @if (@votesCleared) {
+                                            context.tshirtVote = "";
+                                        }
                                             @if (context.tshirtVote != "") {
                                             <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.tshirtVote</MudText></MudPaper>   
                                             }   
                                         }
                                         else {
+                                            @if (@votesCleared) {
+                                            context.scaleVote = "";
+                                        }
                                             @if (context.scaleVote != "") {
                                             <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.scaleVote</MudText></MudPaper>   
                                             }   
@@ -386,7 +398,7 @@ else{
             Are you sure?
         </MessageContent>
         <YesButton>
-            <MudButton >Clear Votes</MudButton>
+            <MudButton OnClick="clearVotes" >Clear Votes</MudButton>
         </YesButton>
     </MudMessageBox>
     <MudMessageBox @ref="timerNotificationMSG" YesText="Ok">
@@ -513,7 +525,8 @@ else{
 
         hubConnection.On<int, bool>("removeUser", async (room, everyone) =>
         {
-            bool currentAdminStatus = _dB.getAdminStatus(userId); //need to pull newest data because signalR takes intitial state not the possible modified state
+
+        bool currentAdminStatus = _dB.getAdminStatus(userId); //need to pull newest data because signalR takes intitial state not the possible modified state
         if(roomId == room)
             {
                 if(everyone) //everyone is true then remove everyone regardless of admin status (for room delete)
@@ -636,6 +649,7 @@ else{
     //Admin Tools
     private bool hiddenUsers = false;
     private bool hiddenVotes = true;
+    private bool votesCleared = false;
     MudMessageBox deleteRoomMSG { get; set; }
     private async void deleteRoom()
     {
@@ -668,9 +682,20 @@ else{
         }
     }
     MudMessageBox clearVotesMSG { get; set; }
-    private async void clearVotes()
+    private async void clearVotesMsg()
     {
         bool? result = await clearVotesMSG.Show();
+    }
+    private void clearVotes()
+    {
+        if(votesCleared)
+        {
+            votesCleared = false;
+        }
+        else
+        {
+            votesCleared = true;
+        }
     }
     private void hideUsers(){
         if(hiddenUsers)
