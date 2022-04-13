@@ -2,7 +2,6 @@
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
-<!--inject Blazored.SessionStorage.ISessionStorageService sessionStorage-->
 @inject IRoomDataAccess _dB
 @inject NavigationManager NavigationManager
 <style>
@@ -150,52 +149,58 @@
                 unique = false;          
                 userIdList = _dB.GetUserIds(); //refresh userId list                                                     
 
-             }
-             else
-             {
-                 unique = true;
-             }
-            
+            }
+            else
+            {
+                unique = true;
+            }
+
         }
         return possibleId;
     }
 
     private void insertData(){
         submitBtnClicked = true;
-        validSubmit = true;
-        foreach(string roomName in availableRoomNames)
+        if (newGroupedModel.userName.Trim().Equals(""))
         {
-            if (tempRoomName.Equals(roomName))
+            validSubmit = true;
+            foreach (string roomName in availableRoomNames)
             {
-                newGroupedModel.roomId = availableRooms.Find(x => x.roomName.Contains(tempRoomName, StringComparison.InvariantCultureIgnoreCase)).roomId;
-                break;
-            }
-        }
-        if(newGroupedModel.roomId != 0)
-        {
-            if(newGroupedModel.userName == String.Empty || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 2)
-            {
-                validSubmit = false;
-            }
-            if (validSubmit)
-            {
-                if (validateRoomId()) //if room code is valid
+                if (tempRoomName.Equals(roomName))
                 {
-                    //define model for insertion
-                    userModel userInsert = new userModel();
-                    //bind data to insertion model
-                    userInsert.isAdmin = newGroupedModel.isAdmin;
-                    userInsert.userName = newGroupedModel.userName;
-                    userInsert.userId = createUserId();
-                    //sessionStorage.SetItemAsync("userId", userInsert.userId);
+                    newGroupedModel.roomId = availableRooms.Find(x => x.roomName.Contains(tempRoomName, StringComparison.InvariantCultureIgnoreCase)).roomId;
+                    break;
+                }
+            }
+            if (newGroupedModel.roomId != 0)
+            {
+                if (newGroupedModel.userName == String.Empty || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 2)
+                {
+                    validSubmit = false;
+                }
+                if (validSubmit)
+                {
+                    if (validateRoomId()) //if room code is valid
+                    {
+                        //define model for insertion
+                        userModel userInsert = new userModel();
+                        //bind data to insertion model
+                        userInsert.isAdmin = newGroupedModel.isAdmin;
+                        userInsert.userName = newGroupedModel.userName;
+                        userInsert.userId = createUserId();
 
-                    //save user model and link user to room based on user input
-                    _dB.joinRoomSaveData(newGroupedModel.roomId, userInsert); 
-                    NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, true);
+                        //save user model and link user to room based on user input
+                        _dB.joinRoomSaveData(newGroupedModel.roomId, userInsert);
+                        NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, true);
+                    }
+                    else
+                    {
+                        isValidId = false;
+                    }
                 }
                 else
                 {
-                    isValidId = false;
+                    validSubmit = false;
                 }
             }
             else
