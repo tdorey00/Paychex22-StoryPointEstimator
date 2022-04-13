@@ -854,9 +854,9 @@ else{
         }
     }
     //Timer
-    public static int Seconds { get; set; } //number of seconds timer will run for
-    public static int Minutes { get; set; } //number of minutes timer will run for
-    public static int Hours { get; set; } //number of hours timer will run for
+    private int Seconds { get; set; } //number of seconds timer will run for
+    private int Minutes { get; set; } //number of minutes timer will run for
+    private int Hours { get; set; } //number of hours timer will run for
     TimeSpan TimeRemaining;
     string displaytimer = "00:00:00"; //displayed time
     string mostRecentTime = "00:00:00"; //displayed time
