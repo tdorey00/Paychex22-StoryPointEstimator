@@ -161,7 +161,7 @@
 
     private void insertData(){
         submitBtnClicked = true;
-        if (newGroupedModel.userName.Trim().Equals(""))
+        if (newGroupedModel.userName.Trim().Equals("")) //do not accept usernames that are just spaces
         {
             validSubmit = true;
             foreach (string roomName in availableRoomNames)
