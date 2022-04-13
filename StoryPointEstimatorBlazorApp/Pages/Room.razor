@@ -184,18 +184,16 @@ else{
                     <MudPaper Style="background: rgba(0,0,0,0.0);" Height ="400px" Width ="400px" Elevation="0">
                         @if (!_stopwatchMode) {
                         <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
-                            @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
-                            else {<MudText Class="timer-buttons-text">Start</MudText>}
+                            <MudText Class="timer-buttons-text">Start</MudText>
                         </MudButton>
                         }
                         else {
-                        <MudButton Disabled="@_timing" OnClick="Stopwatch" Variant="Variant.Filled" Class="timer-buttons">
+                        <MudButton Disabled="@_isStopwatchRunning" OnClick="Stopwatch" Variant="Variant.Filled" Class="timer-buttons">
                             @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
                             else {<MudText Class="timer-buttons-text">Start</MudText>}
                         </MudButton>
                         }
-                        @if (!_stopwatchMode)
-                        {
+                        @if (!_stopwatchMode) {
                             <MudButton Disabled="@_pauseDisable" OnClick="pauseTimer" Variant="Variant.Filled" Class="timer-buttons">
                                 <MudText Class="timer-buttons-text">Pause</MudText>
                             </MudButton>
@@ -203,14 +201,12 @@ else{
                                 <MudText Class="timer-buttons-text">Reset</MudText>
                             </MudButton>
                         }
-                        else
-                        {
+                        else {
                             <MudButton OnClick="stopStopwatch" Variant="Variant.Filled" Class="timer-buttons">
                                 <MudText Class="timer-buttons-text">Stop</MudText>
                             </MudButton>
                         }
-                        @if (!_stopwatchMode)
-                        {
+                        @if (!_stopwatchMode) {
                             <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" AdornmentColor="Color.Primary" Min="0" Max="12" />
                             <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
                             <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
@@ -358,7 +354,6 @@ else{
 
                 <div style="position: fixed; bottom: 2%; left: 1%;">
                 <MudChip Class="mud-chip" >@newGroupedModel.roomName</MudChip>
-                <MudChip Class="mud-chip" >Room Code: @roomId</MudChip>
 </div>
 }
             <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
