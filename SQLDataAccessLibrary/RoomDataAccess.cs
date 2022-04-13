@@ -141,6 +141,12 @@ namespace SqlDataAccessLib
             return connectedUsers;
         }
 
+        public bool getAdminStatus(int userId)
+        {
+            var parameters = new {userId = userId};
+            string sql = "select isAdmin from dbo.userTable where userId = @userId";
+            return _dB.LoadSingleDataSync<bool, dynamic>(sql, parameters);
+        }
         public void removeUserData(int roomId, int userId)
         {
             var param1 = new { roomId = roomId, userId = userId };

@@ -153,10 +153,11 @@ else{
                     @if (newGroupedModel.isAdmin) {
                         <MudPaper Style="background: rgba(0,0,0,0.0);" Class="mud-paper-custom-scale" Elevation="0">
                             <MudItem Class="slider">
-                                <MudText Class="slider">Number of buttons: @currentCustomScale</MudText>
+                                <MudText Class="slider">Number of buttons: @tempCustomScale</MudText>
                                 <MudSlider Min="1" Max="24" Step="1" @bind-Value="@tempCustomScale" Style="{color: #4B27FE;}"/>
                             </MudItem>
-                            <MudTextField @bind-Value="newCustomTitle" Validation="@(new Func<string, IEnumerable<string>>(CustomTitleValidation))" Mask="@mask2" Class="custom-scale-input" Label="Enter Label Name" Variant="Variant.Outlined" Clearable="true"></MudTextField>
+                             <MudText Class="table-vote-text">Custom Title: </MudText>
+                             <input class="join-create-text-fields" type="text" @bind-value="newCustomTitle" />
                             <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>    
                         </MudPaper>
                     }
@@ -338,7 +339,8 @@ else{
             <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
         <DialogContent>
             <MudText Style="font-size: 30px">User Profile</MudText>
-            <MudTextField @bind-Value="tempUsername" Variant="@Variant.Filled" Validation="@(new Func<string, IEnumerable<string>>(TextValidation))" Mask="@mask" Label="Change Username"></MudTextField>
+            <MudText Class="table-vote-text">Username</MudText>
+            <input class="join-create-text-fields" type="text" @bind-value="tempUsername" />
             <div class = "inputSpacer">
                 <MudCheckBox @bind-Checked="tempAdmin" Label="Facilitator" Color="Color.Primary"></MudCheckBox>
             </div>
@@ -426,23 +428,28 @@ else{
 
     protected override async Task OnInitializedAsync() 
     {
-        roomModel roomData = await _dB.GetRoomData(roomId);
-        currentCustomTitle = roomData.scaleTitle;
-        currentCustomScale = roomData.currentScale;
-        tempCustomScale = roomData.currentScale;
-        newGroupedModel.scaleTitle = roomData.scaleTitle;
-        newGroupedModel.roomName = roomData.roomName;
-        newGroupedModel.currentScale = roomData.currentScale;
-        hiddenUsers = roomData.hideUsers;
-        hiddenVotes = roomData.hideVotes;
-        connectedUsers = await _dB.getConnectedUsers(roomId);
-        userModel userData = await _dB.GetUserData(userId);
-        newGroupedModel.userId = userData.userId;
-        newGroupedModel.userName = userData.userName;
-        tempUsername = userData.userName;
-        tempAdmin = userData.isAdmin;
-        newGroupedModel.isAdmin = userData.isAdmin;
-
+        try{
+            roomModel roomData = await _dB.GetRoomData(roomId);
+            currentCustomTitle = roomData.scaleTitle;
+            currentCustomScale = roomData.currentScale;
+            tempCustomScale = roomData.currentScale;
+            newGroupedModel.scaleTitle = roomData.scaleTitle;
+            newGroupedModel.roomName = roomData.roomName;
+            newGroupedModel.currentScale = roomData.currentScale;
+            hiddenUsers = roomData.hideUsers;
+            hiddenVotes = roomData.hideVotes;
+            connectedUsers = await _dB.getConnectedUsers(roomId);
+            userModel userData = await _dB.GetUserData(userId);
+            newGroupedModel.userId = userData.userId;
+            newGroupedModel.userName = userData.userName;
+            tempUsername = userData.userName;
+            tempAdmin = userData.isAdmin;
+            newGroupedModel.isAdmin = userData.isAdmin;
+        }
+        catch (InvalidOperationException) //race condition involving user joining a room while it is being cleared or deleted
+        {
+            NavigationManager.NavigateTo("Error");
+        }
 
         hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("VotingHub"))
@@ -518,7 +525,8 @@ else{
 
         hubConnection.On<int, bool>("removeUser", async (room, everyone) =>
         {
-        //To fix FRED-406 pull newest admin value from db here and use that instead of newGroupedModel.isAdmin
+
+        bool currentAdminStatus = _dB.getAdminStatus(userId); //need to pull newest data because signalR takes intitial state not the possible modified state
         if(roomId == room)
             {
                 if(everyone) //everyone is true then remove everyone regardless of admin status (for room delete)
@@ -526,12 +534,12 @@ else{
                     _dB.removeUserData(roomId, userId);
                     NavigationManager.NavigateTo("/RoomDeleted/true");
                 }
-                else if(!everyone && !newGroupedModel.isAdmin)//not everyone and user is not an admin (clear users)
+                else if(!everyone && !currentAdminStatus)//not everyone and user is not an admin (clear users)
             {
                     _dB.removeUserData(roomId, userId);
                     NavigationManager.NavigateTo("/RoomDeleted/false");
                 }
-                else if(!everyone && newGroupedModel.isAdmin) //not everyone and user is an admin (clear users)
+                else if(!everyone && currentAdminStatus) //not everyone and user is an admin (clear users)
             {
                     Thread.Sleep(100);
                     connectedUsers = await _dB.getConnectedUsers(roomId);
@@ -571,33 +579,6 @@ else{
     //    _dB.removeUserData(roomId, userId);
     //}
 
-    //Validation
-    IMask mask = new RegexMask(@"^[a-zA-Z0-9_-]+$");
-    IMask mask2 = new RegexMask(@"^[ ""a-zA-Z0-9#$&%!*^,.(){}'/\:;<>?@~`=+_-]+$");
-    IMask mask3 = new BlockMask(delimiters:" ", new Block('0', 1,2));
-
-    private IEnumerable<string> TextValidation(string ch)
-    {
-        if (!string.IsNullOrEmpty(ch) && 50 < ch?.Length)
-        {
-            yield return "Too many characters";
-        }
-        else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
-        {
-            yield return "Too few characters";
-        }
-    }
-    private IEnumerable<string> CustomTitleValidation(string ch)
-    {
-        if (!string.IsNullOrEmpty(ch) && 30 < ch?.Length)
-        {
-            yield return "Too many characters";
-        }
-        else if (!string.IsNullOrEmpty(ch) && 3 > ch?.Length)
-        {
-            yield return "Too few characters";
-        }
-    }
     //Custom Scale
     private string newCustomTitle { get; set; } = "Enter A Title";
     private int currentCustomScale;
@@ -625,7 +606,7 @@ else{
     void CloseProfile() => visibleProfile = false;
     async void SubmitProfile()
     {
-        if(!(tempUsername.Length > 50 || tempUsername.Length < 3)){ //valid submission
+        if(!(tempUsername.Length > 50 || tempUsername.Length < 2)){ //valid submission
             visibleProfile = false;
             _dB.UpdateUsername(newGroupedModel.userId, tempUsername);
             newGroupedModel.userName = tempUsername;
@@ -779,41 +760,54 @@ else{
     }
     void setVote(string val)
     {
-        _dB.UpdateVote(newGroupedModel.userId, Voting_Mode, val);
-        if(Voting_Mode == 1)//fib vote
+        try
         {
-            userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
-            if(val.Equals("coffee")){
-                found.fibVote = ""+COFFEE;
-            }
-            else if (val.Equals("0.5")){
-                found.fibVote = "" + HALF;
-            }
-            else
+            _dB.UpdateVote(newGroupedModel.userId, Voting_Mode, val);
+            if (Voting_Mode == 1)//fib vote
             {
-                found.fibVote = val;
+                userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
+                if (val.Equals("coffee"))
+                {
+                    found.fibVote = "" + COFFEE;
+                }
+                else if (val.Equals("0.5"))
+                {
+                    found.fibVote = "" + HALF;
+                }
+                else
+                {
+                    found.fibVote = val;
+                }
             }
+            else if (Voting_Mode == 2) //Fist vote
+            {
+                userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
+                found.fistVote = val;
+            }
+            else if (Voting_Mode == 3) //Tshirt vote
+            {
+                userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
+                found.tshirtVote = val;
+            }
+            else if (Voting_Mode == 4) //custom scale
+            {
+                userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
+                found.scaleVote = val;
+            }
+            if (hubConnection is not null)
+            {
+                hubConnection.SendAsync("updateVote", newGroupedModel.userId, val, Voting_Mode);
+            }
+            StateHasChanged();
         }
-        else if (Voting_Mode == 2) //Fist vote
-        {
-            userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
-            found.fistVote = val;
+        catch(InvalidOperationException){ //race condition involving room being deleted/cleared at the same time user votes
+            _dB.removeUserData(userId, roomId); //ensure user data is removed
+            if(hubConnection is not null)
+            {
+                hubConnection.SendAsync("userDisconnect", userId, roomId); //if the case is where user joins during clear make sure user is removed from the list
+            }
+            NavigationManager.NavigateTo("Error");
         }
-        else if (Voting_Mode == 3) //Tshirt vote
-        {
-            userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
-            found.tshirtVote = val;
-        }
-        else if (Voting_Mode == 4) //custom scale
-        {
-            userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
-            found.scaleVote = val;
-        }
-        if(hubConnection is not null)
-        {
-            hubConnection.SendAsync("updateVote", newGroupedModel.userId, val, Voting_Mode);
-        }
-        StateHasChanged();
     }
     //Timer
     public static int Seconds { get; set; } //number of seconds timer will run for

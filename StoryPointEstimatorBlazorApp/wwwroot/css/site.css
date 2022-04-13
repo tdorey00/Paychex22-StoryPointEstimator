@@ -300,3 +300,8 @@
     display: flex;
     justify-content: right;
 }
+
+.join-create-text-fields {
+    border: black 1px solid;
+    font-size: large;
+}
