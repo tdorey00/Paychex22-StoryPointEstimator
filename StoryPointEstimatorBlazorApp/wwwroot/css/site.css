@@ -164,6 +164,7 @@
         color: #4B27FE;
     }
 .timer-buttons-text {
+    color: white;
     font-size: 22px;
     font-family: 'Ubuntu';
     font-weight: bold;
@@ -186,7 +187,6 @@
     font-size: 30px;
     font-family: 'Ubuntu';
     font-weight: bold;
-    padding-left: 80px;
 }
 .timer-display-text {
     font-size: 70px;
@@ -273,7 +273,7 @@
 }
 
 .mud-paper-timer {
-    padding-top: 100px;
+    padding-top: 50px;
     display: flex;
     justify-content: space-evenly;
     background: rgba(0,0,0,0.0);
