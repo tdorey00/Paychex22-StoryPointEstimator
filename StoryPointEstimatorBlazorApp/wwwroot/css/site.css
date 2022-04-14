@@ -304,13 +304,10 @@
     width: 204px;
     height: 36px;
     border: #F0F0F0 1px solid;
-    background: rgba(0,0,0,0.05);
+    background: #F0F0F0;
     color: #4B27FE;
     font-size: large;
     font-weight: bold;
     border-radius: 5px;
     padding-left: 5px;
 }
-    .join-create-text-fields:focus {
-        background: rgb(128, 128, 128, 0.1);
-    }
