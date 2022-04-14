@@ -9,10 +9,10 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
 <style>
     :root {
          --mud-palette-primary: #4B27FE;
+         --mud-palette-secondary: #FFFFFF;
     }
 </style>
 <div>
@@ -51,7 +51,7 @@
         </MudButton>
         <MudSpacer />
         <MudText Class="appbar-buttons-text">@newGroupedModel.userName</MudText>
-        <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Inherit" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
+        <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Secondary" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
             <MudMenuItem @onclick="OpenProfile">User Profile</MudMenuItem>
             <MudMenuItem @onclick="OpenAbout">About</MudMenuItem>
         </MudMenu>
@@ -802,6 +802,7 @@ else{
             _timerAppBar = true;
         }
     }
+
     void setVote(string val)
     {
         try

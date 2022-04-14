@@ -5,6 +5,9 @@
 @inject IRoomDataAccess _dB
 @inject NavigationManager NavigationManager
 <style>
+    :root {
+         --mud-palette-primary: #4B27FE;
+    }
     .inputArea{
         text-align : center;
     }
@@ -59,7 +62,7 @@
                             <MudAutocomplete T="string" MaxItems="null" Label = "Available Rooms" @bind-Value = "tempRoomName" ResetValueOnEmptyText = "true"
                                 SearchFunc = "@searchRoomNames"/>
                         </MudItem>
-                        <button @onclick = "@UpdateAvailableRooms" class="btn btn-primary" style="width: 183px; margin-left: 22px;" >Refresh Room List</button>
+                        <button @onclick = "@UpdateAvailableRooms" class="btn btn-primary" style="background-color: #4B27FE; color: white; width: 183px; margin-left: 22px;" >Refresh Room List</button>
                     </MudGrid>
                 </div>
             </div>
@@ -69,8 +72,8 @@
                 <MudCheckBox @bind-Checked="newGroupedModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
             </div>
 
-            <button @onclick = "@insertData" class="btn btn-primary">Join Room</button>
-            <a class="btn btn-primary" href="/">Cancel</a>
+            <button @onclick = "@insertData" class="btn btn-primary" style="background-color: #4B27FE; color: white;">Join Room</button>
+            <a class="btn btn-primary" style="background-color: #4B27FE; color: white;" href="/">Cancel</a>
 
             <div class = "inputSpacer">
                 <p>Username must be between 3 and 50 characters.</p>
@@ -79,6 +82,7 @@
     </div>
 </MudPaper>
 </div>
+
 @code {
 
     //Validation

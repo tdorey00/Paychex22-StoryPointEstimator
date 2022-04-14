@@ -7,6 +7,9 @@
 @inject NavigationManager NavigationManager
 
 <style>
+    :root {
+         --mud-palette-primary: #4B27FE;
+    }
     .inputArea{
         text-align : center;
     }
@@ -69,8 +72,8 @@
                 <MudCheckBox @bind-Checked="newGroupedModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
             </div>
 
-            <button type="submit" class="btn btn-primary">Create Room</button>
-            <a class="btn btn-primary" href="/">Cancel</a>
+            <button type="submit" class="btn btn-primary" style="background-color: #4B27FE; color: white;">Create Room</button>
+            <a class="btn btn-primary" style="background-color: #4B27FE; color: white;" href="/">Cancel</a>
             <div class = "inputSpacer">
                 <p>Username must be between 3 and 50 characters. Room name must be between 4 and 50 characters.</p>
             </div>
@@ -78,6 +81,7 @@
     </div>
 </MudPaper>
 </div>
+
 
 @code {
 
