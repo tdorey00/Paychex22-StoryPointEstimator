@@ -10,7 +10,7 @@ namespace SQLDataAccessLibrary.Models
     {
         public string roomName { get; set; } = "";
         public int roomId { get; set; }
-        public string scaleTitle { get; set; } = "Enter A Title"; //1-24 scale title
+        public string scaleTitle { get; set; } = "Custom Voting"; //1-24 scale title
         public int currentScale { get; set; }
         public bool hideVotes { get; set; }
         public bool hideUsers { get; set; }
