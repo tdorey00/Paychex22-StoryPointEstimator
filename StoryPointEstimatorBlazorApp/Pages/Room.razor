@@ -9,14 +9,14 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
 <style>
     :root {
          --mud-palette-primary: #4B27FE;
+         --mud-palette-secondary: #FFFFFF;
     }
 </style>
 <div>
-    @if (_timing) {<head><title>ScrumSpace | @displaytimer </title></head>}
+    @if (_timing || _isStopwatchRunning) {<head><title>ScrumSpace | @displaytimer </title></head>}
     else {<head><title>ScrumSpace</title></head>}
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
         <MudText Class="appbar-buttons-text" Style="width: 120px; min-width:120px;">ScrumSpace</MudText> -
@@ -41,17 +41,17 @@
         </MudButton> |
         <MudButton Disabled="@_timerAppBar" OnClick="() => setVotingMode(5)" Class="appbar-buttons">
             @if (_timerAppBar) {
-                @if (_timing) {<MudText Class="appbar-buttons-clicked" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
+                @if (_timing || _isStopwatchRunning) {<MudText Class="appbar-buttons-clicked" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
                 else {<MudText Class="appbar-buttons-clicked" Style="width: 60px; min-width:60px;">Timer</MudText>}
                 @if (_pause) {<MudText Class="appbar-buttons-clicked" Style="width: 80px; min-width:80px;">| Paused </MudText>}}
             else {
-                @if (_timing) {<MudText Class="appbar-buttons-text" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
+                @if (_timing || _isStopwatchRunning) {<MudText Class="appbar-buttons-text" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
                 else {<MudText Class="appbar-buttons-text" Style="width: 60px; min-width:60px;">Timer</MudText>}
                 @if (_pause) {<MudText Class="appbar-buttons-text" Style="width: 80px; min-width:80px;">| Paused </MudText>}}
         </MudButton>
         <MudSpacer />
         <MudText Class="appbar-buttons-text">@newGroupedModel.userName</MudText>
-        <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Inherit" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
+        <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Secondary" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
             <MudMenuItem @onclick="OpenProfile">User Profile</MudMenuItem>
             <MudMenuItem @onclick="OpenAbout">About</MudMenuItem>
         </MudMenu>
@@ -149,16 +149,18 @@ else{
                 }
                 @if(Voting_Mode==4) 
                 {
-                    <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
+                    <MudText Class="mud-paper-tool-name"> @currentCustomTitle </MudText>
                     @if (newGroupedModel.isAdmin) {
                         <MudPaper Style="background: rgba(0,0,0,0.0);" Class="mud-paper-custom-scale" Elevation="0">
                             <MudItem Class="slider">
                                 <MudText Class="slider">Number of buttons: @tempCustomScale</MudText>
                                 <MudSlider Min="1" Max="24" Step="1" @bind-Value="@tempCustomScale" Style="{color: #4B27FE;}"/>
                             </MudItem>
+                            <div>
                              <MudText Class="table-vote-text">Custom Title: </MudText>
                              <input class="join-create-text-fields" type="text" @bind-value="newCustomTitle" />
-                            <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>    
+                            </div>
+                            <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="margin-top: 35px; width: 75px; height: 30px;"><MudText Class="admin-tools-text">Update</MudText></MudButton>    
                         </MudPaper>
                     }
                     foreach(int x in Enumerable.Range(1, @currentCustomScale))
@@ -172,35 +174,57 @@ else{
             @if (Voting_Mode == 5)
                     {
             <div>
+            @if (_stopwatchMode) {<MudText Class="mud-paper-tool-name" >Stopwatch</MudText>}
+            else {<MudText Class="mud-paper-tool-name" >Timer</MudText>}
             <MudPaper Class="mud-paper-timer" Style="justify-content: space-evenly" Height ="515px" Width ="850px" Elevation="0">  
                 <MudPaper Class="timer-display">
                     @if (_timerDone) {<MudText Class="timer-display-text"> 00:00:00 </MudText>}
                     else {<MudText Class="timer-display-text"> @displaytimer </MudText>}
-                    @if (_pause) {<MudText Class="timer-display-text-pause" Style="width: 80px; min-width:80px;"> (Paused) </MudText>}
+                    @if (_pause) {<MudText Class="timer-display-text-pause" Style="padding-left: 80px; width: 80px; min-width:80px;"> (Paused) </MudText>}
+                    @if (_stopwatchDone) {<MudText Class="timer-display-text-pause" Style="padding-left: 40px; width: 250px; min-width:250px;"> Time: @mostRecentTime </MudText>}
                 </MudPaper> 
                     <MudPaper Style="background: rgba(0,0,0,0.0);" Height ="400px" Width ="400px" Elevation="0">
+                        @if (!_stopwatchMode) {
                         <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
+                            <MudText Class="timer-buttons-text">Start</MudText>
+                        </MudButton>
+                        }
+                        else {
+                        <MudButton Disabled="@_isStopwatchRunning" OnClick="Stopwatch" Variant="Variant.Filled" Class="timer-buttons">
                             @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
                             else {<MudText Class="timer-buttons-text">Start</MudText>}
                         </MudButton>
-                        <MudButton Disabled="@_pauseDisable" OnClick="pauseTimer" Variant="Variant.Filled" Class="timer-buttons">
-                            <MudText Class="timer-buttons-text">Pause</MudText>
-                        </MudButton>
-                        <MudButton OnClick="resetTimer" Class="timer-buttons">
-                            <MudText Class="timer-buttons-text">Reset</MudText>
-                        </MudButton>
-                        <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" AdornmentColor="Color.Primary" Min="0" Max="12" />
-                        <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
-                        <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
+                        }
+                        @if (!_stopwatchMode) {
+                            <MudButton Disabled="@_pauseDisable" OnClick="pauseTimer" Variant="Variant.Filled" Class="timer-buttons">
+                                <MudText Class="timer-buttons-text">Pause</MudText>
+                            </MudButton>
+                            <MudButton OnClick="resetTimer" Class="timer-buttons">
+                                <MudText Class="timer-buttons-text">Reset</MudText>
+                            </MudButton>
+                        }
+                        else {
+                            <MudButton Disabled="@_stopDisable" OnClick="stopStopwatch" Variant="Variant.Filled" Class="timer-buttons">
+                                <MudText Class="timer-buttons-text">Stop</MudText>
+                            </MudButton>
+                        }
+                        @if (!_stopwatchMode) {
+                            <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" AdornmentColor="Color.Primary" Min="0" Max="12" />
+                            <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
+                            <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
+                        }
                     </MudPaper>
             </MudPaper> 
             <MudPaper Style="background: rgba(0,0,0,0.0);" Elevation="0">
                 <MudText Class="mud-paper-tool-name">Timer Tools</MudText>
-                <MudButton Class="btn admin-tools-buttons"> <MudText Class="admin-tools-text" >Stopwatch Mode</MudText></MudButton>
-                <MudButton OnClick="toggleSound" Class="admin-tools-buttons" Style="width: 120px;">
+                <MudButton OnClick="toggleStopwatch" Class="admin-tools-buttons" Style="width: 140px;">
+                    @if (_stopwatchMode) {<MudText Class="admin-tools-text" >Timer Mode</MudText>}
+                    else {<MudText Class="admin-tools-text" >Stopwatch Mode</MudText>}
+                </MudButton>                <MudButton OnClick="toggleSound" Class="admin-tools-buttons" Style="width: 120px;">
                     @if (_soundOff) {<MudText Class="admin-tools-text" >Turn Sound On</MudText>}
                     else {<MudText Class="admin-tools-text" >Turn Sound Off</MudText>}
                 </MudButton>
+                    @if (!_soundOff) {<MudIcon Style="margin-left: 4px;" Size="Size.Large" Color="Color.Primary" Icon="@Icons.Filled.VolumeUp"/>}
             </MudPaper>
             </div>
             }
@@ -221,7 +245,6 @@ else{
                         </MudButton>
                         <MudButton OnClick="clearVotesMsg" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Votes</MudText></MudButton>
                         <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Users</MudText></MudButton>
-                        <!-- <MudButton Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Save Results</MudText></MudButton> -->
                         <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Delete Room</MudText></MudButton>    
                     </MudPaper>
                 }
@@ -333,7 +356,6 @@ else{
 
                 <div style="position: fixed; bottom: 2%; left: 1%;">
                 <MudChip Class="mud-chip" >@newGroupedModel.roomName</MudChip>
-                <MudChip Class="mud-chip" >Room Code: @roomId</MudChip>
 </div>
 }
             <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
@@ -526,7 +548,7 @@ else{
         hubConnection.On<int, bool>("removeUser", async (room, everyone) =>
         {
 
-        bool currentAdminStatus = _dB.getAdminStatus(userId); //need to pull newest data because signalR takes intitial state not the possible modified state
+            bool currentAdminStatus = _dB.getAdminStatus(userId); //need to pull newest data because signalR takes intitial state not the possible modified state
         if(roomId == room)
             {
                 if(everyone) //everyone is true then remove everyone regardless of admin status (for room delete)
@@ -541,9 +563,21 @@ else{
                 }
                 else if(!everyone && currentAdminStatus) //not everyone and user is an admin (clear users)
             {
-                    Thread.Sleep(100);
-                    connectedUsers = await _dB.getConnectedUsers(roomId);
-                    StateHasChanged();
+                    try
+                    {
+                        Thread.Sleep(500);
+                        connectedUsers = await _dB.getConnectedUsers(roomId);
+                        StateHasChanged();
+                    }
+                    catch (InvalidOperationException) //possible failure to grab new list
+                {
+                        _dB.removeUserData(userId, roomId); //ensure user data is removed
+                    if(hubConnection is not null)
+                        {
+                            await hubConnection.SendAsync("userDisconnect", userId, roomId); 
+                        }
+                        NavigationManager.NavigateTo("Error");
+                    }
                 }
             }
         });
@@ -577,10 +611,11 @@ else{
     //public void Dispose() //called on page close
     //{
     //    _dB.removeUserData(roomId, userId);
+    //    NavigationManager.NavigateTo("/")
     //}
 
     //Custom Scale
-    private string newCustomTitle { get; set; } = "Enter A Title";
+    private string newCustomTitle { get; set; } = "";
     private int currentCustomScale;
     private int tempCustomScale;
 
@@ -675,10 +710,22 @@ else{
     private async void clearUsersConfirmed(){
         if(hubConnection is not null)
         {
-            await hubConnection.SendAsync("userRemoval", roomId, false);
-            Thread.Sleep(100);
-            connectedUsers = await _dB.getConnectedUsers(roomId);
-            StateHasChanged();
+            try
+            {
+                await hubConnection.SendAsync("userRemoval", roomId, false);
+                Thread.Sleep(500); //wait for clients to recieve message before regrabbing list of users
+                connectedUsers = await _dB.getConnectedUsers(roomId);
+                StateHasChanged();
+            }
+            catch (InvalidOperationException)//issue where admin clears room while many server calls are being made
+            {
+                _dB.removeUserData(userId, roomId); //ensure user data is removed
+                if(hubConnection is not null)
+                {
+                    await hubConnection.SendAsync("userDisconnect", userId, roomId); 
+                }
+                NavigationManager.NavigateTo("Error");
+            }
         }
     }
     MudMessageBox clearVotesMSG { get; set; }
@@ -758,6 +805,7 @@ else{
             _timerAppBar = true;
         }
     }
+
     void setVote(string val)
     {
         try
@@ -810,17 +858,22 @@ else{
         }
     }
     //Timer
-    public static int Seconds { get; set; } //number of seconds timer will run for
-    public static int Minutes { get; set; } //number of minutes timer will run for
-    public static int Hours { get; set; } //number of hours timer will run for
+    private int Seconds { get; set; } //number of seconds timer will run for
+    private int Minutes { get; set; } //number of minutes timer will run for
+    private int Hours { get; set; } //number of hours timer will run for
     TimeSpan TimeRemaining;
     string displaytimer = "00:00:00"; //displayed time
+    string mostRecentTime = "00:00:00"; //displayed time
     private bool _timing = false;
     private bool _pause = false;
     private bool _reset = false;
     private bool _timerDone = false;
     private bool _pauseDisable = true;
     private bool _soundOff = true;
+    private bool _stopwatchMode = false;
+    private bool _isStopwatchRunning = false;
+    private bool _stopwatchDone = false;
+    private bool _stopDisable = true;
     async Task Timer()
     {
         _timerDone = false;
@@ -852,12 +905,35 @@ else{
         }
         StateHasChanged();
     }
+    async Task Stopwatch() {
+        _stopwatchDone = false;
+        TimeRemaining = new TimeSpan(0, 0, 0);
+        _isStopwatchRunning = true;
+        _stopDisable = false;
+        while (_isStopwatchRunning) {
+            await Task.Delay(1000);
+            if (_isStopwatchRunning)
+            {
+                TimeRemaining = TimeRemaining.Add(new TimeSpan(0, 0, 1));
+                displaytimer = TimeRemaining.ToString();
+                StateHasChanged();
+            }
+        }
+    }
     void pauseTimer()
     {
         TimeRemaining = TimeRemaining.Add(new TimeSpan(0,0,1));
         _pause = true;
         _timing = false;
         _pauseDisable = true;
+    }
+    void stopStopwatch()
+    {
+        _isStopwatchRunning = false;
+        _stopwatchDone = true;
+        _stopDisable = true;
+        displaytimer = "00:00:00";
+        mostRecentTime = TimeRemaining.ToString();
     }
     Task AfterTime()
     {
@@ -890,6 +966,33 @@ else{
         else
         {
             _soundOff = true;
+        }    
+    }
+    void toggleStopwatch()
+    {
+        if(_stopwatchMode)
+        {
+            _pause = false;
+            _stopDisable = true;
+            _stopwatchDone = false;
+            _isStopwatchRunning = false;
+            displaytimer = "00:00:00";
+            TimeRemaining = new TimeSpan(0, 0, 1);
+            _stopwatchMode = false;
+        }
+        else
+        {
+            _pause = false;
+            _stopDisable = true;
+            _stopwatchDone = false;
+            _isStopwatchRunning = false;
+            _reset = true;
+            displaytimer = "00:00:00";
+            TimeRemaining = new TimeSpan(0, 0, 1);
+            Hours = 0;
+            Minutes = 0;
+            Seconds = 0;
+            _stopwatchMode = true;
         }    
     }
     //AppBar

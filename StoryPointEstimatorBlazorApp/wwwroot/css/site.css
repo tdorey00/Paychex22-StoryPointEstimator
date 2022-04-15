@@ -164,6 +164,7 @@
         color: #4B27FE;
     }
 .timer-buttons-text {
+    color: white;
     font-size: 22px;
     font-family: 'Ubuntu';
     font-weight: bold;
@@ -186,7 +187,6 @@
     font-size: 30px;
     font-family: 'Ubuntu';
     font-weight: bold;
-    padding-left: 80px;
 }
 .timer-display-text {
     font-size: 70px;
@@ -242,11 +242,10 @@
     font-family: 'Ubuntu';
     font-size: 30px;
     font-weight: bold;
-    min-height: 60px;
+    min-height: 70px;
     max-height: 70px;
-    padding: 5px;
     display: flex;
-    justify-content: left;
+    justify-content: space-evenly;
     align-content: center;
 }
 .mud-paper-admin-tools {
@@ -273,7 +272,7 @@
 }
 
 .mud-paper-timer {
-    padding-top: 100px;
+    padding-top: 50px;
     display: flex;
     justify-content: space-evenly;
     background: rgba(0,0,0,0.0);
@@ -302,6 +301,13 @@
 }
 
 .join-create-text-fields {
-    border: black 1px solid;
+    width: 204px;
+    height: 36px;
+    border: #F0F0F0 1px solid;
+    background: #F0F0F0;
+    color: #4B27FE;
     font-size: large;
+    font-weight: bold;
+    border-radius: 5px;
+    padding-left: 5px;
 }
