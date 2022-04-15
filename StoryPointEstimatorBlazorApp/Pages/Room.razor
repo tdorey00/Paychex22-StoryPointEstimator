@@ -252,13 +252,14 @@ else{
             @if (Voting_Mode != 5)
             {
                     <MudPaper Class="mud-paper-table" Elevation="0">
-                        <MudItem>
-                            <MudText Class="mud-paper-tool-name"> Results <MudButton OnClick='() => setVote("")' Class="admin-tools-buttons">
-                            <MudText Class="admin-tools-text">Clear My Vote</MudText>
-                            </MudButton> 
-                            </MudText>
+                        <MudItem Style="display: inline-flex; justify-content: start;">
+                            <MudText Class="mud-paper-tool-name"> Results </MudText>
+                            <MudButton OnClick='() => setVote("")' Class="admin-tools-buttons" Style="margin-top: 10px; width: 120px; height: 36px;"><MudText Class="admin-tools-text">Clear My Vote</MudText></MudButton> 
+                            <MudToggleIconButton Style="margin-left: 310px; width: 50px; height: 50px;" @bind-Toggled="@_isDense"
+                            Icon="@Icons.Rounded.ZoomInMap" Color="@Color.Primary"
+                            ToggledIcon="@Icons.Rounded.ZoomOutMap" ToggledColor="@Color.Primary"/>
                         </MudItem>
-                        <MudTable Items="@connectedUsers" Style="background: rgba(0,0,0,0.0);" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
+                        <MudTable Items="@connectedUsers" Style="background: rgba(0,0,0,0.0);" Dense="@_isDense" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
                             <ColGroup>
                                 <col style="width: 50%;" />
                                 <col style="width: 50%;" />
@@ -686,6 +687,7 @@ else{
     private bool hiddenVotes = true;
     private bool votesCleared = false;
     MudMessageBox deleteRoomMSG { get; set; }
+    private bool _isDense = false;
     private async void deleteRoom()
     {
         bool? result = await deleteRoomMSG.Show();
