@@ -57,7 +57,7 @@
                 <div class = "form-group">
                     <MudGrid Class = "justify-space-between" Style = "max-width: 400px;">
                         <MudItem xs="12">
-                            <MudAutocomplete T="string" MaxItems="null" Label = "Available Rooms" @bind-Value = "tempRoomName" ResetValueOnEmptyText = "true"
+                            <MudAutocomplete T="string" Dense="true" Clearable="true" MaxItems="null" Label = "Available Rooms" @bind-Value = "tempRoomName" ResetValueOnEmptyText = "true"
                                 SearchFunc = "@searchRoomNames"/>
                         </MudItem>
                         <button @onclick = "@UpdateAvailableRooms" class="btn btn-primary" style="width: 183px; margin-left: 22px;" >Refresh Room List</button>
