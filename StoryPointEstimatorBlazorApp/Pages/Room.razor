@@ -700,6 +700,7 @@ else{
             hubConnection.SendAsync("userRemoval", roomId, true);
             _dB.removeRoomData(roomId);
             _dB.removeUserData(roomId, userId);
+            Thread.Sleep(500); //Wait for all clients to recieve message
             NavigationManager.NavigateTo("/RoomDeleted/true");
         }
     }
