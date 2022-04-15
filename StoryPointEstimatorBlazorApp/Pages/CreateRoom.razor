@@ -7,6 +7,9 @@
 @inject NavigationManager NavigationManager
 
 <style>
+    :root {
+         --mud-palette-primary: #4B27FE;
+    }
     .inputArea{
         text-align : center;
     }
@@ -45,7 +48,7 @@
         <EditForm Model="@newGroupedModel" OnSubmit="@insertData">
             <div class = "inputSpacer">
                 <div class="form-group">
-                    <MudGrid Class="justify-space-between" Style="max-width: 400px;">
+                    <MudGrid Style="max-width: 40px;">
                         <MudItem xs="12">
                             <MudText Class="table-vote-text">Username: </MudText>
                             <input class="join-create-text-fields" type="text" @bind-value="newGroupedModel.userName" />
@@ -56,7 +59,7 @@
 
             <div class = "inputSpacer">
                 <div class="form-group">
-                    <MudGrid Class="justify-space-between" Style="max-width: 400px;">
+                    <MudGrid Style="max-width: 120px;">
                         <MudItem xs="12">
                             <MudText Class="table-vote-text">Room Name: </MudText>
                             <input class="join-create-text-fields" type="text" @bind-value="newGroupedModel.roomName" />
@@ -69,8 +72,8 @@
                 <MudCheckBox @bind-Checked="newGroupedModel.isAdmin" Label="Are you a facilitator?" Color="Color.Primary"></MudCheckBox>
             </div>
 
-            <button type="submit" class="btn btn-primary">Create Room</button>
-            <a class="btn btn-primary" href="/">Cancel</a>
+            <button type="submit" class="btn btn-primary" style="background-color: #4B27FE; color: white;">Create Room</button>
+            <a class="btn btn-primary" style="background-color: #4B27FE; color: white;" href="/">Cancel</a>
             <div class = "inputSpacer">
                 <p>Username must be between 3 and 50 characters. Room name must be between 4 and 50 characters.</p>
             </div>
@@ -78,6 +81,7 @@
     </div>
 </MudPaper>
 </div>
+
 
 @code {
 
@@ -130,52 +134,61 @@
                 unique = false;          
                 userIdList = _dB.GetUserIds(); //refresh userId list                                                     
 
-             }
-             else
-             {
-                 unique = true;
-             }
-            
+            }
+            else
+            {
+                unique = true;
+            }
+
         }
         return possibleId;
     }
-    
 
-    private void insertData(){
+
+    private void insertData() {
         submitBtnClicked = true;
-        List<string> roomNames = _dB.GetRoomNames();
-        if (newGroupedModel.roomName.Equals(String.Empty) || newGroupedModel.userName.Equals(String.Empty)
-            || newGroupedModel.roomName.Length > 50 || newGroupedModel.roomName.Length < 3 || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 2)
+        if (!newGroupedModel.userName.Trim().Equals("") || !newGroupedModel.roomName.Trim().Equals("")) // do not allow entires with only spaces
+        {
+
+
+            List<string> roomNames = _dB.GetRoomNames();
+            if (newGroupedModel.roomName.Equals(String.Empty) || newGroupedModel.userName.Equals(String.Empty)
+                || newGroupedModel.roomName.Length > 50 || newGroupedModel.roomName.Length < 3 || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 2)
+                validSubmit = false;
+            else
+                validSubmit = true;
+
+            string found = roomNames.Find(x => x.Equals(newGroupedModel.roomName));
+            if (found is not null)
+            {
+                alreadyExists = true;
+            }
+            else
+            {
+                alreadyExists = false;
+            }
+            if (validSubmit && !alreadyExists)
+            {
+                //define roomModel and userModel
+                roomModel roomInsert = new roomModel();
+                userModel userInsert = new userModel();
+                //bind all data from GroupModel to the above models
+                roomInsert.roomId = createRoomCode();
+                newGroupedModel.roomId = roomInsert.roomId;
+                roomInsert.roomName = newGroupedModel.roomName;
+
+                userInsert.userId = createUserId();
+                userInsert.userName = newGroupedModel.userName;
+                userInsert.isAdmin = newGroupedModel.isAdmin;
+
+
+                _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
+                NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, true);
+            }
+        }
+        else
+        {
             validSubmit = false;
-        else
-            validSubmit = true;
-
-        string found = roomNames.Find(x => x.Equals(newGroupedModel.roomName));
-        if(found is not null)
-        {
-            alreadyExists = true;
-        }
-        else
-        {
-            alreadyExists = false;
-        }
-        if (validSubmit && !alreadyExists)
-        {
-            //define roomModel and userModel
-            roomModel roomInsert = new roomModel();
-            userModel userInsert = new userModel();
-            //bind all data from GroupModel to the above models
-            roomInsert.roomId = createRoomCode();
-            newGroupedModel.roomId = roomInsert.roomId;
-            roomInsert.roomName = newGroupedModel.roomName;
-
-            userInsert.userId = createUserId();
-            userInsert.userName = newGroupedModel.userName;
-            userInsert.isAdmin = newGroupedModel.isAdmin;
-
-
-            _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
-            NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, true);
         }
     }
 }
