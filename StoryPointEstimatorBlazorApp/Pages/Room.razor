@@ -9,10 +9,10 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
 <style>
     :root {
          --mud-palette-primary: #4B27FE;
+         --mud-palette-secondary: #FFFFFF;
     }
 </style>
 <div>
@@ -51,7 +51,7 @@
         </MudButton>
         <MudSpacer />
         <MudText Class="appbar-buttons-text">@newGroupedModel.userName</MudText>
-        <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Inherit" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
+        <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Secondary" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
             <MudMenuItem @onclick="OpenProfile">User Profile</MudMenuItem>
             <MudMenuItem @onclick="OpenAbout">About</MudMenuItem>
         </MudMenu>
@@ -149,16 +149,18 @@ else{
                 }
                 @if(Voting_Mode==4) 
                 {
-                    <MudText Class="mud-paper-custom-scale"> @currentCustomTitle </MudText>
+                    <MudText Class="mud-paper-tool-name"> @currentCustomTitle </MudText>
                     @if (newGroupedModel.isAdmin) {
                         <MudPaper Style="background: rgba(0,0,0,0.0);" Class="mud-paper-custom-scale" Elevation="0">
                             <MudItem Class="slider">
                                 <MudText Class="slider">Number of buttons: @tempCustomScale</MudText>
                                 <MudSlider Min="1" Max="24" Step="1" @bind-Value="@tempCustomScale" Style="{color: #4B27FE;}"/>
                             </MudItem>
+                            <div>
                              <MudText Class="table-vote-text">Custom Title: </MudText>
                              <input class="join-create-text-fields" type="text" @bind-value="newCustomTitle" />
-                            <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="width: 75px; height: 30px;">Update</MudButton>    
+                            </div>
+                            <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="margin-top: 35px; width: 75px; height: 30px;"><MudText Class="admin-tools-text">Update</MudText></MudButton>    
                         </MudPaper>
                     }
                     foreach(int x in Enumerable.Range(1, @currentCustomScale))
@@ -202,7 +204,7 @@ else{
                             </MudButton>
                         }
                         else {
-                            <MudButton OnClick="stopStopwatch" Variant="Variant.Filled" Class="timer-buttons">
+                            <MudButton Disabled="@_stopDisable" OnClick="stopStopwatch" Variant="Variant.Filled" Class="timer-buttons">
                                 <MudText Class="timer-buttons-text">Stop</MudText>
                             </MudButton>
                         }
@@ -222,6 +224,7 @@ else{
                     @if (_soundOff) {<MudText Class="admin-tools-text" >Turn Sound On</MudText>}
                     else {<MudText Class="admin-tools-text" >Turn Sound Off</MudText>}
                 </MudButton>
+                    @if (!_soundOff) {<MudIcon Style="margin-left: 4px;" Size="Size.Large" Color="Color.Primary" Icon="@Icons.Filled.VolumeUp"/>}
             </MudPaper>
             </div>
             }
@@ -249,13 +252,14 @@ else{
             @if (Voting_Mode != 5)
             {
                     <MudPaper Class="mud-paper-table" Elevation="0">
-                        <MudItem>
-                            <MudText Class="mud-paper-tool-name"> Results <MudButton OnClick='() => setVote("")' Class="admin-tools-buttons">
-                            <MudText Class="admin-tools-text">Clear My Vote</MudText>
-                            </MudButton> 
-                            </MudText>
+                        <MudItem Style="display: inline-flex; justify-content: start;">
+                            <MudText Class="mud-paper-tool-name"> Results </MudText>
+                            <MudButton OnClick='() => setVote("")' Class="admin-tools-buttons" Style="margin-top: 10px; width: 120px; height: 36px;"><MudText Class="admin-tools-text">Clear My Vote</MudText></MudButton> 
+                            <MudToggleIconButton Style="margin-left: 310px; width: 50px; height: 50px;" @bind-Toggled="@_isDense"
+                            Icon="@Icons.Rounded.ZoomInMap" Color="@Color.Primary"
+                            ToggledIcon="@Icons.Rounded.ZoomOutMap" ToggledColor="@Color.Primary"/>
                         </MudItem>
-                        <MudTable Items="@connectedUsers" Style="background: rgba(0,0,0,0.0);" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
+                        <MudTable Items="@connectedUsers" Style="background: rgba(0,0,0,0.0);" Dense="@_isDense" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
                             <ColGroup>
                                 <col style="width: 50%;" />
                                 <col style="width: 50%;" />
@@ -568,9 +572,9 @@ else{
                         StateHasChanged();
                     }
                     catch (InvalidOperationException) //possible failure to grab new list
-                    {
+                {
                         _dB.removeUserData(userId, roomId); //ensure user data is removed
-                        if(hubConnection is not null)
+                    if(hubConnection is not null)
                         {
                             await hubConnection.SendAsync("userDisconnect", userId, roomId); 
                         }
@@ -613,7 +617,7 @@ else{
     //}
 
     //Custom Scale
-    private string newCustomTitle { get; set; } = "Enter A Title";
+    private string newCustomTitle { get; set; } = "";
     private int currentCustomScale;
     private int tempCustomScale;
 
@@ -684,6 +688,7 @@ else{
     private bool hiddenVotes = true;
     private bool votesCleared = false;
     MudMessageBox deleteRoomMSG { get; set; }
+    private bool _isDense = false;
     private async void deleteRoom()
     {
         bool? result = await deleteRoomMSG.Show();
@@ -717,7 +722,7 @@ else{
             }
             catch (InvalidOperationException)//issue where admin clears room while many server calls are being made
             {
-                 _dB.removeUserData(userId, roomId); //ensure user data is removed
+                _dB.removeUserData(userId, roomId); //ensure user data is removed
                 if(hubConnection is not null)
                 {
                     await hubConnection.SendAsync("userDisconnect", userId, roomId); 
@@ -803,6 +808,7 @@ else{
             _timerAppBar = true;
         }
     }
+
     void setVote(string val)
     {
         try
@@ -870,6 +876,7 @@ else{
     private bool _stopwatchMode = false;
     private bool _isStopwatchRunning = false;
     private bool _stopwatchDone = false;
+    private bool _stopDisable = true;
     async Task Timer()
     {
         _timerDone = false;
@@ -905,6 +912,7 @@ else{
         _stopwatchDone = false;
         TimeRemaining = new TimeSpan(0, 0, 0);
         _isStopwatchRunning = true;
+        _stopDisable = false;
         while (_isStopwatchRunning) {
             await Task.Delay(1000);
             if (_isStopwatchRunning)
@@ -926,6 +934,7 @@ else{
     {
         _isStopwatchRunning = false;
         _stopwatchDone = true;
+        _stopDisable = true;
         displaytimer = "00:00:00";
         mostRecentTime = TimeRemaining.ToString();
     }
@@ -966,6 +975,8 @@ else{
     {
         if(_stopwatchMode)
         {
+            _pause = false;
+            _stopDisable = true;
             _stopwatchDone = false;
             _isStopwatchRunning = false;
             displaytimer = "00:00:00";
@@ -974,6 +985,8 @@ else{
         }
         else
         {
+            _pause = false;
+            _stopDisable = true;
             _stopwatchDone = false;
             _isStopwatchRunning = false;
             _reset = true;
