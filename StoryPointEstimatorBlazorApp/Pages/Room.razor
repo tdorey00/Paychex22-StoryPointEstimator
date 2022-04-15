@@ -467,6 +467,7 @@ else{
         }
         catch (InvalidOperationException) //race condition involving user joining a room while it is being cleared or deleted
         {
+            _dB.removeUserData(roomId, userId);
             NavigationManager.NavigateTo("Error");
         }
 
@@ -710,7 +711,7 @@ else{
             try
             {
                 await hubConnection.SendAsync("userRemoval", roomId, false);
-                Thread.Sleep(500); //wait for clients to recieve message before regrabbing list of users
+                Thread.Sleep(1000); //wait for clients to recieve message before regrabbing list of users
                 connectedUsers = await _dB.getConnectedUsers(roomId);
                 StateHasChanged();
             }

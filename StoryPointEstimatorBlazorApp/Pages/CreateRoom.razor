@@ -2,6 +2,7 @@
 @using StoryPointEstimatorBlazorApp.Models
 @using SqlDataAccessLib
 @using SQLDataAccessLibrary.Models
+@using System.Data.SqlClient
 @inject IRoomDataAccess _dB
 
 @inject NavigationManager NavigationManager
@@ -42,7 +43,11 @@
         {
             <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Room Already Exists! Please use a different name.</MudAlert>
         }
-        <EditForm Model="@newGroupedModel" OnSubmit="@insertData">
+            @if(sqlError && submitBtnClicked)
+            {
+                <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Error! Please click create room again!</MudAlert>
+            }
+            <EditForm Model="@newGroupedModel" OnSubmit="@insertData">
             <div class = "inputSpacer">
                 <div class="form-group">
                     <MudGrid Class="justify-space-between" Style="max-width: 400px;">
@@ -85,6 +90,7 @@
     private bool validSubmit = false;
     private bool submitBtnClicked = false;
     private bool alreadyExists = false;
+    private bool sqlError = false;
 
     //Data Models
     private List<int> userIdList = new List<int>(); 
@@ -142,49 +148,56 @@
 
 
     private void insertData() {
-        submitBtnClicked = true;
-        if (!newGroupedModel.userName.Trim().Equals("") || !newGroupedModel.roomName.Trim().Equals("")) // do not allow entires with only spaces
+        try
         {
+            sqlError = false;
+            submitBtnClicked = true;
+            if (!newGroupedModel.userName.Trim().Equals("") || !newGroupedModel.roomName.Trim().Equals("")) // do not allow entires with only spaces
+            {
 
 
-            List<string> roomNames = _dB.GetRoomNames();
-            if (newGroupedModel.roomName.Equals(String.Empty) || newGroupedModel.userName.Equals(String.Empty)
-                || newGroupedModel.roomName.Length > 50 || newGroupedModel.roomName.Length < 3 || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 2)
+                List<string> roomNames = _dB.GetRoomNames();
+                if (newGroupedModel.roomName.Equals(String.Empty) || newGroupedModel.userName.Equals(String.Empty)
+                    || newGroupedModel.roomName.Length > 50 || newGroupedModel.roomName.Length < 3 || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 2)
+                    validSubmit = false;
+                else
+                    validSubmit = true;
+
+                string found = roomNames.Find(x => x.Equals(newGroupedModel.roomName));
+                if (found is not null)
+                {
+                    alreadyExists = true;
+                }
+                else
+                {
+                    alreadyExists = false;
+                }
+                if (validSubmit && !alreadyExists)
+                {
+                    //define roomModel and userModel
+                    roomModel roomInsert = new roomModel();
+                    userModel userInsert = new userModel();
+                    //bind all data from GroupModel to the above models
+                    roomInsert.roomId = createRoomCode();
+                    newGroupedModel.roomId = roomInsert.roomId;
+                    roomInsert.roomName = newGroupedModel.roomName;
+
+                    userInsert.userId = createUserId();
+                    userInsert.userName = newGroupedModel.userName;
+                    userInsert.isAdmin = newGroupedModel.isAdmin;
+
+
+                    _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
+                    NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, true);
+                }
+            }
+            else
+            {
                 validSubmit = false;
-            else
-                validSubmit = true;
-
-            string found = roomNames.Find(x => x.Equals(newGroupedModel.roomName));
-            if (found is not null)
-            {
-                alreadyExists = true;
             }
-            else
-            {
-                alreadyExists = false;
-            }
-            if (validSubmit && !alreadyExists)
-            {
-                //define roomModel and userModel
-                roomModel roomInsert = new roomModel();
-                userModel userInsert = new userModel();
-                //bind all data from GroupModel to the above models
-                roomInsert.roomId = createRoomCode();
-                newGroupedModel.roomId = roomInsert.roomId;
-                roomInsert.roomName = newGroupedModel.roomName;
-
-                userInsert.userId = createUserId();
-                userInsert.userName = newGroupedModel.userName;
-                userInsert.isAdmin = newGroupedModel.isAdmin;
-
-
-                _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
-                NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, true);
-            }
-        }
-        else
+        }catch (SqlException)//race condition on create room where two of the same Id's are put in at the same time
         {
-            validSubmit = false;
+            sqlError = true;
         }
     }
 }
