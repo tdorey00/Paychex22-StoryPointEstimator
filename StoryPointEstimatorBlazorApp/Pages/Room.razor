@@ -301,14 +301,16 @@ else{
                                     }
                                 </MudTd>
                                 <MudTd DataLabel="Vote">
-                                    @if (!hiddenVotes)
-                                    {
+
                                         @if (Voting_Mode == 1) {
                                             @if (@votesCleared) {
                                             context.fibVote = "";
                                         }
                                             @if (context.fibVote != "") {
-                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">
+                                            <MudPaper Class="vote-background">
+                                                @if (!hiddenVotes)
+                                                {
+                                                <MudText Class="table-vote-text">
                                                 @if(context.fibVote.Equals("coffee")){
                                                     @COFFEE
                                                 }
@@ -318,7 +320,10 @@ else{
                                                 else{
                                                     @context.fibVote
                                                 }
-                                                </MudText></MudPaper>   
+                                                </MudText>  
+                                                }
+                                                </MudPaper>
+
                                             }   
                                         }
                                         else if (Voting_Mode == 2) {
@@ -326,7 +331,12 @@ else{
                                             context.fistVote = "";
                                         }
                                             @if (context.fistVote != "") {
-                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.fistVote</MudText></MudPaper>   
+                                            <MudPaper Class="vote-background">
+                                                @if (!hiddenVotes)
+                                                {
+                                                <MudText Class="table-vote-text">@context.fistVote</MudText>  
+                                                }
+                                                </MudPaper>
                                             }   
                                         }
                                         else if (Voting_Mode == 3) {
@@ -334,18 +344,25 @@ else{
                                             context.tshirtVote = "";
                                         }
                                             @if (context.tshirtVote != "") {
-                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.tshirtVote</MudText></MudPaper>   
-                                            }   
+                                            <MudPaper Class="vote-background">
+                                                @if (!hiddenVotes)
+                                                {
+                                                <MudText Class="table-vote-text">@context.tshirtVote</MudText>  
+                                                }
+                                                </MudPaper>                                            }   
                                         }
                                         else {
                                             @if (@votesCleared) {
                                             context.scaleVote = "";
                                         }
                                             @if (context.scaleVote != "") {
-                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.scaleVote</MudText></MudPaper>   
-                                            }   
+                                            <MudPaper Class="vote-background">
+                                                @if (!hiddenVotes)
+                                                {
+                                                <MudText Class="table-vote-text">@context.scaleVote</MudText>  
+                                                }
+                                                </MudPaper>                                              }   
                                         }                                        
-                                    }
                                 </MudTd>
                             </RowTemplate>
                         </MudTable>
