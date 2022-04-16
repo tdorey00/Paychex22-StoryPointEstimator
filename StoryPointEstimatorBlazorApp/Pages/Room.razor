@@ -5,7 +5,7 @@
 @using Microsoft.AspNetCore.SignalR.Client
 <!--inject Blazored.SessionStorage.ISessionStorageService sessionStorage-->
 @inject IRoomDataAccess _dB
-<!--implements IDisposable-->
+<!-- implements IDisposable-->
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
@@ -296,7 +296,7 @@ else{
                                 {
                                     @STAR
                                 }
-                                @if (@newGroupedModel.userName == @context.userName)
+                                @if (userId == @context.userId)
                                 {
                                     @Me
                                 }
@@ -324,7 +324,7 @@ else{
                                         </MudText>
                                             }
                                             else {
-                                                @if (@newGroupedModel.userName == @context.userName) {
+                                                @if (userId == @context.userId) {
                                                 <MudText Class="table-vote-text">@fiboVoteClient</MudText>  
                                                 }
                                             }
@@ -342,7 +342,7 @@ else{
                                             <MudText Class="table-vote-text">@context.fistVote</MudText>  
                                             }
                                             else {
-                                                @if (@newGroupedModel.userName == @context.userName) {
+                                                @if (userId == @context.userId) {
                                                 <MudText Class="table-vote-text">@fistVoteClient</MudText>  
                                                 }
                                             }
@@ -360,7 +360,7 @@ else{
                                             <MudText Class="table-vote-text">@context.tshirtVote</MudText>  
                                             }
                                             else {
-                                                @if (@newGroupedModel.userName == @context.userName) {
+                                                @if (userId == @context.userId) {
                                                 <MudText Class="table-vote-text">@tshirtVoteClient</MudText>  
                                                 }
                                             }
@@ -378,7 +378,7 @@ else{
                                             <MudText Class="table-vote-text">@context.scaleVote</MudText>  
                                             }
                                             else {
-                                                @if (@newGroupedModel.userName == @context.userName) {
+                                                @if (userId == @context.userId) {
                                                 <MudText Class="table-vote-text">@scaleVoteClient</MudText>  
                                                 }
                                             }
@@ -589,20 +589,20 @@ else{
         {
 
             bool currentAdminStatus = _dB.getAdminStatus(userId); //need to pull newest data because signalR takes intitial state not the possible modified state
-        if(roomId == room)
+            if(roomId == room)
             {
                 if(everyone) //everyone is true then remove everyone regardless of admin status (for room delete)
-            {
+                {
                     _dB.removeUserData(roomId, userId);
                     NavigationManager.NavigateTo("/RoomDeleted/true");
                 }
                 else if(!everyone && !currentAdminStatus)//not everyone and user is not an admin (clear users)
-            {
+                {
                     _dB.removeUserData(roomId, userId);
                     NavigationManager.NavigateTo("/RoomDeleted/false");
                 }
                 else if(!everyone && currentAdminStatus) //not everyone and user is an admin (clear users)
-            {
+                {
                     try
                     {
                         Thread.Sleep(500);
@@ -610,9 +610,9 @@ else{
                         StateHasChanged();
                     }
                     catch (InvalidOperationException) //possible failure to grab new list
-                {
+                    {
                         _dB.removeUserData(userId, roomId); //ensure user data is removed
-                    if(hubConnection is not null)
+                        if(hubConnection is not null)
                         {
                             await hubConnection.SendAsync("userDisconnect", userId, roomId); 
                         }
@@ -650,8 +650,8 @@ else{
 
     //public void Dispose() //called on page close
     //{
-    //    _dB.removeUserData(roomId, userId);
-    //    NavigationManager.NavigateTo("/")
+        //_dB.removeUserData(roomId, userId);
+        //NavigationManager.NavigateTo("/");
     //}
 
     //Custom Scale
