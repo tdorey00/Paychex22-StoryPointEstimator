@@ -89,7 +89,7 @@
     background-color: #4B27FE;
     color: white;
     height: 60px;
-    padding-top: 12px;
+    padding-top: 2px;
     display: flex;
     justify-content: center;
     border-radius: 15px;
@@ -176,6 +176,15 @@
     min-width: 600px;
     max-width: 600px;
     background: rgba(0,0,0,0.0);
+}
+.mud-paper-table-tools {
+    margin-top: 10px;
+    width: 100px;
+    height: 36px;
+    background-color: #4B27FE;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-evenly;
 }
 .mud-paper-tool-name {
     font-family: 'Ubuntu';

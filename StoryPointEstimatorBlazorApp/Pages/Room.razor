@@ -256,12 +256,15 @@ else{
             <MudPaper Class="mud-paper-table" Elevation="0">
                 <MudItem Style="display: inline-flex; justify-content: start;">
                     <MudText Class="mud-paper-tool-name"> Results </MudText>
-                    <MudButton OnClick='() => setVote("")' Class="admin-tools-buttons" Style="margin-top: 10px; width: 120px; height: 36px;">
-                        <MudText Class="main-font" Style="font-size: 16px;">Clear My Vote</MudText>
-                    </MudButton> 
-                    <MudToggleIconButton Style="margin-left: 310px; width: 50px; height: 50px;" @bind-Toggled="@_isDense"
-                    Icon="@Icons.Rounded.ZoomInMap" Color="@Color.Primary"
-                    ToggledIcon="@Icons.Rounded.ZoomOutMap" ToggledColor="@Color.Primary"/>
+                        <MudButton OnClick='() => setVote("")' Class="btn admin-tools-buttons" Style="height: 36px; margin-top: 10px; margin-left: 265px">
+                        <MudText Class="main-font" Style="font-size: 14px;">Clear My Vote</MudText>
+                        </MudButton> 
+                    <MudPaper Class="mud-paper-table-tools" Style="margin-left: 10px;">
+                        <MudIconButton Icon="@Icons.Filled.Refresh" Color="@Color.Secondary" Style=""></MudIconButton>
+                        <MudToggleIconButton Style="" @bind-Toggled="@_isDense"
+                        Icon="@Icons.Rounded.ZoomInMap" Color="@Color.Secondary"
+                        ToggledIcon="@Icons.Rounded.ZoomOutMap" ToggledColor="@Color.Secondary"/>
+                    </MudPaper>
                 </MudItem>
                 <MudTable Items="@connectedUsers" Style="background: rgba(0,0,0,0.0);" Dense="@_isDense" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
                     <ColGroup>
@@ -270,20 +273,16 @@ else{
                     </ColGroup>
                     <HeaderContent>
                         <MudTh><MudTableSortLabel SortBy="new Func<userModel, object>(x=>x.userName)">User</MudTableSortLabel></MudTh>
-                            @if (Voting_Mode == 1)
-                            {
+                            @if (Voting_Mode == 1) {
                                     <MudTh>Story Points</MudTh>
                             }
-                            else if (Voting_Mode == 2)
-                            {
+                            else if (Voting_Mode == 2) {
                                     <MudTh>Fingers</MudTh>
                             }
-                            else if (Voting_Mode == 3)
-                            {
+                            else if (Voting_Mode == 3) {
                                     <MudTh>Size</MudTh>
                             }
-                            else
-                            {
+                            else {
                                     <MudTh>@currentCustomTitle</MudTh>
                             }
                     </HeaderContent>
@@ -311,22 +310,25 @@ else{
                             }
                                 @if (context.fibVote != "") {
                                     <MudPaper Class="vote-background">
-                                        @if (!hiddenVotes)
-                                        {
+                                        @if (!hiddenVotes) {
                                         <MudText Class="table-vote-text">
-                                        @if(context.fibVote.Equals("coffee")){
+                                            @if(context.fibVote.Equals("coffee")) {
                                             @COFFEE
-                                        }
-                                        else if(context.fibVote.Equals("half")){
+                                            }
+                                            else if(context.fibVote.Equals("half")) {
                                             @HALF
-                                        }
-                                        else{
+                                            }
+                                            else {
                                             @context.fibVote
-                                        }
-                                        </MudText>  
-                                        }
-                                        </MudPaper>
-
+                                            }
+                                        </MudText>
+                                            }
+                                            else {
+                                                @if (@newGroupedModel.userName == @context.userName) {
+                                                <MudText Class="table-vote-text">@fiboVoteClient</MudText>  
+                                                }
+                                            }
+                                </MudPaper>
                                     }   
                                 }
                                 else if (Voting_Mode == 2) {
@@ -334,37 +336,54 @@ else{
                                     context.fistVote = "";
                                 }
                                     @if (context.fistVote != "") {
-                                    <MudPaper Class="vote-background">
-                                        @if (!hiddenVotes)
-                                        {
-                                        <MudText Class="table-vote-text">@context.fistVote</MudText>  
-                                        }
+                                        <MudPaper Class="vote-background">
+                                            @if (!hiddenVotes)
+                                            {
+                                            <MudText Class="table-vote-text">@context.fistVote</MudText>  
+                                            }
+                                            else {
+                                                @if (@newGroupedModel.userName == @context.userName) {
+                                                <MudText Class="table-vote-text">@fistVoteClient</MudText>  
+                                                }
+                                            }
                                         </MudPaper>
                                     }   
                                 }
                                 else if (Voting_Mode == 3) {
                                     @if (@votesCleared) {
                                     context.tshirtVote = "";
-                                }
+                                    }
                                     @if (context.tshirtVote != "") {
-                                    <MudPaper Class="vote-background">
-                                        @if (!hiddenVotes)
-                                        {
-                                        <MudText Class="table-vote-text">@context.tshirtVote</MudText>  
-                                        }
-                                        </MudPaper>                                            }   
+                                        <MudPaper Class="vote-background">
+                                            @if (!hiddenVotes)
+                                            {
+                                            <MudText Class="table-vote-text">@context.tshirtVote</MudText>  
+                                            }
+                                            else {
+                                                @if (@newGroupedModel.userName == @context.userName) {
+                                                <MudText Class="table-vote-text">@tshirtVoteClient</MudText>  
+                                                }
+                                            }
+                                        </MudPaper>
+                                    }   
                                 }
                                 else {
                                     @if (@votesCleared) {
                                     context.scaleVote = "";
-                                }
+                                    }
                                     @if (context.scaleVote != "") {
-                                    <MudPaper Class="vote-background">
-                                        @if (!hiddenVotes)
-                                        {
-                                        <MudText Class="table-vote-text">@context.scaleVote</MudText>  
-                                        }
-                                        </MudPaper>                                              }   
+                                        <MudPaper Class="vote-background">
+                                            @if (!hiddenVotes)
+                                            {
+                                            <MudText Class="table-vote-text">@context.scaleVote</MudText>  
+                                            }
+                                            else {
+                                                @if (@newGroupedModel.userName == @context.userName) {
+                                                <MudText Class="table-vote-text">@scaleVoteClient</MudText>  
+                                                }
+                                            }
+                                        </MudPaper>
+                                    }   
                                 }                                        
                         </MudTd>
                     </RowTemplate>
@@ -376,7 +395,7 @@ else{
 @if (Voting_Mode != 5) {
     <div style="position: fixed; bottom: 2%; left: 1%;">
     <MudPaper Class="roomname-display">
-        <MudText Class="main-font" Style="font-size: 18px; padding: 5px;">Room: @newGroupedModel.roomName</MudText>
+        <MudText Class="main-font" Style="font-size: 18px; padding: 15px;">Room: @newGroupedModel.roomName</MudText>
     </MudPaper>
     </div>
 }
@@ -798,8 +817,12 @@ else{
         }
     }
     //Voting Mode
-    public int Voting_Mode { get; set; } = 1;
 
+    public int Voting_Mode { get; set; } = 1;
+    string fiboVoteClient { get; set; }
+    string fistVoteClient { get; set; } 
+    string tshirtVoteClient { get; set; }
+    string scaleVoteClient { get; set; } 
     void setVotingMode(int mode){
         Voting_Mode = mode;
         if(Voting_Mode == 1) //fib vote
@@ -828,7 +851,6 @@ else{
             _timerAppBar = true;
         }
     }
-
     void setVote(string val)
     {
         try
@@ -840,30 +862,36 @@ else{
                 if (val.Equals("coffee"))
                 {
                     found.fibVote = "" + COFFEE;
+                    fiboVoteClient = "" + COFFEE;
                 }
                 else if (val.Equals("0.5"))
                 {
                     found.fibVote = "" + HALF;
+                    fiboVoteClient = "" + HALF;
                 }
                 else
                 {
                     found.fibVote = val;
+                    fiboVoteClient = val;
                 }
             }
             else if (Voting_Mode == 2) //Fist vote
             {
                 userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
                 found.fistVote = val;
+                fistVoteClient = val;
             }
             else if (Voting_Mode == 3) //Tshirt vote
             {
                 userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
                 found.tshirtVote = val;
+                tshirtVoteClient = val;
             }
             else if (Voting_Mode == 4) //custom scale
             {
                 userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
                 found.scaleVote = val;
+                scaleVoteClient = val;
             }
             if (hubConnection is not null)
             {
