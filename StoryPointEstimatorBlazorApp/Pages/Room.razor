@@ -575,7 +575,7 @@ else{
             }
         });
 
-        hubConnection.On<int, string, int>("recieveScale", async(room, scaleName, scale)=>
+        hubConnection.On<int, string, int>("recieveScale", async(room, scaleName, scale) =>
         {
             if(room == roomId)
             {
@@ -587,7 +587,6 @@ else{
 
         hubConnection.On<int, bool>("removeUser", async (room, everyone) =>
         {
-
             bool currentAdminStatus = _dB.getAdminStatus(userId); //need to pull newest data because signalR takes intitial state not the possible modified state
             if(roomId == room)
             {
