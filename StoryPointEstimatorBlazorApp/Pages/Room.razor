@@ -19,25 +19,25 @@
     @if (_timing || _isStopwatchRunning) {<head><title>ScrumSpace | @displaytimer </title></head>}
     else {<head><title>ScrumSpace</title></head>}
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
-        <MudText Class="appbar-buttons-text" Style="width: 120px; min-width:120px;">ScrumSpace</MudText> -
+        <MudText Class="main-font" Style="width: 120px; min-width:120px;">ScrumSpace</MudText> -
         <MudButton OnClick="returnHome" Class="appbar-buttons"> 
-            <MudText Class="appbar-buttons-text">Home</MudText>
+            <MudText Class="main-font">Home</MudText>
         </MudButton> |
         <MudButton Disabled="@_fiboAppBar" OnClick="() => setVotingMode(1)" Class="appbar-buttons" Style="width: 150px; min-width:150px;">
             @if (_fiboAppBar) {<MudText Class="appbar-buttons-clicked">Fibonacci Tool</MudText>}
-            else {<MudText Class="appbar-buttons-text">Fibonacci Tool</MudText>}
+            else {<MudText Class="main-font">Fibonacci Tool</MudText>}
         </MudButton> |
         <MudButton Disabled="@_fistAppBar" OnClick="() => setVotingMode(2)" Class="appbar-buttons" Style="width: 120px; min-width:120px;">
             @if (_fistAppBar) {<MudText Class="appbar-buttons-clicked">Fist of Five</MudText>}
-            else {<MudText Class="appbar-buttons-text">Fist of Five</MudText>}        
+            else {<MudText Class="main-font">Fist of Five</MudText>}        
         </MudButton> |
         <MudButton Disabled="@_tshirtAppBar" OnClick="() => setVotingMode(3)" Class="appbar-buttons" Style="width: 140px; min-width:140px;">
             @if (_tshirtAppBar) {<MudText Class="appbar-buttons-clicked">T-Shirt Sizing</MudText>}
-            else {<MudText Class="appbar-buttons-text">T-Shirt Sizing</MudText>}        
+            else {<MudText Class="main-font">T-Shirt Sizing</MudText>}        
         </MudButton> |
         <MudButton Disabled="@_customAppBar" OnClick="() => setVotingMode(4)" Class="appbar-buttons" Style="width: 160px; min-width:160px;">
             @if (_customAppBar) {<MudText Class="appbar-buttons-clicked">Custom Voting</MudText>}
-            else {<MudText Class="appbar-buttons-text">Custom Voting</MudText>}        
+            else {<MudText Class="main-font">Custom Voting</MudText>}        
         </MudButton> |
         <MudButton Disabled="@_timerAppBar" OnClick="() => setVotingMode(5)" Class="appbar-buttons">
             @if (_timerAppBar) {
@@ -45,12 +45,12 @@
                 else {<MudText Class="appbar-buttons-clicked" Style="width: 60px; min-width:60px;">Timer</MudText>}
                 @if (_pause) {<MudText Class="appbar-buttons-clicked" Style="width: 80px; min-width:80px;">| Paused </MudText>}}
             else {
-                @if (_timing || _isStopwatchRunning) {<MudText Class="appbar-buttons-text" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
-                else {<MudText Class="appbar-buttons-text" Style="width: 60px; min-width:60px;">Timer</MudText>}
-                @if (_pause) {<MudText Class="appbar-buttons-text" Style="width: 80px; min-width:80px;">| Paused </MudText>}}
+                @if (_timing || _isStopwatchRunning) {<MudText Class="main-font" Style=" width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
+                else {<MudText Class="main-font" Style=" width: 60px; min-width:60px;">Timer</MudText>}
+                @if (_pause) {<MudText Class="main-font"  width: 80px; min-width:80px;">| Paused </MudText>}}
         </MudButton>
         <MudSpacer />
-        <MudText Class="appbar-buttons-text">@newGroupedModel.userName</MudText>
+        <MudText Class="main-font">@newGroupedModel.userName</MudText>
         <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Secondary" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
             <MudMenuItem @onclick="OpenProfile">User Profile</MudMenuItem>
             <MudMenuItem @onclick="OpenAbout">About</MudMenuItem>
@@ -59,12 +59,12 @@
 </div>
 @if (loading)
 {        
-        <MudText>Your Room is loading...</MudText>
+        <MudText Style="font-family:'Ubuntu', sans-serif; font-weight: bold; font-size: 20px;">Your Room is loading...</MudText>
 }
 else{
 <div class="mainContainer">
-            @if (Voting_Mode != 5){
-            <div>
+    @if (Voting_Mode != 5){
+        <div>
             <MudPaper Class="mud-paper-buttons" Elevation="0">    
                 @if(Voting_Mode==1) 
                 {
@@ -157,10 +157,12 @@ else{
                                 <MudSlider Min="1" Max="24" Step="1" @bind-Value="@tempCustomScale" Style="{color: #4B27FE;}"/>
                             </MudItem>
                             <div>
-                             <MudText Class="table-vote-text">Custom Title: </MudText>
+                             <MudText Style="font-size: 16px; font-family: 'Ubuntu', sans-serif; font-weight: bold;">Custom Title: </MudText>
                              <input class="join-create-text-fields" type="text" @bind-value="newCustomTitle" />
                             </div>
-                            <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="margin-top: 35px; width: 75px; height: 30px;"><MudText Class="admin-tools-text">Update</MudText></MudButton>    
+                            <MudButton @onclick="updateCustomVote" Class="admin-tools-buttons" Style="margin-top: 35px; width: 75px; height: 30px;">
+                                <MudText Class="main-font" Style="font-size: 14px;">Update</MudText>
+                            </MudButton>    
                         </MudPaper>
                     }
                     foreach(int x in Enumerable.Range(1, @currentCustomScale))
@@ -168,275 +170,311 @@ else{
                         <MudButton Variant="Variant.Filled" OnClick='()=> setVote(""+x)' Class="tool-buttons">@x</MudButton>
                     }
                 }
-                </MudPaper>
-            </div>
-            }
-            @if (Voting_Mode == 5)
-                    {
-            <div>
+            </MudPaper>
+        </div>
+    }
+    @if (Voting_Mode == 5)
+    {
+        <div>
             @if (_stopwatchMode) {<MudText Class="mud-paper-tool-name" >Stopwatch</MudText>}
             else {<MudText Class="mud-paper-tool-name" >Timer</MudText>}
             <MudPaper Class="mud-paper-timer" Style="justify-content: space-evenly" Height ="515px" Width ="850px" Elevation="0">  
                 <MudPaper Class="timer-display">
-                    @if (_timerDone) {<MudText Class="timer-display-text"> 00:00:00 </MudText>}
-                    else {<MudText Class="timer-display-text"> @displaytimer </MudText>}
-                    @if (_pause) {<MudText Class="timer-display-text-pause" Style="padding-left: 80px; width: 80px; min-width:80px;"> (Paused) </MudText>}
-                    @if (_stopwatchDone) {<MudText Class="timer-display-text-pause" Style="padding-left: 40px; width: 250px; min-width:250px;"> Time: @mostRecentTime </MudText>}
+                    @if (_timerDone) {<MudText Class="main-font" Style="font-size: 70px;"> 00:00:00 </MudText>}
+                    else {<MudText Class="main-font" Style="font-size: 70px;"> @displaytimer </MudText>}
+                    @if (_pause) {<MudText Class="main-font" Style="font-size: 30px; padding-left: 80px; width: 80px; min-width:80px;"> (Paused) </MudText>}
+                    @if (_stopwatchDone) {<MudText Class="main-font" Style="font-size: 30px; padding-left: 40px; width: 250px; min-width:250px;"> Time: @mostRecentTime </MudText>}
                 </MudPaper> 
-                    <MudPaper Style="background: rgba(0,0,0,0.0);" Height ="400px" Width ="400px" Elevation="0">
-                        @if (!_stopwatchMode) {
-                        <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
-                            <MudText Class="timer-buttons-text">Start</MudText>
-                        </MudButton>
-                        }
-                        else {
-                        <MudButton Disabled="@_isStopwatchRunning" OnClick="Stopwatch" Variant="Variant.Filled" Class="timer-buttons">
-                            @if (_timerDone) {<MudText Class="timer-buttons-text">Start</MudText>}
-                            else {<MudText Class="timer-buttons-text">Start</MudText>}
-                        </MudButton>
-                        }
-                        @if (!_stopwatchMode) {
-                            <MudButton Disabled="@_pauseDisable" OnClick="pauseTimer" Variant="Variant.Filled" Class="timer-buttons">
-                                <MudText Class="timer-buttons-text">Pause</MudText>
-                            </MudButton>
-                            <MudButton OnClick="resetTimer" Class="timer-buttons">
-                                <MudText Class="timer-buttons-text">Reset</MudText>
-                            </MudButton>
-                        }
-                        else {
-                            <MudButton Disabled="@_stopDisable" OnClick="stopStopwatch" Variant="Variant.Filled" Class="timer-buttons">
-                                <MudText Class="timer-buttons-text">Stop</MudText>
-                            </MudButton>
-                        }
-                        @if (!_stopwatchMode) {
-                            <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" AdornmentColor="Color.Primary" Min="0" Max="12" />
-                            <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
-                            <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
-                        }
-                    </MudPaper>
+                <MudPaper Style="background: rgba(0,0,0,0.0);" Height ="400px" Width ="400px" Elevation="0">
+                    @if (!_stopwatchMode) {
+                    <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
+                        <MudText Class="main-font" Style="font-size: 22px;">Start</MudText>
+                    </MudButton>
+                    }
+                    else {
+                    <MudButton Disabled="@_isStopwatchRunning" OnClick="Stopwatch" Variant="Variant.Filled" Class="timer-buttons">
+                        @if (_timerDone) {<MudText Class="main-font" Style="font-size: 22px;">Start</MudText>}
+                        else {<MudText Class="main-font" Style="font-size: 22px;">Start</MudText>}
+                    </MudButton>
+                    }
+                    @if (!_stopwatchMode) {
+                    <MudButton Disabled="@_pauseDisable" OnClick="pauseTimer" Variant="Variant.Filled" Class="timer-buttons">
+                        <MudText Class="main-font" Style="font-size: 22px;">Pause</MudText>
+                    </MudButton>
+                    <MudButton OnClick="resetTimer" Class="timer-buttons">
+                        <MudText Class="main-font" Style="font-size: 22px;">Reset</MudText>
+                    </MudButton>
+                    }
+                    else {
+                    <MudButton Disabled="@_stopDisable" OnClick="stopStopwatch" Variant="Variant.Filled" Class="timer-buttons">
+                        <MudText Class="main-font" Style="font-size: 22px;">Stop</MudText>
+                    </MudButton>
+                    }
+                    @if (!_stopwatchMode) {
+                        <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" AdornmentColor="Color.Primary" Min="0" Max="12" />
+                        <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
+                        <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
+                    }
+                </MudPaper>
             </MudPaper> 
             <MudPaper Style="background: rgba(0,0,0,0.0);" Elevation="0">
                 <MudText Class="mud-paper-tool-name">Timer Tools</MudText>
                 <MudButton OnClick="toggleStopwatch" Class="admin-tools-buttons" Style="width: 140px;">
-                    @if (_stopwatchMode) {<MudText Class="admin-tools-text" >Timer Mode</MudText>}
-                    else {<MudText Class="admin-tools-text" >Stopwatch Mode</MudText>}
+                    @if (_stopwatchMode) {<MudText Class="main-font" Style="font-size: 14px;" >Timer Mode</MudText>}
+                    else {<MudText Class="main-font" Style="font-size: 14px;" >Stopwatch Mode</MudText>}
                 </MudButton>                <MudButton OnClick="toggleSound" Class="admin-tools-buttons" Style="width: 120px;">
-                    @if (_soundOff) {<MudText Class="admin-tools-text" >Turn Sound On</MudText>}
-                    else {<MudText Class="admin-tools-text" >Turn Sound Off</MudText>}
+                    @if (_soundOff) {<MudText Class="main-font" Style="font-size: 14px;" >Turn Sound On</MudText>}
+                    else {<MudText Class="main-font" Style="font-size: 14px;" >Turn Sound Off</MudText>}
                 </MudButton>
                     @if (!_soundOff) {<MudIcon Style="margin-left: 4px;" Size="Size.Large" Color="Color.Primary" Icon="@Icons.Filled.VolumeUp"/>}
             </MudPaper>
-            </div>
-            }
-        <div>
-            @if (newGroupedModel.isAdmin)
-            {
-                @if (Voting_Mode != 5)
-                {
-                    <MudPaper Class="mud-paper-admin-tools" Elevation="0">
-                        <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
-                        <MudButton OnClick="hideVotes" Class="btn admin-tools-buttons">
-                        @if (hiddenVotes) {<MudText Class="admin-tools-text" >Unhide Votes</MudText>}
-                        else {<MudText Class="admin-tools-text" >Hide Votes</MudText>}
-                        </MudButton>
-                        <MudButton OnClick="hideUsers" Class="btn admin-tools-buttons">
-                        @if (hiddenUsers) {<MudText Class="admin-tools-text" >Unhide Users</MudText>}
-                        else {<MudText Class="admin-tools-text" >Hide Users</MudText>}
-                        </MudButton>
-                        <MudButton OnClick="clearVotesMsg" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Votes</MudText></MudButton>
-                        <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Clear Users</MudText></MudButton>
-                        <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons"><MudText Class="admin-tools-text" >Delete Room</MudText></MudButton>    
-                    </MudPaper>
-                }
-            }
+        </div>
+    }
+    <div>
+        @if (newGroupedModel.isAdmin)
+        {
             @if (Voting_Mode != 5)
             {
-                    <MudPaper Class="mud-paper-table" Elevation="0">
-                        <MudItem Style="display: inline-flex; justify-content: start;">
-                            <MudText Class="mud-paper-tool-name"> Results </MudText>
-                            <MudButton OnClick='() => setVote("")' Class="admin-tools-buttons" Style="margin-top: 10px; width: 120px; height: 36px;"><MudText Class="admin-tools-text">Clear My Vote</MudText></MudButton> 
-                            <MudToggleIconButton Style="margin-left: 310px; width: 50px; height: 50px;" @bind-Toggled="@_isDense"
-                            Icon="@Icons.Rounded.ZoomInMap" Color="@Color.Primary"
-                            ToggledIcon="@Icons.Rounded.ZoomOutMap" ToggledColor="@Color.Primary"/>
-                        </MudItem>
-                        <MudTable Items="@connectedUsers" Style="background: rgba(0,0,0,0.0);" Dense="@_isDense" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
-                            <ColGroup>
-                                <col style="width: 50%;" />
-                                <col style="width: 50%;" />
-                            </ColGroup>
-                            <HeaderContent>
-                                <MudTh><MudTableSortLabel SortBy="new Func<userModel, object>(x=>x.userName)">User</MudTableSortLabel></MudTh>
-                                        @if (Voting_Mode == 1)
-                                        {
-                                                <MudTh>Story Points</MudTh>
-                                        }
-                                        else if (Voting_Mode == 2)
-                                        {
-                                                <MudTh>Fingers</MudTh>
-                                        }
-                                        else if (Voting_Mode == 3)
-                                        {
-                                                <MudTh>Size</MudTh>
-                                        }
-                                        else
-                                        {
-                                                <MudTh>@currentCustomTitle</MudTh>
-                                        }
-                            </HeaderContent>
-                            <RowTemplate>
-                                <MudTd DataLabel="User">
-                                    @if (!hiddenUsers)
-                                    {
-                                        <MudText Class="table-vote-text">
-                                        @context.userName
-                                        @if (context.isAdmin)
-                                        {
-                                            @STAR
-                                        }
-                                        @if (@newGroupedModel.userName == @context.userName)
-                                        {
-                                            @Me
-                                        }
-                                        </MudText>
-                                    }
-                                </MudTd>
-                                <MudTd DataLabel="Vote">
-                                    @if (!hiddenVotes)
-                                    {
-                                        @if (Voting_Mode == 1) {
-                                            @if (@votesCleared) {
-                                            context.fibVote = "";
-                                        }
-                                            @if (context.fibVote != "") {
-                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">
-                                                @if(context.fibVote.Equals("coffee")){
-                                                    @COFFEE
-                                                }
-                                                else if(context.fibVote.Equals("half")){
-                                                    @HALF
-                                                }
-                                                else{
-                                                    @context.fibVote
-                                                }
-                                                </MudText></MudPaper>   
-                                            }   
-                                        }
-                                        else if (Voting_Mode == 2) {
-                                            @if (@votesCleared) {
-                                            context.fistVote = "";
-                                        }
-                                            @if (context.fistVote != "") {
-                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.fistVote</MudText></MudPaper>   
-                                            }   
-                                        }
-                                        else if (Voting_Mode == 3) {
-                                            @if (@votesCleared) {
-                                            context.tshirtVote = "";
-                                        }
-                                            @if (context.tshirtVote != "") {
-                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.tshirtVote</MudText></MudPaper>   
-                                            }   
-                                        }
-                                        else {
-                                            @if (@votesCleared) {
-                                            context.scaleVote = "";
-                                        }
-                                            @if (context.scaleVote != "") {
-                                            <MudPaper Class="vote-background"><MudText Class="table-vote-text">@context.scaleVote</MudText></MudPaper>   
-                                            }   
-                                        }                                        
-                                    }
-                                </MudTd>
-                            </RowTemplate>
-                        </MudTable>
-                    </MudPaper>
+                <MudPaper Class="mud-paper-admin-tools" Elevation="0">
+                    <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
+                    <MudButton OnClick="hideVotes" Class="btn admin-tools-buttons">
+                        @if (hiddenVotes) {<MudText Class="main-font" Style="font-size: 14px;" >Unhide Votes</MudText>}
+                        else {<MudText Class="main-font" Style="font-size: 14px;" >Hide Votes</MudText>}
+                    </MudButton>
+                    <MudButton OnClick="hideUsers" Class="btn admin-tools-buttons">
+                        @if (hiddenUsers) {<MudText Class="main-font" Style="font-size: 14px;" >Unhide Users</MudText>}
+                        else {<MudText Class="main-font" Style="font-size: 14px;" >Hide Users</MudText>}
+                    </MudButton>
+                    <MudButton OnClick="clearVotesMsg" Class="btn admin-tools-buttons"><MudText Class="main-font" Style="font-size: 14px;" >Clear Votes</MudText></MudButton>
+                    <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons"><MudText Class="main-font" Style="font-size: 14px;" >Clear Users</MudText></MudButton>
+                    <MudButton OnClick="deleteRoom" Class="btn admin-tools-buttons"><MudText Class="main-font" Style="font-size: 14px;" >Delete Room</MudText></MudButton>    
+                </MudPaper>
             }
-            </div>
+        }
+        @if (Voting_Mode != 5)
+        {
+            <MudPaper Class="mud-paper-table" Elevation="0">
+                <MudItem Style="display: inline-flex; justify-content: start;">
+                    <MudText Class="mud-paper-tool-name"> Results </MudText>
+                        <MudButton OnClick='() => setVote("")' Class="btn admin-tools-buttons" Style="height: 36px; margin-top: 10px; margin-left: 265px">
+                        <MudText Class="main-font" Style="font-size: 14px;">Clear My Vote</MudText>
+                        </MudButton> 
+                    <MudPaper Class="mud-paper-table-tools" Style="margin-left: 10px;">
+                        <MudIconButton Icon="@Icons.Filled.Refresh" Color="@Color.Secondary" Style=""></MudIconButton>
+                        <MudToggleIconButton Style="" @bind-Toggled="@_isDense"
+                        Icon="@Icons.Rounded.ZoomInMap" Color="@Color.Secondary"
+                        ToggledIcon="@Icons.Rounded.ZoomOutMap" ToggledColor="@Color.Secondary"/>
+                    </MudPaper>
+                </MudItem>
+                <MudTable Items="@connectedUsers" Style="background: rgba(0,0,0,0.0);" Dense="@_isDense" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
+                    <ColGroup>
+                        <col style="width: 50%;" />
+                        <col style="width: 50%;" />
+                    </ColGroup>
+                    <HeaderContent>
+                        <MudTh><MudTableSortLabel SortBy="new Func<userModel, object>(x=>x.userName)">User</MudTableSortLabel></MudTh>
+                            @if (Voting_Mode == 1) {
+                                    <MudTh>Story Points</MudTh>
+                            }
+                            else if (Voting_Mode == 2) {
+                                    <MudTh>Fingers</MudTh>
+                            }
+                            else if (Voting_Mode == 3) {
+                                    <MudTh>Size</MudTh>
+                            }
+                            else {
+                                    <MudTh>@currentCustomTitle</MudTh>
+                            }
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="User">
+                            @if (!hiddenUsers)
+                            {
+                                <MudText Class="table-vote-text">
+                                @context.userName
+                                @if (context.isAdmin)
+                                {
+                                    @STAR
+                                }
+                                @if (@newGroupedModel.userName == @context.userName)
+                                {
+                                    @Me
+                                }
+                                </MudText>
+                            }
+                        </MudTd>
+                        <MudTd DataLabel="Vote">
+                            @if (Voting_Mode == 1) {
+                                @if (@votesCleared) {
+                                context.fibVote = "";
+                            }
+                                @if (context.fibVote != "") {
+                                    <MudPaper Class="vote-background">
+                                        @if (!hiddenVotes) {
+                                        <MudText Class="table-vote-text">
+                                            @if(context.fibVote.Equals("coffee")) {
+                                            @COFFEE
+                                            }
+                                            else if(context.fibVote.Equals("half")) {
+                                            @HALF
+                                            }
+                                            else {
+                                            @context.fibVote
+                                            }
+                                        </MudText>
+                                            }
+                                            else {
+                                                @if (@newGroupedModel.userName == @context.userName) {
+                                                <MudText Class="table-vote-text">@fiboVoteClient</MudText>  
+                                                }
+                                            }
+                                </MudPaper>
+                                    }   
+                                }
+                                else if (Voting_Mode == 2) {
+                                    @if (@votesCleared) {
+                                    context.fistVote = "";
+                                }
+                                    @if (context.fistVote != "") {
+                                        <MudPaper Class="vote-background">
+                                            @if (!hiddenVotes)
+                                            {
+                                            <MudText Class="table-vote-text">@context.fistVote</MudText>  
+                                            }
+                                            else {
+                                                @if (@newGroupedModel.userName == @context.userName) {
+                                                <MudText Class="table-vote-text">@fistVoteClient</MudText>  
+                                                }
+                                            }
+                                        </MudPaper>
+                                    }   
+                                }
+                                else if (Voting_Mode == 3) {
+                                    @if (@votesCleared) {
+                                    context.tshirtVote = "";
+                                    }
+                                    @if (context.tshirtVote != "") {
+                                        <MudPaper Class="vote-background">
+                                            @if (!hiddenVotes)
+                                            {
+                                            <MudText Class="table-vote-text">@context.tshirtVote</MudText>  
+                                            }
+                                            else {
+                                                @if (@newGroupedModel.userName == @context.userName) {
+                                                <MudText Class="table-vote-text">@tshirtVoteClient</MudText>  
+                                                }
+                                            }
+                                        </MudPaper>
+                                    }   
+                                }
+                                else {
+                                    @if (@votesCleared) {
+                                    context.scaleVote = "";
+                                    }
+                                    @if (context.scaleVote != "") {
+                                        <MudPaper Class="vote-background">
+                                            @if (!hiddenVotes)
+                                            {
+                                            <MudText Class="table-vote-text">@context.scaleVote</MudText>  
+                                            }
+                                            else {
+                                                @if (@newGroupedModel.userName == @context.userName) {
+                                                <MudText Class="table-vote-text">@scaleVoteClient</MudText>  
+                                                }
+                                            }
+                                        </MudPaper>
+                                    }   
+                                }                                        
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </MudPaper>
+        }
+    </div>
 </div>
-                @if (Voting_Mode != 5) {
-
-                <div style="position: fixed; bottom: 2%; left: 1%;">
-                <MudChip Class="mud-chip" >@newGroupedModel.roomName</MudChip>
-</div>
+@if (Voting_Mode != 5) {
+    <div style="position: fixed; bottom: 2%; left: 1%;">
+    <MudPaper Class="roomname-display">
+        <MudText Class="main-font" Style="font-size: 18px; padding: 15px;">Room: @newGroupedModel.roomName</MudText>
+    </MudPaper>
+    </div>
 }
-            <MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
-        <DialogContent>
-            <MudText Style="font-size: 30px">User Profile</MudText>
-            <MudText Class="table-vote-text">Username</MudText>
-            <input class="join-create-text-fields" type="text" @bind-value="tempUsername" />
-            <div class = "inputSpacer">
-                <MudCheckBox @bind-Checked="tempAdmin" Label="Facilitator" Color="Color.Primary"></MudCheckBox>
-            </div>
-            </DialogContent>
-        <DialogActions>
-            <MudButton OnClick="CloseProfile">Cancel</MudButton>
-            <MudButton Color="Color.Primary" OnClick="SubmitProfile">Save</MudButton>
-        </DialogActions>
-    </MudDialog>
-    <MudDialog @bind-Isvisible="visibleAbout" Options="dialogAbout">
-        <DialogContent>
-            <MudContainer Style="max-height: 300px; overflow-y: scroll">
-                <MudText Style="font-size: 30px">About Product</MudText>
-                <MudText Style="white-space: pre-wrap;">@AboutProduct</MudText>
-                <MudText Style="font-size: 30px">About Creators</MudText>
-                <MudText Style="white-space: pre-wrap;">@AboutUs</MudText>
-            </MudContainer>
-        </DialogContent>
-        <DialogActions>
-            <MudButton OnClick="CloseAbout">Close</MudButton>
-        </DialogActions>
-    </MudDialog>
-    @if (_timerDone)
-    {
-        _timing = false;
-        timerNotification();
-        _timerDone = false;
-    }
-    <MudMessageBox @ref="returnHomeMSG" Title="Return Home" CancelText="Cancel">
-        <MessageContent>
-            Do you wish to leave this room and return home?
-        </MessageContent>
-        <YesButton>
-            <MudButton OnClick="removeUserReturnHome">Return Home</MudButton>
-        </YesButton>
-    </MudMessageBox>
-    <MudMessageBox @ref="deleteRoomMSG" Title="Delete Room" CancelText="Cancel">
-        <MessageContent>
-            Are you sure?
-        </MessageContent>
-        <YesButton>
-            <MudButton OnClick="deleteRoomConfirmed">Delete Room</MudButton>
-        </YesButton>
-    </MudMessageBox>
-    <MudMessageBox @ref="clearUsersMSG" Title="Clear Users" CancelText="Cancel">
-        <MessageContent>
-            Are you sure?
-        </MessageContent>
-        <YesButton>
-            <MudButton OnClick="clearUsersConfirmed">Clear Users</MudButton>
-        </YesButton>
-    </MudMessageBox>
-    <MudMessageBox @ref="clearVotesMSG" Title="Clear Votes" CancelText="Cancel">
-        <MessageContent>
-            Are you sure?
-        </MessageContent>
-        <YesButton>
-            <MudButton OnClick="clearVotes" >Clear Votes</MudButton>
-        </YesButton>
-    </MudMessageBox>
-    <MudMessageBox @ref="timerNotificationMSG" YesText="Ok">
-        <MessageContent>
-            <MudText Class="timer-notification-text"> Timer Finished </MudText>
-                    @if (!_soundOff)
-                    {
-                    <audio autoplay><source src="/Audio/TimerSound.mp3" /></audio>
-                    }
-        </MessageContent>
-    </MudMessageBox>
+<MudDialog @bind-Isvisible="visibleProfile" Options="dialogProfile">
+    <DialogContent>
+        <MudText Style="font-size: 30px">User Profile</MudText>
+        <MudText Class="table-vote-text">Username</MudText>
+        <input class="join-create-text-fields" type="text" @bind-value="tempUsername" />
+        <div class = "inputSpacer">
+            <MudCheckBox @bind-Checked="tempAdmin" Label="Facilitator" Color="Color.Primary"></MudCheckBox>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CloseProfile">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="SubmitProfile">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+<MudDialog @bind-Isvisible="visibleAbout" Options="dialogAbout">
+    <DialogContent>
+        <MudContainer Style="max-height: 300px; overflow-y: scroll">
+            <MudText Style="font-size: 30px">About Product</MudText>
+            <MudText Style="white-space: pre-wrap;">@AboutProduct</MudText>
+            <MudText Style="font-size: 30px">About Creators</MudText>
+            <MudText Style="white-space: pre-wrap;">@AboutUs</MudText>
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CloseAbout">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+@if (_timerDone) {
+    _timing = false;
+    timerNotification();
+    _timerDone = false;
+}
+<MudMessageBox @ref="returnHomeMSG" Title="Return Home" CancelText="Cancel">
+    <MessageContent>
+        Do you wish to leave this room and return home?
+    </MessageContent>
+    <YesButton>
+        <MudButton OnClick="removeUserReturnHome">Return Home</MudButton>
+    </YesButton>
+</MudMessageBox>
+<MudMessageBox @ref="deleteRoomMSG" Title="Delete Room" CancelText="Cancel">
+    <MessageContent>
+        Are you sure?
+    </MessageContent>
+    <YesButton>
+        <MudButton OnClick="deleteRoomConfirmed">Delete Room</MudButton>
+    </YesButton>
+</MudMessageBox>
+<MudMessageBox @ref="clearUsersMSG" Title="Clear Users" CancelText="Cancel">
+    <MessageContent>
+        Are you sure?
+    </MessageContent>
+    <YesButton>
+        <MudButton OnClick="clearUsersConfirmed">Clear Users</MudButton>
+    </YesButton>
+</MudMessageBox>
+<MudMessageBox @ref="clearVotesMSG" Title="Clear Votes" CancelText="Cancel">
+    <MessageContent>
+        Are you sure?
+    </MessageContent>
+    <YesButton>
+        <MudButton OnClick="clearVotes" >Clear Votes</MudButton>
+    </YesButton>
+</MudMessageBox>
+<MudMessageBox @ref="timerNotificationMSG" YesText="Ok">
+    <MessageContent>
+        <MudText Style="font-family:'Ubuntu', sans-serif; font-weight: bold; font-size: 20px;"> Timer Finished </MudText>
+        @if (!_soundOff)
+        {
+        <audio autoplay><source src="/Audio/TimerSound.mp3" /></audio>
+        }
+    </MessageContent>
+</MudMessageBox>
 }
 @code {
     private HubConnection? hubConnection;
-
     //data
     [Parameter]
     public int roomId{ get; set; }
@@ -714,7 +752,7 @@ else{
     private async void clearUsersConfirmed(){
         if(hubConnection is not null)
         {
-            await hubConnection.SendAsync("userRemoval", roomId, false);            
+            await hubConnection.SendAsync("userRemoval", roomId, false);
         }
     }
     MudMessageBox clearVotesMSG { get; set; }
@@ -764,8 +802,12 @@ else{
         }
     }
     //Voting Mode
-    public int Voting_Mode { get; set; } = 1;
 
+    public int Voting_Mode { get; set; } = 1;
+    string fiboVoteClient { get; set; }
+    string fistVoteClient { get; set; } 
+    string tshirtVoteClient { get; set; }
+    string scaleVoteClient { get; set; } 
     void setVotingMode(int mode){
         Voting_Mode = mode;
         if(Voting_Mode == 1) //fib vote
@@ -794,7 +836,6 @@ else{
             _timerAppBar = true;
         }
     }
-
     void setVote(string val)
     {
         try
@@ -806,30 +847,36 @@ else{
                 if (val.Equals("coffee"))
                 {
                     found.fibVote = "" + COFFEE;
+                    fiboVoteClient = "" + COFFEE;
                 }
                 else if (val.Equals("0.5"))
                 {
                     found.fibVote = "" + HALF;
+                    fiboVoteClient = "" + HALF;
                 }
                 else
                 {
                     found.fibVote = val;
+                    fiboVoteClient = val;
                 }
             }
             else if (Voting_Mode == 2) //Fist vote
             {
                 userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
                 found.fistVote = val;
+                fistVoteClient = val;
             }
             else if (Voting_Mode == 3) //Tshirt vote
             {
                 userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
                 found.tshirtVote = val;
+                tshirtVoteClient = val;
             }
             else if (Voting_Mode == 4) //custom scale
             {
                 userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
                 found.scaleVote = val;
+                scaleVoteClient = val;
             }
             if (hubConnection is not null)
             {
@@ -998,10 +1045,9 @@ else{
         _customAppBar = false;
         _timerAppBar = false;
     }
-    //Symbols
+    //Symbols and Strings
     const char COFFEE = '\u2615';
     const char HALF = '\u00BD';
     const char STAR = '\u2B50';
-    //Strings
     private string Me = " (Me)";
 } 
