@@ -4,7 +4,7 @@
 @using SQLDataAccessLibrary.Models
 @using Microsoft.AspNetCore.SignalR.Client
 @inject IRoomDataAccess _dB
-<!-- implements IDisposable -->
+<!--implements IDisposable-->
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
@@ -648,8 +648,9 @@ else{
 
     //public void Dispose() //called on page close
     //{
-    //    _dB.removeUserData(roomId, userId);
-        
+    //    if(!loading){
+    //        _dB.removeUserData(roomId, userId);
+    //    } 
     //}
 
     //Custom Scale
