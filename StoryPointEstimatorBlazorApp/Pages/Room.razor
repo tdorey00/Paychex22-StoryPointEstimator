@@ -592,12 +592,12 @@ else{
                 if(everyone) //everyone is true then remove everyone regardless of admin status (for room delete)
             {
                     _dB.removeUserData(roomId, userId);
-                    NavigationManager.NavigateTo("/RoomDeleted/true");
+                    NavigationManager.NavigateTo("/RoomDeleted/true", true);
                 }
                 else if(!everyone && !currentAdminStatus)//not everyone and user is not an admin (clear users)
             {
                     _dB.removeUserData(roomId, userId);
-                    NavigationManager.NavigateTo("/RoomDeleted/false");
+                    NavigationManager.NavigateTo("/RoomDeleted/false", true);
                 }
                 else if(!everyone && currentAdminStatus) //not everyone and user is an admin (clear users)
             {
