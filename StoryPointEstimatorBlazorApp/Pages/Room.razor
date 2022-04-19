@@ -4,7 +4,7 @@
 @using SQLDataAccessLibrary.Models
 @using Microsoft.AspNetCore.SignalR.Client
 @inject IRoomDataAccess _dB
-<!--implements IDisposable-->
+@implements IDisposable
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
@@ -671,12 +671,14 @@ else{
         loading = false;
     }
 
-    //public void Dispose() //called on page close
-    //{
-    //    if(!loading){
-    //        _dB.removeUserData(roomId, userId);
-    //    } 
-    //}
+    public void Dispose() //called on page close
+    {
+        if(hubConnection is not null)
+        {
+            hubConnection.StopAsync();
+            //NavigationManager.NavigateTo("/");
+        }
+    }
 
     //Custom Scale
     private string newCustomTitle { get; set; } = "";

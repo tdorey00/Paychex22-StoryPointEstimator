@@ -29,5 +29,10 @@
                 return false;
             }
         }
+
+        public override string ToString()
+        {
+            return "ConnectionID: " + connectionId + " userId: " + userId + " roomId: " + roomId;
+        }
     }
 }
