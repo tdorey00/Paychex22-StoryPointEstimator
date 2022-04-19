@@ -56,8 +56,7 @@
         </MudMenu>
     </MudAppBar>
 </div>
-@if (loading)
-{        
+@if (loading) {        
         <MudText Style="font-family:'Ubuntu', sans-serif; font-weight: bold; font-size: 20px;">Your Room is loading...</MudText>
 }
 else{
@@ -255,7 +254,7 @@ else{
             <MudPaper Class="mud-paper-table" Elevation="0">
                 <MudItem Style="display: inline-flex; justify-content: start;">
                     <MudText Class="mud-paper-tool-name"> Results </MudText>
-                        <MudButton OnClick='() => setVote("")' Class="btn admin-tools-buttons" Style="height: 36px; margin-top: 10px; margin-left: 265px">
+                        <MudButton OnClick='() => setVote("")' Class="btn admin-tools-buttons" Style="height: 36px; margin-top: 10px; margin-left: 329px">
                         <MudText Class="main-font" Style="font-size: 14px;">Clear My Vote</MudText>
                         </MudButton> 
                     <MudPaper Class="mud-paper-table-tools" Style="margin-left: 10px;">
@@ -288,52 +287,63 @@ else{
                     <RowTemplate>
                         <MudTd DataLabel="User">
                             @if (!hiddenUsers)
-                            {
-                                <MudText Class="table-vote-text">
-                                @context.userName
-                                @if (context.isAdmin)
-                                {
+                            {                         
+                                @if(!context.observer){
+                                    <MudText Class="table-vote-text">
+                                    @context.userName
+                                    @if (context.isAdmin)
+                                    {
                                     @STAR
-                                }
-                                @if (userId == @context.userId)
-                                {
+                                    }
+                                    @if (userId == @context.userId)
+                                    {
                                     @Me
+                                    }
+                                    </MudText>
                                 }
-                                </MudText>
                             }
                         </MudTd>
                         <MudTd DataLabel="Vote">
-                            @if (Voting_Mode == 1) {
-                                @if (@votesCleared) {
-                                context.fibVote = "";
-                            }
-                                @if (context.fibVote != "") {
-                                    <MudPaper Class="vote-background">
-                                        @if (!hiddenVotes) {
-                                        <MudText Class="table-vote-text">
-                                            @if(context.fibVote.Equals("coffee")) {
-                                            @COFFEE
+                            @if(!context.observer)
+                            {
+                                @if (Voting_Mode == 1) {
+                                    @if (@votesCleared) {
+                                    context.fibVote = "";
+                                    }
+                                    @if (context.fibVote != "") 
+                                    {
+                                        <MudPaper Class="vote-background">
+                                            @if (!hiddenVotes) 
+                                            {
+                                            <MudText Class="table-vote-text">
+                                                @if(context.fibVote.Equals("coffee")) 
+                                                {
+                                                    @COFFEE
+                                                }
+                                                else if(context.fibVote.Equals("half")) 
+                                                {
+                                                    @HALF
+                                                }
+                                                else 
+                                                {
+                                                    @context.fibVote
+                                                }
+                                            </MudText>
                                             }
-                                            else if(context.fibVote.Equals("half")) {
-                                            @HALF
-                                            }
-                                            else {
-                                            @context.fibVote
-                                            }
-                                        </MudText>
-                                            }
-                                            else {
-                                                @if (userId == @context.userId) {
-                                                <MudText Class="table-vote-text">@fiboVoteClient</MudText>  
+                                            else 
+                                            {
+                                                @if (userId == @context.userId) 
+                                                {
+                                                    <MudText Class="table-vote-text">@fiboVoteClient</MudText>  
                                                 }
                                             }
-                                </MudPaper>
+                                    </MudPaper>
                                     }   
                                 }
                                 else if (Voting_Mode == 2) {
                                     @if (@votesCleared) {
                                     context.fistVote = "";
-                                }
+                                    }
                                     @if (context.fistVote != "") {
                                         <MudPaper Class="vote-background">
                                             @if (!hiddenVotes)
@@ -366,7 +376,7 @@ else{
                                         </MudPaper>
                                     }   
                                 }
-                                else {
+                                else if (Voting_Mode == 4) {
                                     @if (@votesCleared) {
                                     context.scaleVote = "";
                                     }
@@ -383,7 +393,8 @@ else{
                                             }
                                         </MudPaper>
                                     }   
-                                }                                        
+                                }  
+                            }
                         </MudTd>
                     </RowTemplate>
                 </MudTable>
@@ -405,6 +416,10 @@ else{
         <input class="join-create-text-fields" type="text" @bind-value="tempUsername" />
         <div class = "inputSpacer">
             <MudCheckBox @bind-Checked="tempAdmin" Label="Facilitator" Color="Color.Primary"></MudCheckBox>
+            @if(tempAdmin)
+            {
+                <MudCheckBox @bind-Checked="tempObserver" Label="Observer Mode" Color="Color.Primary"></MudCheckBox>
+            }        
         </div>
     </DialogContent>
     <DialogActions>
@@ -504,6 +519,8 @@ else{
             newGroupedModel.userName = userData.userName;
             tempUsername = userData.userName;
             tempAdmin = userData.isAdmin;
+            tempObserver = userData.observer;
+            newGroupedModel.observer = userData.observer;
             newGroupedModel.isAdmin = userData.isAdmin;
         }
         catch (InvalidOperationException) //race condition involving user joining a room while it is being cleared or deleted
@@ -563,13 +580,14 @@ else{
               }
           });
 
-        hubConnection.On<int, string, bool>("updateProfileRecieve", async (user, name, admin) =>
+        hubConnection.On<int, string, bool, bool>("updateProfileRecieve", async (user, name, admin, observe) =>
         {
             userModel found = connectedUsers.Find(x => x.userId == user);
             if(found is not null)
             {
                 found.userName = name;
                 found.isAdmin = admin;
+                found.observer = observe;
                 StateHasChanged();
             }
         });
@@ -682,6 +700,7 @@ else{
         }
     }
     //Settings Menu Content
+    private bool tempObserver = false;
     private bool visibleProfile;
     private void OpenProfile() => visibleProfile = true;
     void CloseProfile() => visibleProfile = false;
@@ -692,12 +711,19 @@ else{
             _dB.UpdateUsername(newGroupedModel.userId, tempUsername);
             newGroupedModel.userName = tempUsername;
             newGroupedModel.isAdmin = tempAdmin;
-            _dB.UpdateAdmin(newGroupedModel.userId, newGroupedModel.isAdmin);
+            if(!newGroupedModel.isAdmin){
+                tempObserver = false;
+                newGroupedModel.observer = false;
+            }
+            else{
+                newGroupedModel.observer = tempObserver;
+            }
+            _dB.UpdateAdmin(newGroupedModel.userId, newGroupedModel.isAdmin, newGroupedModel.observer);
             connectedUsers = await _dB.getConnectedUsers(roomId);
             StateHasChanged();
             if(hubConnection is not null)
             {
-                await hubConnection.SendAsync("updateUserProfile", userId, newGroupedModel.userName, newGroupedModel.isAdmin);
+                await hubConnection.SendAsync("updateUserProfile", userId, newGroupedModel.userName, newGroupedModel.isAdmin, newGroupedModel.observer);
             }
         }
     }

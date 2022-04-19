@@ -43,9 +43,9 @@ namespace StoryPointEstimatorBlazorApp.Hubs
             await Clients.All.SendAsync("disconnectUser", user, room);
         }
 
-        public async Task updateUserProfile(int user, string name, bool admin)
+        public async Task updateUserProfile(int user, string name, bool admin, bool observe)
         {
-            await Clients.All.SendAsync("updateProfileRecieve", user, name, admin);
+            await Clients.All.SendAsync("updateProfileRecieve", user, name, admin, observe);
         }
 
         public async Task updateScale(int room, string scaleName, int scale)

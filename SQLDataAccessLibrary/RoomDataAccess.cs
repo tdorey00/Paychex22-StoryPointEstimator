@@ -78,10 +78,10 @@ namespace SqlDataAccessLib
             await _dB.SaveDataAsync(sql,parameters);
         }
 
-        public async void UpdateAdmin(int userid, bool isAdmin)
+        public async void UpdateAdmin(int userid, bool isAdmin, bool observe)
         {
-            var parameters = new {userId = userid, isAdmin = isAdmin};
-            string sql = "update dbo.userTable set isAdmin = @isAdmin where userId = @userId";
+            var parameters = new {userId = userid, isAdmin = isAdmin, observer = observe};
+            string sql = "update dbo.userTable set isAdmin = @isAdmin, observer = @observer where userId = @userId";
             await _dB.SaveDataAsync(sql, parameters);
         }
 

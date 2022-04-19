@@ -20,6 +20,7 @@ namespace StoryPointEstimatorBlazorApp.Models
         public string userName { get; set; } = "";
         public int userId { get; set; }
         public bool isAdmin { get; set; } = false;
+        public bool observer { get; set; } = false;
         public string fibVote { get; set; } = "";
         public string scaleVote { get; set; } = "";
         public string fistVote { get; set; } = "";
