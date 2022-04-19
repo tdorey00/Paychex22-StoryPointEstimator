@@ -202,7 +202,7 @@
 
                             //save user model and link user to room based on user input
                             _dB.joinRoomSaveData(newGroupedModel.roomId, userInsert);
-                            NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, true);
+                            NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, false);
                         }
                         else
                         {

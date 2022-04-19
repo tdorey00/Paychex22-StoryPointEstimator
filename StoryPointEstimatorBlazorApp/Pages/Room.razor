@@ -259,7 +259,7 @@ else{
                         <MudText Class="main-font" Style="font-size: 14px;">Clear My Vote</MudText>
                         </MudButton> 
                     <MudPaper Class="mud-paper-table-tools" Style="margin-left: 10px;">
-                        <MudIconButton Icon="@Icons.Filled.Refresh" Color="@Color.Secondary" Style=""></MudIconButton>
+                        <!--<MudIconButton Icon="(AT)Icons.Filled.Refresh" Color="(AT)Color.Secondary" Style=""></MudIconButton>-->
                         <MudToggleIconButton Style="" @bind-Toggled="@_isDense"
                         Icon="@Icons.Rounded.ZoomInMap" Color="@Color.Secondary"
                         ToggledIcon="@Icons.Rounded.ZoomOutMap" ToggledColor="@Color.Secondary"/>
@@ -532,7 +532,7 @@ else{
                     else{
                         found.fibVote = vote;
                     }
-                } 
+                }
                 if (votingMode == 2)
                     found.fistVote = vote;
                 if (votingMode == 3)
@@ -637,7 +637,14 @@ else{
                 StateHasChanged();
             }
         });
-
+        hubConnection.On<int, List<userModel>>("recieveClearedList", async (room, newlist) =>
+        {
+            if(roomId == room)
+            {
+                connectedUsers = newlist;
+                StateHasChanged();
+            } 
+        });
         await hubConnection.StartAsync();
         if(hubConnection is not null)
         {
@@ -759,15 +766,12 @@ else{
     {
         bool? result = await clearVotesMSG.Show();
     }
-    private void clearVotes()
+
+    private async void clearVotes()
     {
-        if(votesCleared)
-        {
-            votesCleared = false;
-        }
-        else
-        {
-            votesCleared = true;
+        if(hubConnection is not null){
+            connectedUsers = await _dB.GetClearedVotesList(roomId);
+            await hubConnection.SendAsync("sendClearedVotes", roomId, connectedUsers);
         }
     }
     private void hideUsers(){

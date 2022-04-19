@@ -192,7 +192,7 @@
 
 
                     _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
-                    NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, true);
+                    NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, false);
                 }
             }
             else

@@ -23,5 +23,6 @@ namespace SqlDataAccessLib
         void removeUserData(int roomId, int userId);
         void removeRoomData(int roomId);
         bool getAdminStatus(int userId);
+        Task<List<userModel>> GetClearedVotesList(int roomId);
     }
 }

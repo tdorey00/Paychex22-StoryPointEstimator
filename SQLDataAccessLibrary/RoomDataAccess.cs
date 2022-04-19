@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
 using SQLDataAccessLibrary.Models;
 
 namespace SqlDataAccessLib
@@ -124,6 +125,24 @@ namespace SqlDataAccessLib
                 string sql = "update dbo.userTable set scaleVote = @scaleVote where userId = @userId";
                 await _dB.SaveDataAsync(sql, parameters);
             }
+        }
+
+        public async Task<List<userModel>> GetClearedVotesList(int roomId)
+        {
+            var parameters = new {roomId = roomId};
+            string sql = "select * from dbo.roomUserTable where roomId = @roomId";
+            List<roomUserModel> temp = await _dB.LoadListDataAsync<roomUserModel,dynamic>(sql, parameters);
+            foreach (roomUserModel model in temp)
+            {
+                try
+                {
+                    var param2 = new { userId = model.userId };
+                    string sql2 = "UPDATE dbo.userTable SET fibVote = '', tshirtVote = '', fistVote = '', scaleVote = '' WHERE userId = @userId";
+                    await _dB.SaveDataAsync(sql2, param2);
+                }
+                catch (SqlException) { }
+            }
+            return await getConnectedUsers(roomId);
         }
 
         public async Task<List<userModel>> getConnectedUsers(int roomid)

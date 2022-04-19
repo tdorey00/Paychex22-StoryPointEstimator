@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
-
+using SQLDataAccessLibrary.Models;
 
 namespace StoryPointEstimatorBlazorApp.Hubs
 {
@@ -66,6 +66,11 @@ namespace StoryPointEstimatorBlazorApp.Hubs
         public async Task sendHideUsers(int room, bool status)
         {
             await Clients.All.SendAsync("recieveHideUsers", room, status);
+        }
+
+        public async Task sendClearedVotes(int room, List<userModel> newlist)
+        {
+            await Clients.All.SendAsync("recieveClearedList", room, newlist);
         }
 
     }
