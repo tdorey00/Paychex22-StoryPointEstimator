@@ -11,6 +11,7 @@ namespace SQLDataAccessLibrary.Models
         public string userName { get; set; } = "";
         public int userId { get; set; }
         public bool isAdmin { get; set; }
+        public bool observer { get; set; }
         public string fibVote { get; set; } = "";
         public string scaleVote { get; set; } = "";
         public string fistVote { get; set; } = "";

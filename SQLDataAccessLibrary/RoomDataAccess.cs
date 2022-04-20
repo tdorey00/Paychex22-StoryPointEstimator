@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
 using SQLDataAccessLibrary.Models;
 
 namespace SqlDataAccessLib
@@ -77,10 +78,10 @@ namespace SqlDataAccessLib
             await _dB.SaveDataAsync(sql,parameters);
         }
 
-        public async void UpdateAdmin(int userid, bool isAdmin)
+        public async void UpdateAdmin(int userid, bool isAdmin, bool observe)
         {
-            var parameters = new {userId = userid, isAdmin = isAdmin};
-            string sql = "update dbo.userTable set isAdmin = @isAdmin where userId = @userId";
+            var parameters = new {userId = userid, isAdmin = isAdmin, observer = observe};
+            string sql = "update dbo.userTable set isAdmin = @isAdmin, observer = @observer where userId = @userId";
             await _dB.SaveDataAsync(sql, parameters);
         }
 
@@ -124,6 +125,24 @@ namespace SqlDataAccessLib
                 string sql = "update dbo.userTable set scaleVote = @scaleVote where userId = @userId";
                 await _dB.SaveDataAsync(sql, parameters);
             }
+        }
+
+        public async Task<List<userModel>> GetClearedVotesList(int roomId)
+        {
+            var parameters = new {roomId = roomId};
+            string sql = "select * from dbo.roomUserTable where roomId = @roomId";
+            List<roomUserModel> temp = await _dB.LoadListDataAsync<roomUserModel,dynamic>(sql, parameters);
+            foreach (roomUserModel model in temp)
+            {
+                try
+                {
+                    var param2 = new { userId = model.userId };
+                    string sql2 = "UPDATE dbo.userTable SET fibVote = '', tshirtVote = '', fistVote = '', scaleVote = '' WHERE userId = @userId";
+                    await _dB.SaveDataAsync(sql2, param2);
+                }
+                catch (SqlException) { }
+            }
+            return await getConnectedUsers(roomId);
         }
 
         public async Task<List<userModel>> getConnectedUsers(int roomid)

@@ -1,9 +1,14 @@
+.main-font {
+    color: white;
+    font-family: 'Ubuntu', sans-serif; 
+    font-weight: bold;
+    font-size: 20px;
+}
 .appbar {
     font-size: 24px;
     font-family: 'Ubuntu', sans-serif;
     background-color: #4B27FE;
 }
-
 .buttons-container {
     padding-top: 50px;
     margin: auto;
@@ -11,7 +16,6 @@
     display: flex;
     justify-content: center;
 }
-
 .buttons {
     background-color: #4B27FE;
     color: white;
@@ -39,7 +43,6 @@
     min-width: 200px;
     max-width: 200px;
 }
-
 .tool-buttons {
     background-color: #4B27FE;
     color: white;
@@ -52,7 +55,6 @@
     min-width: 81px;
     padding: 23px;
 }
-
 .tool-buttons:hover {
     background-color: #3e1fdd;
     color: white;
@@ -61,38 +63,10 @@
     background-color: #21A7EC;
     color: white;
 }
-
-.roomLabel {
-    background-color: #4B27FE;
-    color: white;
-    font-family: 'Ubuntu';
-    font-size: 20px;
-    font-weight: bold;
-}
-
 .appbar-buttons {
     background-color: #4B27FE;
-    color: white;
-    font-family: 'Ubuntu';
-    font-size: 20px;
-    font-weight: bold;
     padding: 8px;
     border-radius: 5px;
-}
-.appbar-buttons-text {
-    color: white;
-    font-family: 'Ubuntu';
-    font-size: 20px;
-    font-weight: bold;
-}
-.appbar-buttons-timer {
-    background-color: red;
-    color: white;
-    font-family: 'Ubuntu';
-    font-size: 20px;
-    font-weight: bold;
-    padding: 8px;
-    border-radius: 10%;
 }
 .appbar-buttons-clicked {
     background-color: #21A7EC;
@@ -103,49 +77,23 @@
     padding: 2px;
     border-radius: 5px;
 }
-
 .admin-tools-buttons {
     background-color: #4B27FE;
-    color: white;
-    font-family: 'Ubuntu';
-    font-size: 14px;
     padding: 7px;
     margin: 5px;
-    font-weight: bold;
 }
     .admin-tools-buttons:hover {
-        color: white;
         background-color: lightgrey;
-        font-weight: bold;
     }
-.admin-tools-text {
-    color: white;
-    font-family: 'Ubuntu';
-    font-size: 14px;
-    font-weight: bold;
-}
-.custom-scale-input {
-    min-width: 200px;
-    max-width: 200px;
-    display: flex;
-    justify-content: center;
-}
-
-.mud-chip {
-    min-width: 40px;
-    padding: 25px;
+.roomname-display {
     background-color: #4B27FE;
     color: white;
-    font-family: 'Ubuntu';
-    font-size: 25px;
-    font-weight: bold;
+    height: 60px;
+    padding-top: 2px;
+    display: flex;
     justify-content: center;
+    border-radius: 15px;
 }
-    .mud-chip:hover {
-        background-color: #4B27FE;
-        color: white;
-    }
-
 .timer-buttons {
     background-color: #4B27FE;
     color: white;
@@ -153,9 +101,6 @@
     height: 100px;
     border-radius: 50%;
     margin: 10px;
-    font-size: 22px;
-    font-family: 'Ubuntu';
-    font-weight: bold;
     min-width: 100px;
     padding: 23px;
 }
@@ -163,41 +108,15 @@
         background-color: #3e1fdd;
         color: #4B27FE;
     }
-.timer-buttons-text {
-    color: white;
-    font-size: 22px;
-    font-family: 'Ubuntu';
-    font-weight: bold;
-}
 .timer-display {
     background-color: #4B27FE;
     color: white;
     width: 400px;
     height: 400px;
     min-width: 400px;
-    font-size: 40px;
-    font-family: 'Ubuntu';
-    font-weight: bold;
     border-radius: 50%;
     padding-top: 140px;
     padding-left: 65px;
-}
-.timer-display-text-pause {
-    color: white;
-    font-size: 30px;
-    font-family: 'Ubuntu';
-    font-weight: bold;
-}
-.timer-display-text {
-    font-size: 70px;
-    font-family: 'Ubuntu';
-    font-weight: bold;
-}
-.timer-notification-text {
-    
-    font-family: 'Ubuntu';
-    font-size: 20px;
-    font-weight: bold;
 }
 .timer-input {
     width: 113px;
@@ -205,6 +124,42 @@
     padding-left: 20px;
     display: inline-flex;
     justify-content: start;
+}
+.slider {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    font-family: 'Ubuntu';
+    margin-top: 0px;
+}
+
+.table-vote-text {
+    font-size: 16px;
+    font-family: 'Ubuntu';
+    font-weight: bold;
+}
+
+.vote-background {
+    background-color: #4B27FE;
+    color: white;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    padding-top: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.join-create-text-fields {
+    width: 204px;
+    height: 36px;
+    border: #F0F0F0 1px solid;
+    background: #F0F0F0;
+    color: #4B27FE;
+    font-size: large;
+    font-weight: bold;
+    border-radius: 5px;
+    padding-left: 5px;
 }
 .mud-paper-buttons {
     padding-left: 10px;
@@ -216,19 +171,21 @@
     margin-right: 10px;
     background: rgba(0,0,0,0.0);
 }
-
 .mud-paper-table {
     width: 600px;
     min-width: 600px;
     max-width: 600px;
     background: rgba(0,0,0,0.0);
 }
-
-.mud-paper-room-labels {
-    padding: 5px;
-    margin: 10px;
+.mud-paper-table-tools {
+    margin-top: 10px;
+    width: 36px;
+    height: 36px;
+    background-color: #4B27FE;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-evenly;
 }
-
 .mud-paper-tool-name {
     font-family: 'Ubuntu';
     font-size: 30px;
@@ -255,59 +212,9 @@
     background: rgba(0,0,0,0.0);
 
 }
-
-.custom-voting-tools {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.slider{
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
-    font-family: 'Ubuntu';
-    margin-top: 0px;
-}
-
 .mud-paper-timer {
     padding-top: 50px;
     display: flex;
     justify-content: space-evenly;
     background: rgba(0,0,0,0.0);
-}
-
-.table-vote-text {
-    font-size: 16px;
-    font-family: 'Ubuntu';
-    font-weight: bold;
-}
-
-.vote-background {
-    background-color: #4B27FE;
-    color: white;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    padding-top: 5px;
-    display: flex;
-    justify-content: center;
-}
-
-.table-area {
-    display: flex;
-    justify-content: right;
-}
-
-.join-create-text-fields {
-    width: 204px;
-    height: 36px;
-    border: #F0F0F0 1px solid;
-    background: #F0F0F0;
-    color: #4B27FE;
-    font-size: large;
-    font-weight: bold;
-    border-radius: 5px;
-    padding-left: 5px;
 }

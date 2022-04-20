@@ -18,10 +18,11 @@ namespace SqlDataAccessLib
         void UpdateCustomScaleTitle(int roomid, string customtitle);
         void UpdateCustomScale(int roomid, int scale);
         Task<List<userModel>> getConnectedUsers(int roomid);
-        void UpdateAdmin(int userid, bool isAdmin);
+        void UpdateAdmin(int userid, bool isAdmin, bool observe);
         void UpdateVote(int userid, int voting_mode, string vote);
         void removeUserData(int roomId, int userId);
         void removeRoomData(int roomId);
         bool getAdminStatus(int userId);
+        Task<List<userModel>> GetClearedVotesList(int roomId);
     }
 }
