@@ -32,6 +32,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\StoryPointEstimatorBlazorApp\StoryPointEstimatorBlazorApp.csproj" />
+	  <ProjectReference Include="..\SQLDataAccessLibrary\SQLDataAccessLibrary.csproj" />
 	</ItemGroup>
 
 

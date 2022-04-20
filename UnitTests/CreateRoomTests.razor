@@ -1,0 +1,13 @@
+﻿<h3>CreateRoomTests</h3>
+
+@code {
+    [Fact]
+    public void deniesEmptySubmit()
+    {
+        var ctx = new TestContext();
+        ctx.Services.AddTransient<IRoomDataAccess>();
+
+        var cut = ctx.Render(@<StoryPointEstimatorBlazorApp.Pages.CreateRoom />);
+    }
+
+}
