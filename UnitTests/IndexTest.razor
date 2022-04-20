@@ -1,0 +1,27 @@
+﻿<h3>IndexTest</h3>
+
+@code {
+    [Fact]
+    public void createRoomNav()
+    {
+        var ctx = new TestContext();
+        var nav = ctx.Services.GetRequiredService<NavigationManager>();
+        var cut = ctx.Render(@<StoryPointEstimatorBlazorApp.Pages.Index />);
+
+        cut.Find(".buttons.create").Click();
+
+        Assert.Equal("http://localhost/createRoom", nav.Uri);
+    }
+
+    [Fact]
+    public void joinRoomNav()
+    {
+        var ctx = new TestContext();
+        var nav = ctx.Services.GetRequiredService<NavigationManager>();
+        var cut = ctx.Render(@<StoryPointEstimatorBlazorApp.Pages.Index />);
+
+        cut.Find(".buttons.join").Click();
+
+        Assert.Equal("http://localhost/joinRoom", nav.Uri);
+    }
+}
