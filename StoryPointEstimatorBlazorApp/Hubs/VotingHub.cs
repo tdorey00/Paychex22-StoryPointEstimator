@@ -7,39 +7,38 @@ namespace StoryPointEstimatorBlazorApp.Hubs
 {
     public class VotingHub : Hub
     {
-        /*
-        private List<connectionModel> connections = new List<connectionModel>();
+        
+        private static List<connectionModel> connections = new List<connectionModel>();
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
             connectionModel found = connections.Find(x => x.connectionId.Equals(Context.ConnectionId));
             if (found is not null)
             {
-                bool remove = connections.Remove(found);
-                Console.Write(remove);
+                connections.Remove(found);
                 Clients.All.SendAsync("disconnectUser", found.userId, found.roomId);
             }
             return base.OnDisconnectedAsync(exception);
         }
-        */
+        
         public async Task updateVote(int user, string vote, int votingMode)
         {
             await Clients.All.SendAsync("receiveVote", user, vote, votingMode, new CancellationToken());
         }
         public async Task userConnected(int user,int room)
         {
-            //connections.Add(new connectionModel(Context.ConnectionId, user, room));
+            connections.Add(new connectionModel(Context.ConnectionId, user, room));
             await Clients.All.SendAsync("connectUser", user, room);
         }
         public async Task userDisconnect(int user, int room)
         {
-            /*
+            
             connectionModel found = connections.Find(x => x.connectionId.Equals(Context.ConnectionId));
             if(found is not null)
             {
                 connections.Remove(found);
             }
-            */
+            
             await Clients.All.SendAsync("disconnectUser", user, room);
         }
 

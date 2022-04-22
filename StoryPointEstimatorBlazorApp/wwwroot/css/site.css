@@ -144,6 +144,7 @@
     color: white;
     border-radius: 50%;
     width: 35px;
+    min-width: 35px;
     height: 35px;
     padding-top: 5px;
     display: flex;
