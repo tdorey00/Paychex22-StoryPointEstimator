@@ -480,7 +480,7 @@ else{
 </MudMessageBox>
 <MudMessageBox @ref="deleteRoomMSG" Title="Delete Room" CancelText="Cancel">
     <MessageContent>
-        Are you sure?
+        Are you sure? This will permanently delete the room.
     </MessageContent>
     <YesButton>
         <MudButton OnClick="deleteRoomConfirmed">Delete Room</MudButton>
@@ -488,7 +488,7 @@ else{
 </MudMessageBox>
 <MudMessageBox @ref="clearUsersMSG" Title="Clear Users" CancelText="Cancel">
     <MessageContent>
-        Are you sure?
+        Are you sure? This will remove all non-facilitators from the room.
     </MessageContent>
     <YesButton>
         <MudButton OnClick="clearUsersConfirmed">Clear Users</MudButton>
@@ -496,7 +496,7 @@ else{
 </MudMessageBox>
 <MudMessageBox @ref="clearVotesMSG" Title="Clear Votes" CancelText="Cancel">
     <MessageContent>
-        Are you sure?
+        Are you sure? This will clear votes on each of the tabs.
     </MessageContent>
     <YesButton>
         <MudButton OnClick="clearVotes" >Clear Votes</MudButton>
@@ -703,10 +703,10 @@ else{
             _dB.removeUserData(roomId, userId);
             if(hubConnection is not null)
             {
-            hubConnection.StopAsync();
+                hubConnection.StopAsync();
             }
         }
-        
+
     }
 
     //Custom Scale
@@ -835,9 +835,13 @@ else{
 
     private async void clearVotes()
     {
+        hiddenVotes = true;
         if(hubConnection is not null){
             connectedUsers = await _dB.GetClearedVotesList(roomId);
             await hubConnection.SendAsync("sendClearedVotes", roomId, connectedUsers);
+            await hubConnection.SendAsync("sendHideVotes", roomId, hiddenVotes);
+            _dB.UpdateHideVotes(roomId, hiddenVotes);
+
         }
     }
     private void hideUsers(){
