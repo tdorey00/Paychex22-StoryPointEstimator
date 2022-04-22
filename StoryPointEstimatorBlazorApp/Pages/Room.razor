@@ -698,11 +698,15 @@ else{
 
     public void Dispose() //called on page close
     {
-        if(hubConnection is not null)
+        if (!loading)
         {
+            _dB.removeUserData(roomId, userId);
+            if(hubConnection is not null)
+            {
             hubConnection.StopAsync();
-            //NavigationManager.NavigateTo("/");
+            }
         }
+        
     }
 
     //Custom Scale

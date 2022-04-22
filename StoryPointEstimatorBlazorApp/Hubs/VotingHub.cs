@@ -13,7 +13,6 @@ namespace StoryPointEstimatorBlazorApp.Hubs
         public override Task OnDisconnectedAsync(Exception? exception)
         {
             connectionModel found = connections.Find(x => x.connectionId.Equals(Context.ConnectionId));
-            Console.Write("Disconnected");
             if (found is not null)
             {
                 connections.Remove(found);
@@ -29,10 +28,6 @@ namespace StoryPointEstimatorBlazorApp.Hubs
         public async Task userConnected(int user,int room)
         {
             connections.Add(new connectionModel(Context.ConnectionId, user, room));
-            foreach (connectionModel connection in connections)
-            {
-                Console.Write(connection.ToString());
-            }
             await Clients.All.SendAsync("connectUser", user, room);
         }
         public async Task userDisconnect(int user, int room)
