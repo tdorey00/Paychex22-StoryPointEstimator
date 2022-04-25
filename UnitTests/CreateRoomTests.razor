@@ -2,12 +2,42 @@
 
 
 @code {
+    private IConfiguration _config;
+
+    public IConfiguration Configuration
+    {
+        get
+        {
+            if (_config == null)
+            {
+                var builder = new ConfigurationBuilder().AddJsonFile($"appsettings.json", optional: false);
+                _config = builder.Build();
+            }
+
+            return _config;
+        }
+    }
+
+
     [Fact]
     public void deniesEmptySubmit()
     {
         var ctx = new TestContext();
-        var db = ctx.Services.AddTransient<IRoomDataAccess, RoomDataAccess>();
-        var cut = ctx.Render(@<StoryPointEstimatorBlazorApp.Pages.CreateRoom />);
+
+        ctx.Services.AddSingleton<IConfiguration>(Configuration);
+        ctx.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
+        ctx.Services.AddTransient<IRoomDataAccess, RoomDataAccess>();
+        ctx.Services.AddMudServices();
+        //ctx.JSInterop.Mode = JSRuntimeMode.Loose;
+        ctx.JSInterop.SetupModule("_content/MudBlazor/Mudblazor.min.js");
+        var nav = ctx.Services.GetRequiredService<NavigationManager>();
+
+        var cut = ctx.Render(@<StoryPointEstimatorBlazorApp.Pages.CreateRoom />
+    );
+
+        cut.Find("#submit-button").Click();
+
+        Assert.Equal("http://localhost/createRoom", nav.Uri);
     }
 
 }
