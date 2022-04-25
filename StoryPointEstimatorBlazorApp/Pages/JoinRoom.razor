@@ -63,8 +63,16 @@
             <div class = "inputSpacer">
                 <div class = "form-group">
                     <MudGrid Class = "justify-space-between" Style = "max-width: 400px;">
-                            <MudAutocomplete AdornmentColor="Color.Primary" Style="margin-left: 15px; margin-bottom: 20px; width: 200px;" T="string" Dense="true" Clearable="true" MaxItems="null" Label = "Available Rooms" @bind-Value = "tempRoomName" ResetValueOnEmptyText = "true"
-                                SearchFunc = "@searchRoomNames"/>
+
+                           <!-- <MudAutocomplete AdornmentColor="Color.Primary" Style="margin-left: 15px; margin-bottom: 20px; width: 200px;" T="string" Dense="true" Clearable="true" MaxItems="null" Label = "Available Rooms" @bind-Value = "tempRoomName" ResetValueOnEmptyText = "true"
+                                SearchFunc = "@searchRoomNames"/> -->
+                        <label for="dropdown">Select a room:</label>
+                        <InputSelect id="dropdown" @bind-Value="tempRoomName">
+                                @foreach(string roomName in availableRoomNames)
+                                {
+                                    <option value="@roomName">@roomName</option>
+                                }
+                        </InputSelect>
                         <button @onclick = "@UpdateAvailableRooms" class="btn btn-primary" style="background-color: #4B27FE; color: white; width: 183px; margin-left: 22px;" >Refresh Room List</button>
                     </MudGrid>
                 </div>

@@ -434,7 +434,7 @@ else{
             <MudText Style="font-size: 30px">Help</MudText>
             <MudExpansionPanels>
             <MudExpansionPanel Text="Voting" MaxHeight="300">
-                Panel One Content
+                @panelVoting
             </MudExpansionPanel>
             <MudExpansionPanel Text="Table" MaxHeight="300">
                 <MudText Style="white-space: pre-wrap;">@STAR @panelTable</MudText>
@@ -443,7 +443,7 @@ else{
                 <MudText Style="white-space: pre-wrap;">@panelAdmin</MudText>
             </MudExpansionPanel>
             <MudExpansionPanel Text="Misc." Style="margin-bottom: 5px;" MaxHeight="300">
-                Panel Four Content
+                <MudText Style= "white-space: pre-wrap;">@panelMisc@panelMisc2</MudText>
             </MudExpansionPanel>
         </MudExpansionPanels>
     </MudContainer>
@@ -768,10 +768,11 @@ else{
     private bool visibleHelp;
     private void OpenHelp() => visibleHelp = true;
     void CloseHelp() => visibleHelp = false;
-    private string panelVoting = "";
+    private string panelVoting = "Custom Voting: If the user is an admin on the custom voting tab you can use the scale to change the number of buttons and an input box to change the custom voting title, the title will also be updated on the table as the vote column header";
     private string panelTable = ": Indicates whether a user is a facilitator \nUser Sorting: Usernames can be sorted alphabetically by clicking on the column header \nClear My Vote: Removes your own vote from the table \nResize Button: Changes the size of the table, useful for rooms with a lot of users";
     private string panelAdmin = "Hide Votes: Toggleable tool that determines whether votes are visable for all users \nHide Users: Toggleable tool that determines whether users are visable for all users \nClear Votes: Clears all of the votes in the table for all users \nClear Users: Removes all non-facilitators from the room \nDelete Room: Removes all users and deletes the room";
-    private string panelMisc = "";
+    private string panelMisc = "Timer: The timer tab comes with two modes, a stopwatch mode and timer mode where you can set hours, minutes, and seconds for a countdown.  If you are using timer mode you can also trigger a sound to play when the timer is finished";
+    private string panelMisc2 = "\nDark Mode: If you click the moon in the bottom right corner you'll enter dark mode. You're Welcome :)";
     private DialogOptions dialogHelp = new() { FullWidth = true };
 
     //Return Home Warning
