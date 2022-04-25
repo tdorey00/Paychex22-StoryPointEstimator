@@ -63,11 +63,10 @@
             <div class = "inputSpacer">
                 <div class = "form-group">
                     <MudGrid Class = "justify-space-between" Style = "max-width: 400px;">
-
                            <!-- <MudAutocomplete AdornmentColor="Color.Primary" Style="margin-left: 15px; margin-bottom: 20px; width: 200px;" T="string" Dense="true" Clearable="true" MaxItems="null" Label = "Available Rooms" @bind-Value = "tempRoomName" ResetValueOnEmptyText = "true"
                                 SearchFunc = "@searchRoomNames"/> -->
-                        <label for="dropdown">Select a room:</label>
-                        <InputSelect id="dropdown" @bind-Value="tempRoomName">
+                        <label for="dropdown" class="table-vote-text" style="margin-left: 12px;">Select a room:</label>
+                        <InputSelect class="join-create-text-fields" style="margin-left: 12px; margin-bottom: 15px;" id="dropdown" @bind-Value="tempRoomName">
                                 @foreach(string roomName in availableRoomNames)
                                 {
                                     <option value="@roomName">@roomName</option>
