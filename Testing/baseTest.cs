@@ -13,12 +13,11 @@ namespace Testing
 {
     public class baseTest
     {
-        private ChromeDriver driver = new ChromeDriver();
-
         [Fact]
         public void createRoomWorkflow()
         {
             //Initialize Driver and navigate to site
+            var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://paychex-story-point-estimator.azurewebsites.net/");
 
             //Click on create room button and assert that the navigation executed correctly
@@ -48,6 +47,18 @@ namespace Testing
             driver.FindElements(By.ClassName("join-create-text-fields"))[0].SendKeys(Keys.Backspace + "UserA");
             Thread.Sleep(500);
             driver.FindElements(By.ClassName("join-create-text-fields"))[1].SendKeys(Keys.Backspace + "a");
+            Assert.Equal("https://paychex-story-point-estimator.azurewebsites.net/CreateRoom", driver.Url);
+            Thread.Sleep(500);
+
+            //Attempting valid submission and asserting navigation
+            driver.FindElements(By.ClassName("join-create-text-fields"))[0].SendKeys(Keys.Clear + "UserA");
+            Thread.Sleep(500);
+            driver.FindElements(By.ClassName("join-create-text-fields"))[1].SendKeys(Keys.Clear + "TestingRoom");
+            driver.FindElement(By.TagName("button")).Click();
+            Thread.Sleep(500);
+            Assert.Contains("https://paychex-story-point-estimator.azurewebsites.net/Room", driver.Url);
         }
+
+
     }
 }
