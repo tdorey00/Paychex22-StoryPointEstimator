@@ -91,16 +91,17 @@
 @code {
 
     //Validation
-    private bool validSubmit = false;
-    private bool submitBtnClicked = false;
-    private bool alreadyExists = false;
-    private bool sqlError = false;
+    private bool validSubmit = false; //used to display error where input is not within validation requirements
+    private bool submitBtnClicked = false; //used to make sure errors do not pop up prior to submit button click
+    private bool alreadyExists = false; //used to display error where room name already exists to ensure unique names
+    private bool sqlError = false; //used to display error in the case where a database primary key conflict occurs
 
     //Data Models
     private List<int> userIdList = new List<int>(); 
     private List<int> roomIdList = new List<int>();
     private DisplayGroupedModel newGroupedModel = new DisplayGroupedModel();
 
+    //This function creates a new random roomId to be used as the primary key in the database and compares the current list of already used roomId's
     private int createRoomCode()
     {
         Random rand = new Random();
@@ -110,10 +111,10 @@
         roomIdList = _dB.GetRoomIds(); //pull roomId list from dB
         while (!unique)
         {
-            int found = roomIdList.Find(x => x == randomId);
+            int found = roomIdList.Find(x => x == randomId); //check if userId already exists in list of current users
             if(found != 0)
             {
-                randomId = rand.Next(1000, 10000);
+                randomId = rand.Next(1000, 10000); //generate new Id
                 unique = false;
                 roomIdList = _dB.GetRoomIds(); //refresh roomId list
             }
@@ -124,7 +125,8 @@
         }
         return randomId;
     }
-
+    
+    //This function creates a new random userId to be used as the primary key in the database and compares the current list of already used userId's
     private int createUserId()
     {
         Random rand = new Random();
@@ -133,7 +135,7 @@
         userIdList = _dB.GetUserIds(); //pull userId list from the db
         while (!unique)
         {
-            int found = roomIdList.Find(x => x == possibleId);
+            int found = roomIdList.Find(x => x == possibleId); //check if userId is already in the list
             if(found != 0) // if found id is not unique
             {
                 possibleId = rand.Next(1000, 10000); //randomize again                     
@@ -150,24 +152,22 @@
         return possibleId;
     }
 
-
+    //this inserts the room data and user data entered into the input boxes into the database and navigates the user to the room they created
     private void insertData() {
         try
         {
-            sqlError = false;
+            sqlError = false; 
             submitBtnClicked = true;
             if (!newGroupedModel.userName.Trim().Equals("") || !newGroupedModel.roomName.Trim().Equals("")) // do not allow entires with only spaces
             {
-
-
-                List<string> roomNames = _dB.GetRoomNames();
-                if (newGroupedModel.roomName.Equals(String.Empty) || newGroupedModel.userName.Equals(String.Empty)
+                List<string> roomNames = _dB.GetRoomNames(); //get current list of room names
+                if (newGroupedModel.roomName.Equals(String.Empty) || newGroupedModel.userName.Equals(String.Empty) //ensure input areas contain data and are within length requirements
                     || newGroupedModel.roomName.Length > 50 || newGroupedModel.roomName.Length < 3 || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 2)
                     validSubmit = false;
                 else
                     validSubmit = true;
 
-                string found = roomNames.Find(x => x.Equals(newGroupedModel.roomName));
+                string found = roomNames.Find(x => x.Equals(newGroupedModel.roomName)); //make sure room name does not already exist in the database
                 if (found is not null)
                 {
                     alreadyExists = true;
@@ -176,7 +176,7 @@
                 {
                     alreadyExists = false;
                 }
-                if (validSubmit && !alreadyExists)
+                if (validSubmit && !alreadyExists) //input is within validation requirements and the room name is unique
                 {
                     //define roomModel and userModel
                     roomModel roomInsert = new roomModel();
@@ -192,7 +192,7 @@
 
 
                     _dB.createRoomSaveData(roomInsert, userInsert); //calling the method from roomDataAccess in order to save the data to the database
-                    NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, false);
+                    NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, false); //send the user to the created room
                 }
             }
             else
