@@ -63,8 +63,13 @@
             <div class = "inputSpacer">
                 <div class = "form-group">
                     <MudGrid Class = "justify-space-between" Style = "max-width: 400px;">
-                            <MudAutocomplete AdornmentColor="Color.Primary" Style="margin-left: 15px; margin-bottom: 20px; width: 200px;" T="string" Dense="true" Clearable="true" MaxItems="null" Label = "Available Rooms" @bind-Value = "tempRoomName" ResetValueOnEmptyText = "true"
-                                SearchFunc = "@searchRoomNames"/>
+                        <label for="dropdown" class="table-vote-text" style="margin-left: 12px;">Select a room:</label>
+                        <InputSelect class="join-create-text-fields" style="margin-left: 12px; margin-bottom: 15px;" id="dropdown" @bind-Value="tempRoomName">
+                                @foreach(string roomName in availableRoomNames)
+                                {
+                                    <option value="@roomName">@roomName</option>
+                                }
+                        </InputSelect>
                         <button @onclick = "@UpdateAvailableRooms" class="btn btn-primary" style="background-color: #4B27FE; color: white; width: 183px; margin-left: 22px;" >Refresh Room List</button>
                     </MudGrid>
                 </div>
@@ -89,12 +94,12 @@
 @code {
 
     //Validation
-    private bool validSubmit = false;
-    private bool submitBtnClicked = false;
-    private bool sqlError = false;
+    private bool validSubmit = false; //used to display error where input is not within validation requirements
+    private bool submitBtnClicked = false; //used to make sure errors do not pop up prior to submit button click
+    private bool sqlError = false; //used to display error in the case where a database primary key conflict occurs
 
     //Drop Down Data
-    private string tempRoomName = "";
+    private string tempRoomName = ""; //temp variable used for InputSelect
     private List<roomModel> availableRooms = new List<roomModel>();
     private string[] availableRoomNames = Array.Empty<string>();
 
@@ -106,28 +111,23 @@
 
     protected override void OnInitialized()
     {
-        UpdateAvailableRooms();
+        UpdateAvailableRooms(); //Pull room names from dB when page loads
     }
 
+    //This function pulls the roomModel data from the database and then creates an array with just the roomNames for selection in the InputSelect element
     private void UpdateAvailableRooms()
     {
-        availableRooms = _dB.GetRoomModels();
-        availableRoomNames = new string[availableRooms.Count];
+        availableRooms = _dB.GetRoomModels(); //get room Models
+        availableRoomNames = new string[availableRooms.Count]; //create array with length equal to the number of available rooms
         int counter = 0;
         foreach(roomModel room in availableRooms)
         {
-            availableRoomNames[counter] = room.roomName;
+            availableRoomNames[counter] = room.roomName; //add each roomName to the array
             counter++;
         }
     }
-
-    private async Task<IEnumerable<string>> searchRoomNames (string value)
-    {
-        if (string.IsNullOrEmpty(value))
-            return availableRoomNames;
-        return availableRoomNames.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
-    }
-
+    
+    //This function is a security measure to ensure that the room selected exists and has not been deleted during the users time on the page
     private bool validateRoomId()
     {
         int inputId = newGroupedModel.roomId; //the id the user inputs into the box
@@ -142,6 +142,7 @@
         return false; //user input is not valid. 
     }
 
+    //This function creates a new random userId to be used as the primary key in the database and compares the current list of already used userId's
     private int createUserId()
     {
         Random rand = new Random();
@@ -167,6 +168,7 @@
         return possibleId;
     }
 
+    //This function inserts the userData into the database and ensures that input given is valid
     private void insertData(){
         try
         {
@@ -175,17 +177,18 @@
             if (!newGroupedModel.userName.Trim().Equals("")) //do not accept usernames that are just spaces
             {
                 validSubmit = true;
-                foreach (string roomName in availableRoomNames)
+                foreach (string roomName in availableRoomNames) //search the available rooms for the room that was selected from the dropdown
                 {
-                    if (tempRoomName.Equals(roomName))
+                    if (tempRoomName.Equals(roomName)) 
                     {
+                        //store the roomId of the room that was selected in the groupedModel
                         newGroupedModel.roomId = availableRooms.Find(x => x.roomName.Contains(tempRoomName, StringComparison.InvariantCultureIgnoreCase)).roomId;
                         break;
                     }
                 }
                 if (newGroupedModel.roomId != 0)
                 {
-                    if (newGroupedModel.userName == String.Empty || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 2)
+                    if (newGroupedModel.userName == String.Empty || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 2) //ensure input is not empty and within validation requirements
                     {
                         validSubmit = false;
                     }
@@ -202,7 +205,7 @@
 
                             //save user model and link user to room based on user input
                             _dB.joinRoomSaveData(newGroupedModel.roomId, userInsert);
-                            NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, false);
+                            NavigationManager.NavigateTo("/Room/" + newGroupedModel.roomId + "/" + userInsert.userId, false); //navigate to selected room
                         }
                         else
                         {

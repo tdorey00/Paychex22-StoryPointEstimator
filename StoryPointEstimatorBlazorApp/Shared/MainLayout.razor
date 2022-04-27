@@ -19,11 +19,11 @@
 
 </MudLayout>
 @code {
-    private MudTheme _theme = new();
-    public bool _isDarkMode;
+    private MudTheme _theme = new(); //Sets MudTheme
+    public bool _isDarkMode; //Determines if dark mode is active or not
     private MudThemeProvider _mudThemeProvider;
     
-    protected override async Task OnAfterRenderAsync(bool firstRender) {
+    protected override async Task OnAfterRenderAsync(bool firstRender) { //Sets dark/light theme automatically based on your systems preference
         if (firstRender) {
             _isDarkMode = await _mudThemeProvider.GetSystemPreference();
             StateHasChanged();

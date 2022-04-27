@@ -13,10 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
-builder.Services.AddTransient<IRoomDataAccess, RoomDataAccess>();
-builder.Services.AddMudServices();
-//builder.Services.AddBlazoredSessionStorage();
+builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>(); //SQL Access Class
+builder.Services.AddTransient<IRoomDataAccess, RoomDataAccess>(); //Uses SQL Access Class to put relevant data into the database
+builder.Services.AddMudServices(); //Mudblazor Services
 builder.Services.AddResponseCompression(opts =>
 {
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -45,6 +44,6 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-app.MapHub<VotingHub>("VotingHub");
+app.MapHub<VotingHub>("VotingHub"); //SignalR Hub users are connected to
 
 app.Run();
