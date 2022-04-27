@@ -14,7 +14,7 @@ namespace Testing
     public class baseTest
     {
         [Fact]
-        public void createRoomWorkflow()
+        public async void createRoomWorkflow()
         {
             //Initialize Driver and navigate to site
             var driver = new ChromeDriver();
@@ -62,7 +62,7 @@ namespace Testing
 
             driver.FindElements(By.ClassName("admin-tools-buttons"))[4].Click();
             Thread.Sleep(1000);
-            //Need to figure out how to confirm delete in this line
+            driver.FindElement(By.TagName("html")).SendKeys(Keys.Tab + Keys.Enter);
             Thread.Sleep(5000);
             driver.Close();
         }
