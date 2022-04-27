@@ -15,7 +15,7 @@
     }
 </style>
 <div>
-    @if (_timing || _isStopwatchRunning) {<head><title>ScrumSpace | @displaytimer </title></head>}
+    @if (_timing || _isStopwatchRunning) {<head><title>ScrumSpace | @displaytimer </title></head>} //Displays timer time in tab title
     else {<head><title>ScrumSpace</title></head>}
     <MudAppBar Class="appbar" @bind-Button="Voting_Mode">
         <MudText Class="main-font" Style="width: 120px; min-width:120px;">ScrumSpace</MudText> -
@@ -23,28 +23,28 @@
             <MudText Class="main-font">Home</MudText>
         </MudButton> |
         <MudButton Disabled="@_fiboAppBar" OnClick="() => setVotingMode(1)" Class="appbar-buttons" Style="width: 150px; min-width:150px;">
-            @if (_fiboAppBar) {<MudText Class="appbar-buttons-clicked">Fibonacci Tool</MudText>}
+            @if (_fiboAppBar) {<MudText Class="appbar-buttons-clicked">Fibonacci Tool</MudText>} //Highlights if fibonacci tab is currently selected
             else {<MudText Class="main-font">Fibonacci Tool</MudText>}
         </MudButton> |
         <MudButton Disabled="@_fistAppBar" OnClick="() => setVotingMode(2)" Class="appbar-buttons" Style="width: 120px; min-width:120px;">
-            @if (_fistAppBar) {<MudText Class="appbar-buttons-clicked">Fist of Five</MudText>}
+            @if (_fistAppBar) {<MudText Class="appbar-buttons-clicked">Fist of Five</MudText>} //Highlights if fist of five tab is currently selected
             else {<MudText Class="main-font">Fist of Five</MudText>}        
         </MudButton> |
         <MudButton Disabled="@_tshirtAppBar" OnClick="() => setVotingMode(3)" Class="appbar-buttons" Style="width: 140px; min-width:140px;">
-            @if (_tshirtAppBar) {<MudText Class="appbar-buttons-clicked">T-Shirt Sizing</MudText>}
+            @if (_tshirtAppBar) {<MudText Class="appbar-buttons-clicked">T-Shirt Sizing</MudText>} //Highlights if T-Shirt sizing tab is currently selected
             else {<MudText Class="main-font">T-Shirt Sizing</MudText>}        
         </MudButton> |
         <MudButton Disabled="@_customAppBar" OnClick="() => setVotingMode(4)" Class="appbar-buttons" Style="width: 160px; min-width:160px;">
-            @if (_customAppBar) {<MudText Class="appbar-buttons-clicked">Custom Voting</MudText>}
+            @if (_customAppBar) {<MudText Class="appbar-buttons-clicked">Custom Voting</MudText>} //Highlights if custom voting tab is currently selected
             else {<MudText Class="main-font">Custom Voting</MudText>}        
         </MudButton> |
-        <MudButton Disabled="@_timerAppBar" OnClick="() => setVotingMode(5)" Class="appbar-buttons">
+        <MudButton Disabled="@_timerAppBar" OnClick="() => setVotingMode(5)" Class="appbar-buttons"> //Highlights if timer tool is currently selected
             @if (_timerAppBar) {
-                @if (_timing || _isStopwatchRunning) {<MudText Class="appbar-buttons-clicked" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
+                @if (_timing || _isStopwatchRunning) {<MudText Class="appbar-buttons-clicked" Style="width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>} //Displays timer time in appbar tab while tab is selected
                 else {<MudText Class="appbar-buttons-clicked" Style="width: 60px; min-width:60px;">Timer</MudText>}
                 }
             else {
-                @if (_timing || _isStopwatchRunning) {<MudText Class="main-font" Style=" width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>}
+                @if (_timing || _isStopwatchRunning) {<MudText Class="main-font" Style=" width: 170px; min-width:170px;"> Timing | @displaytimer </MudText>} //Displays timer time in appbar tab
                 else {<MudText Class="main-font" Style=" width: 60px; min-width:60px;">Timer</MudText>}
                 }
         </MudButton>
@@ -62,10 +62,10 @@
 }
 else{
 <div class="mainContainer">
-    @if (Voting_Mode != 5){
+    @if (Voting_Mode != 5){ //Don't display voting buttons if timer page is selected
         <div>
             <MudPaper Class="mud-paper-buttons" Elevation="0">    
-                @if(Voting_Mode==1) 
+                @if(Voting_Mode==1) //Fibonacci Buttons
                 {
                     <MudText Class="mud-paper-tool-name"> Fibonacci Tool</MudText>
                     <MudButton OnClick='() => setVote("?")' Class="tool-buttons">
@@ -108,7 +108,7 @@ else{
                          @COFFEE
                     </MudButton> 
                 }
-                @if(Voting_Mode == 2)
+                @if(Voting_Mode == 2) //Fist of Five Buttons
                 {
                     <MudText Class="mud-paper-tool-name"> Fist of Five</MudText>
                     <MudButton OnClick='() => setVote("1")' Class="tool-buttons">
@@ -127,7 +127,7 @@ else{
                          5
                     </MudButton> 
                 }
-                @if(Voting_Mode == 3)
+                @if(Voting_Mode == 3) //T-Shirt Sizing Buttons
                 {
                     <MudText Class="mud-paper-tool-name"> T-Shirt Sizing</MudText>
                     <MudButton OnClick='() => setVote("XS")' Class="tool-buttons">
@@ -146,10 +146,10 @@ else{
                          XL
                     </MudButton> 
                 }
-                @if(Voting_Mode==4) 
+                @if(Voting_Mode==4) //Custom Voting Buttons
                 {
                     <MudText Class="mud-paper-tool-name"> @currentCustomTitle </MudText>
-                    @if (newGroupedModel.isAdmin) {
+                    @if (newGroupedModel.isAdmin) { //Only display if user is a admin
                         <MudPaper Style="background: rgba(0,0,0,0.0);" Class="mud-paper-custom-scale" Elevation="0">
                             <MudItem Class="slider">
                                 <MudText Class="slider">Number of buttons: @tempCustomScale</MudText>
@@ -164,7 +164,7 @@ else{
                             </MudButton>    
                         </MudPaper>
                     }
-                    foreach(int x in Enumerable.Range(1, @currentCustomScale))
+                    foreach(int x in Enumerable.Range(1, @currentCustomScale)) //Changes Custom Scale Size
                     {
                         <MudButton Variant="Variant.Filled" OnClick='()=> setVote(""+x)' Class="tool-buttons">@x</MudButton>
                     }
@@ -172,31 +172,43 @@ else{
             </MudPaper>
         </div>
     }
-    @if (Voting_Mode == 5)
+    @if (Voting_Mode == 5) //Timer Tool Page
     {
         <div>
-            @if (_stopwatchMode) {<MudText Class="mud-paper-tool-name" >Stopwatch</MudText>}
-            else {<MudText Class="mud-paper-tool-name" >Timer</MudText>}
+            @if (_stopwatchMode) {<MudText Class="mud-paper-tool-name" >Stopwatch</MudText>} //Heading name is "Stopwatch" if stopwatch mode is selected
+            else {<MudText Class="mud-paper-tool-name" >Timer</MudText>} //Heading name is "Timer" if stopwatch mode is not selected
             <MudPaper Class="mud-paper-timer" Style="justify-content: space-evenly" Height ="515px" Width ="850px" Elevation="0">  
                 <MudPaper Class="timer-display">
-                    @if (_timerDone) {<MudText Class="main-font" Style="font-size: 70px;"> 00:00:00 </MudText>}
-                    else {<MudText Class="main-font" Style="font-size: 70px;"> @displaytimer </MudText>}
-                    @if (_pause) {<MudText Class="main-font" Style="font-size: 30px; padding-left: 80px; width: 80px; min-width:80px;"> (Paused) </MudText>}
-                    @if (_stopwatchDone) {<MudText Class="main-font" Style="font-size: 30px; padding-left: 40px; width: 250px; min-width:250px;"> Time: @mostRecentTime </MudText>}
+                    @if (_timerDone) {<MudText Class="main-font" Style="font-size: 70px;"> 00:00:00 </MudText>} //Set timer display to zero if the timer is done
+                    else {<MudText Class="main-font" Style="font-size: 70px;"> @displaytimer </MudText>} //If the timer is running, display the time here
+                    @if (_pause) {<MudText Class="main-font" Style="font-size: 30px; padding-left: 80px; width: 80px; min-width:80px;"> (Paused) </MudText>} //Display under the time if timer is paused
+                    @if (_stopwatchDone) {<MudText Class="main-font" Style="font-size: 30px; padding-left: 40px; width: 250px; min-width:250px;"> Time: @mostRecentTime </MudText>} //Display under the time if stopwatch is done
                 </MudPaper> 
                 <MudPaper Style="background: rgba(0,0,0,0.0);" Height ="400px" Width ="400px" Elevation="0">
-                    @if (!_stopwatchMode) {
+                    @if (!_stopwatchMode) { //Display timer controls if stopwatch mode isn't true
                     <MudButton Disabled="@_timing" OnClick="Timer" Variant="Variant.Filled" Class="timer-buttons">
                         <MudText Class="main-font" Style="font-size: 22px;">Start</MudText>
                     </MudButton>
+                    <MudButton Disabled="@_pauseDisable" OnClick="pauseTimer" Variant="Variant.Filled" Class="timer-buttons">
+                        <MudText Class="main-font" Style="font-size: 22px;">Pause</MudText>
+                    </MudButton>
+                    <MudButton OnClick="resetTimer" Class="timer-buttons">
+                        <MudText Class="main-font" Style="font-size: 22px;">Reset</MudText>
+                    </MudButton>
+                    <MudNumericField @bind-Value="Hours" Class="timer-input" Label="Hours" Variant="Variant.Outlined" AdornmentColor="Color.Primary" Min="0" Max="12" />
+                    <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
+                    <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
                     }
-                    else {
+                    else { //Display stopwatch controls if stopwatch mode is true
                     <MudButton Disabled="@_isStopwatchRunning" OnClick="Stopwatch" Variant="Variant.Filled" Class="timer-buttons">
-                        @if (_timerDone) {<MudText Class="main-font" Style="font-size: 22px;">Start</MudText>}
+                        @if (_timerDone) {<MudText Class="main-font" Style="font-size: 22px;">Start</MudText>} 
                         else {<MudText Class="main-font" Style="font-size: 22px;">Start</MudText>}
                     </MudButton>
+                    <MudButton Disabled="@_stopDisable" OnClick="stopStopwatch" Variant="Variant.Filled" Class="timer-buttons">
+                        <MudText Class="main-font" Style="font-size: 22px;">Stop</MudText>
+                    </MudButton>
                     }
-                    @if (!_stopwatchMode) {
+@*                    @if (!_stopwatchMode) {
                     <MudButton Disabled="@_pauseDisable" OnClick="pauseTimer" Variant="Variant.Filled" Class="timer-buttons">
                         <MudText Class="main-font" Style="font-size: 22px;">Pause</MudText>
                     </MudButton>
@@ -214,35 +226,35 @@ else{
                         <MudNumericField @bind-Value="Minutes" Class="timer-input" Label="Minutes" Variant="Variant.Outlined" Min="0" Max="60" />
                         <MudNumericField @bind-Value="Seconds" Class="timer-input" Label="Seconds" Variant="Variant.Outlined" Min="0" Max="60" />
                     }
-                </MudPaper>
+*@                </MudPaper>
             </MudPaper> 
             <MudPaper Style="background: rgba(0,0,0,0.0);" Elevation="0">
                 <MudText Class="mud-paper-tool-name">Timer Tools</MudText>
                 <MudButton OnClick="toggleStopwatch" Class="admin-tools-buttons" Style="width: 140px;">
-                    @if (_stopwatchMode) {<MudText Class="main-font" Style="font-size: 14px;" >Timer Mode</MudText>}
-                    else {<MudText Class="main-font" Style="font-size: 14px;" >Stopwatch Mode</MudText>}
+                    @if (_stopwatchMode) {<MudText Class="main-font" Style="font-size: 14px;" >Timer Mode</MudText>} //Toggle timer mode
+                    else {<MudText Class="main-font" Style="font-size: 14px;" >Stopwatch Mode</MudText>} //Toggle stopwatch mode 
                 </MudButton>                <MudButton OnClick="toggleSound" Class="admin-tools-buttons" Style="width: 120px;">
-                    @if (_soundOff) {<MudText Class="main-font" Style="font-size: 14px;" >Turn Sound On</MudText>}
-                    else {<MudText Class="main-font" Style="font-size: 14px;" >Turn Sound Off</MudText>}
+                    @if (_soundOff) {<MudText Class="main-font" Style="font-size: 14px;" >Turn Sound On</MudText>} //Toggle sound on
+                    else {<MudText Class="main-font" Style="font-size: 14px;" >Turn Sound Off</MudText>} //Toggle sound off
                 </MudButton>
-                    @if (!_soundOff) {<MudIcon Style="margin-left: 4px;" Size="Size.Large" Color="Color.Primary" Icon="@Icons.Filled.VolumeUp"/>}
+                    @if (!_soundOff) {<MudIcon Style="margin-left: 4px;" Size="Size.Large" Color="Color.Primary" Icon="@Icons.Filled.VolumeUp"/>} //Display sound icon if sound is turned on
             </MudPaper>
         </div>
     }
     <div>
-        @if (newGroupedModel.isAdmin)
+        @if (newGroupedModel.isAdmin) //Display Admin Tools if user is a facilitator
         {
-            @if (Voting_Mode != 5)
+            @if (Voting_Mode != 5) //Don't display admin tools if timer page is selected
             {
                 <MudPaper Class="mud-paper-admin-tools" Elevation="0">
                     <MudText Class="mud-paper-tool-name">Admin Tools</MudText>
                     <MudButton OnClick="hideVotes" Class="btn admin-tools-buttons">
-                        @if (hiddenVotes) {<MudText Class="main-font" Style="font-size: 14px;" >Unhide Votes</MudText>}
-                        else {<MudText Class="main-font" Style="font-size: 14px;" >Hide Votes</MudText>}
+                        @if (hiddenVotes) {<MudText Class="main-font" Style="font-size: 14px;" >Unhide Votes</MudText>} //Toggle unhidden votes
+                        else {<MudText Class="main-font" Style="font-size: 14px;" >Hide Votes</MudText>} //Toggle hidden votes
                     </MudButton>
                     <MudButton OnClick="hideUsers" Class="btn admin-tools-buttons">
-                        @if (hiddenUsers) {<MudText Class="main-font" Style="font-size: 14px;" >Unhide Users</MudText>}
-                        else {<MudText Class="main-font" Style="font-size: 14px;" >Hide Users</MudText>}
+                        @if (hiddenUsers) {<MudText Class="main-font" Style="font-size: 14px;" >Unhide Users</MudText>} //Toggle unhidden votes
+                        else {<MudText Class="main-font" Style="font-size: 14px;" >Hide Users</MudText>} //Toggle hidden votes
                     </MudButton>
                     <MudButton OnClick="clearVotesMsg" Class="btn admin-tools-buttons"><MudText Class="main-font" Style="font-size: 14px;" >Clear Votes</MudText></MudButton>
                     <MudButton OnClick="clearUsers" Class="btn admin-tools-buttons"><MudText Class="main-font" Style="font-size: 14px;" >Clear Users</MudText></MudButton>
@@ -250,7 +262,7 @@ else{
                 </MudPaper>
             }
         }
-        @if (Voting_Mode != 5)
+        @if (Voting_Mode != 5) //Don't display table if timer page is selected
         {
             <MudPaper Class="mud-paper-table" Elevation="0">
                 <MudItem Style="display: inline-flex; justify-content: start;">
@@ -272,7 +284,7 @@ else{
                     </ColGroup>
                     <HeaderContent>
                         <MudTh><MudTableSortLabel SortBy="new Func<userModel, object>(x=>x.userName)">User</MudTableSortLabel></MudTh>
-                            @if (Voting_Mode == 1) {
+                            @if (Voting_Mode == 1) { //Changes Vote Heading depending on mode
                                     <MudTh>Story Points</MudTh>
                             }
                             else if (Voting_Mode == 2) {
@@ -282,21 +294,21 @@ else{
                                     <MudTh>Size</MudTh>
                             }
                             else {
-                                    <MudTh>@currentCustomTitle</MudTh>
+                                    <MudTh>@currentCustomTitle</MudTh> 
                             }
                     </HeaderContent>
                     <RowTemplate>
                         <MudTd DataLabel="User">
-                            @if (!hiddenUsers)
+                            @if (!hiddenUsers) //Displays users in table if unhidden
                             {                         
-                                @if(!context.observer){
+                                @if(!context.observer){ //Displays user if not an observer
                                     <MudText Class="table-vote-text">
                                     @context.userName
-                                    @if (context.isAdmin)
+                                    @if (context.isAdmin) //Displays a star if user is an admin
                                     {
                                     @STAR
                                     }
-                                    @if (userId == @context.userId)
+                                    @if (userId == @context.userId) //Displays Me for client so they know who they are (just in case :))
                                     {
                                     @Me
                                     }
@@ -305,91 +317,92 @@ else{
                             }
                         </MudTd>
                         <MudTd DataLabel="Vote">
-                            @if(!context.observer)
+                            @if(!context.observer) //Display vote if not an observer
                             {
-                                @if (Voting_Mode == 1) {
-                                    @if (@votesCleared) {
+                                @if (Voting_Mode == 1) { //Display's fibonacci votes
+                                    @if (@votesCleared) { //Change votes to empty if votes have been cleared
                                     context.fibVote = "";
                                     }
-                                    @if (context.fibVote != "") 
+                                    @if (context.fibVote != "") //Display votes if vote is not empty
                                     {
                                         <MudPaper Class="vote-background">
-                                            @if (!hiddenVotes) 
+                                            @if (!hiddenVotes) //Display votes if votes are not hidden
                                             {
                                             <MudText Class="table-vote-text">
-                                                @if(context.fibVote.Equals("coffee")) 
+                                                @if(context.fibVote.Equals("coffee")) //Display coffee symbol if vote is Coffee Cup
                                                 {
                                                     @COFFEE
                                                 }
-                                                else if(context.fibVote.Equals("half")) 
+                                                else if(context.fibVote.Equals("half")) //Display half symbol if vote is half
                                                 {
                                                     @HALF
                                                 }
                                                 else 
                                                 {
-                                                    @context.fibVote
+                                                    @context.fibVote //Display fibonacci vote
                                                 }
                                             </MudText>
                                             }
-                                            else 
+                                            else //Display vote to yourself regardless of if vote is hidden
                                             {
-                                                @if (userId == @context.userId) 
+                                                @if (userId == @context.userId) //Displays vote as unhidden for client even if votes are hidden so user can see what they voted
                                                 {
-                                                    <MudText Class="table-vote-text">@fiboVoteClient</MudText>  
+                                                    <MudText Class="table-vote-text">@fiboVoteClient</MudText> //Client Fibonacci Vote
                                                 }
                                             }
                                     </MudPaper>
                                     }   
                                 }
-                                else if (Voting_Mode == 2) {
-                                    @if (@votesCleared) {
+                                else if (Voting_Mode == 2) { //Display's fist of five votes
+                                    @if (@votesCleared) { //Change votes to empty if votes have been cleared
                                     context.fistVote = "";
                                     }
-                                    @if (context.fistVote != "") {
+                                    @if (context.fistVote != "") { //Display votes if vote is not empty
                                         <MudPaper Class="vote-background">
-                                            @if (!hiddenVotes)
+                                            @if (!hiddenVotes) //Display votes if votes are not hidden
                                             {
-                                            <MudText Class="table-vote-text">@context.fistVote</MudText>  
+                                            <MudText Class="table-vote-text">@context.fistVote</MudText> //Display fist of five vote
                                             }
-                                            else {
-                                                @if (userId == @context.userId) {
-                                                <MudText Class="table-vote-text">@fistVoteClient</MudText>  
+                                            else { //Display vote to yourself regardless of if vote is hidden
+                                                @if (userId == @context.userId) //Displays vote as unhidden for client even if votes are hidden so user can see what they voted
+                                                {
+                                                <MudText Class="table-vote-text">@fistVoteClient</MudText> //Client Fist of Five Vote
                                                 }
                                             }
                                         </MudPaper>
                                     }   
                                 }
-                                else if (Voting_Mode == 3) {
-                                    @if (@votesCleared) {
+                                else if (Voting_Mode == 3) { //Display's t-shirt votes
+                                    @if (@votesCleared) { //Change votes to empty if votes have been cleared
                                     context.tshirtVote = "";
                                     }
                                     @if (context.tshirtVote != "") {
                                         <MudPaper Class="vote-background">
-                                            @if (!hiddenVotes)
+                                            @if (!hiddenVotes) //Display votes if votes are not hidden
                                             {
                                             <MudText Class="table-vote-text">@context.tshirtVote</MudText>  
                                             }
-                                            else {
-                                                @if (userId == @context.userId) {
-                                                <MudText Class="table-vote-text">@tshirtVoteClient</MudText>  
+                                            else { //Display vote to yourself regardless of if vote is hidden
+                                                @if (userId == @context.userId) { //Displays vote as unhidden for client even if votes are hidden so user can see what they voted
+                                                <MudText Class="table-vote-text">@tshirtVoteClient</MudText> //Client T-shirt Vote
                                                 }
                                             }
                                         </MudPaper>
                                     }   
                                 }
-                                else if (Voting_Mode == 4) {
-                                    @if (@votesCleared) {
+                                else if (Voting_Mode == 4) { //Display's custom votes
+                                    @if (@votesCleared) { //Change votes to empty if votes have been cleared
                                     context.scaleVote = "";
                                     }
                                     @if (context.scaleVote != "") {
                                         <MudPaper Class="vote-background">
-                                            @if (!hiddenVotes)
+                                            @if (!hiddenVotes) //Display votes if votes are not hidden
                                             {
                                             <MudText Class="table-vote-text">@context.scaleVote</MudText>  
                                             }
-                                            else {
-                                                @if (userId == @context.userId) {
-                                                <MudText Class="table-vote-text">@scaleVoteClient</MudText>  
+                                            else { //Display vote to yourself regardless of if vote is hidden
+                                                @if (userId == @context.userId) {//Displays vote as unhidden for client even if votes are hidden so user can see what they voted
+                                                <MudText Class="table-vote-text">@scaleVoteClient</MudText> //Client Custom Scale Vote
                                                 }
                                             }
                                         </MudPaper>
@@ -403,7 +416,7 @@ else{
         }
     </div>
 </div>
-@if (Voting_Mode != 5) {
+@if (Voting_Mode != 5) { //Don't display room name if timer page is selected
     <div style="position: fixed; bottom: 2%; left: 1%;">
     <MudPaper Class="roomname-display">
         <MudText Class="main-font" Style="font-size: 18px; padding: 15px;">Room: @newGroupedModel.roomName</MudText>
@@ -465,7 +478,7 @@ else{
         <MudButton OnClick="CloseAbout">Close</MudButton>
     </DialogActions>
 </MudDialog>
-@if (_timerDone) {
+@if (_timerDone) { //If timer is done display timer done notification
     _timing = false;
     timerNotification();
     _timerDone = false;
@@ -505,7 +518,7 @@ else{
 <MudMessageBox @ref="timerNotificationMSG" YesText="Ok">
     <MessageContent>
         <MudText Style="font-family:'Ubuntu', sans-serif; font-weight: bold; font-size: 20px;"> Timer Finished </MudText>
-        @if (!_soundOff)
+        @if (!_soundOff) //Is sound if not off, play timer sound
         {
         <audio autoplay><source src="/Audio/TimerSound.mp3" /></audio>
         }
@@ -516,98 +529,111 @@ else{
     private HubConnection? hubConnection;
     //data
     [Parameter]
-    public int roomId{ get; set; }
+    public int roomId{ get; set; } //roomId comes from joinRoom or createRoom
     [Parameter]
-    public int userId { get; set; }
-    private string tempUsername = "";
-    private bool tempAdmin;
-    private bool loading = true;
-    private string currentCustomTitle = "Custom Title";
+    public int userId { get; set; } //userId comes from joinRoom or create
+    private bool loading = true; //true when page is initializing, false otherwise used to control when the user can see the page layout
     private List<userModel> connectedUsers = new List<userModel>();
     DisplayGroupedModel newGroupedModel = new DisplayGroupedModel();
 
     protected override async Task OnInitializedAsync() 
     {
         try{
+            //Get room data from database and bind to grouped model
             roomModel roomData = await _dB.GetRoomData(roomId);
-            currentCustomTitle = roomData.scaleTitle;
-            currentCustomScale = roomData.currentScale;
-            tempCustomScale = roomData.currentScale;
             newGroupedModel.scaleTitle = roomData.scaleTitle;
             newGroupedModel.roomName = roomData.roomName;
             newGroupedModel.currentScale = roomData.currentScale;
             hiddenUsers = roomData.hideUsers;
             hiddenVotes = roomData.hideVotes;
+            //set the state of temp room variable
+            tempCustomScale = roomData.currentScale;
+            currentCustomTitle = roomData.scaleTitle;
+            currentCustomScale = roomData.currentScale;
+            //Get list of connected users
             connectedUsers = await _dB.getConnectedUsers(roomId);
+            //Get user data from database and bind to user model
             userModel userData = await _dB.GetUserData(userId);
             newGroupedModel.userId = userData.userId;
             newGroupedModel.userName = userData.userName;
-            tempUsername = userData.userName;
-            tempAdmin = userData.isAdmin;
-            tempObserver = userData.observer;
             newGroupedModel.observer = userData.observer;
             newGroupedModel.isAdmin = userData.isAdmin;
+            //sets the state of user temp variables
+            tempUsername = userData.userName; 
+            tempAdmin = userData.isAdmin;
+            tempObserver = userData.observer;
+            
         }
         catch (InvalidOperationException) //race condition involving user joining a room while it is being cleared or deleted
         {
-            _dB.removeUserData(roomId, userId);
-            NavigationManager.NavigateTo("Error");
+            _dB.removeUserData(roomId, userId); //remove user data from database
+            NavigationManager.NavigateTo("Error"); //go to error page
         }
 
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("VotingHub"))
+            .WithUrl(NavigationManager.ToAbsoluteUri("VotingHub"))  //create signalR hub connection
             .Build();
+        
+        //The following are signalR events called from VotingHub all of them contain an int user which represents the id of the user who created the call
 
-        hubConnection.On<int, string, int>("receiveVote", (user, vote, votingMode) =>
+        //This event is called from the Hub to recieve a new vote from a client given the voting mode the client was in at the time of the call
+        hubConnection.On<int, string, int>("receiveVote", (user, vote, votingMode) => 
         {
-            userModel found = connectedUsers.Find(x => x.userId == user);
+            userModel found = connectedUsers.Find(x => x.userId == user); //if found then user is in room
             if(found is not null)
             {
-                if (votingMode == 1)
+                if (votingMode == 1) //fib vote
                 {
                     if(vote.Equals("coffee")){
-                        found.fibVote = ""+COFFEE;
+                        found.fibVote = ""+COFFEE; //used to display coffee emoji
                     }
                     else if (vote.Equals("half")){
-                        found.fibVote = ""+HALF;
+                        found.fibVote = ""+HALF; //used to display 1/2 symbol
                     }
                     else{
                         found.fibVote = vote;
                     }
                 }
-                if (votingMode == 2)
+                if (votingMode == 2) //fist vote
                     found.fistVote = vote;
-                if (votingMode == 3)
+                if (votingMode == 3) //tshirt vote
                     found.tshirtVote = vote;
-                if (votingMode == 4)
+                if (votingMode == 4) //custom vote
                     found.scaleVote = vote;
-                StateHasChanged();
+                StateHasChanged(); //rerender affected page elements
             }
         });
+
+        //This event is called when the a user connects to the room
         hubConnection.On<int, int>("connectUser", async (user, room) =>
             {
-                Thread.Sleep(10);
-                userModel found = connectedUsers.Find(x => x.userId == user); 
-                if(room == roomId && userId != user && (found is null))
+                Thread.Sleep(10); //wait (Not sure why this is necessary but it didn't work for me without it)
+                userModel found = connectedUsers.Find(x => x.userId == user); //if found != null then user is in room
+                if(room == roomId && userId != user && (found is null)) //ensure a double call has not occured (happened during testing)
                 {
-                    connectedUsers.Add(await _dB.GetUserData(user));
-                    StateHasChanged();
+                    connectedUsers.Add(await _dB.GetUserData(user)); //add new user to list, gets user data from database
+                    StateHasChanged(); //rerender affected page elements
                 }
             });
 
+        //This event is called when a user disconnects from a room
         hubConnection.On<int, int>("disconnectUser", async (user, room) =>
           {
-              userModel found = connectedUsers.Find(x => x.userId == user);
+              userModel found = connectedUsers.Find(x => x.userId == user); //if found != null then user is in room
               if (found is not null)
               {
-                  connectedUsers.Remove(found);
-                  StateHasChanged();
+                  connectedUsers.Remove(found); //remove user from connection list
+                  StateHasChanged(); //rerender affected page elements
               }
           });
-
+        
+        //This event is called when a user has updated their profile in the user settings menu
+        //name = new username
+        //admin = new admin status
+        //observe = new observer status
         hubConnection.On<int, string, bool, bool>("updateProfileRecieve", async (user, name, admin, observe) =>
         {
-            userModel found = connectedUsers.Find(x => x.userId == user);
+            userModel found = connectedUsers.Find(x => x.userId == user); //if found != null then user is in room
             if(found is not null)
             {
                 found.userName = name;
@@ -617,9 +643,12 @@ else{
             }
         });
 
+        //This event is called when the custom voting scale/name is changed
+        //scaleName = custom scale title
+        //scale = number of buttons
         hubConnection.On<int, string, int>("recieveScale", async(room, scaleName, scale) =>
         {
-            if(room == roomId)
+            if(room == roomId) //calling clients room is the same as this clients room
             {
                 currentCustomScale = scale;
                 currentCustomTitle = scaleName;
@@ -627,6 +656,8 @@ else{
             }
         });
 
+        //this event is called when an admin clicks clear users or delete room
+        //everyone = true when all users should disconnect (delete room), false when non admins should disconnect (clear users)
         hubConnection.On<int, bool>("removeUser", async (room, everyone) =>
         {
             bool currentAdminStatus = _dB.getAdminStatus(userId); //need to pull newest data because signalR takes intitial state not the possible modified state
@@ -646,8 +677,8 @@ else{
             {
                     try
                     {
-                        Thread.Sleep(500);
-                        connectedUsers = await _dB.getConnectedUsers(roomId);
+                        Thread.Sleep(500); //Wait for non admins to disconnect
+                        connectedUsers = await _dB.getConnectedUsers(roomId); //regrab list of current users
                         StateHasChanged();
                     }
                     catch (InvalidOperationException) //possible failure to grab new list
@@ -655,31 +686,38 @@ else{
                         _dB.removeUserData(userId, roomId); //ensure user data is removed
                     if(hubConnection is not null)
                         {
-                            await hubConnection.SendAsync("userDisconnect", userId, roomId); 
+                            await hubConnection.SendAsync("userDisconnect", userId, roomId);  //disconnect notification sent out when error occurs
                         }
-                        NavigationManager.NavigateTo("Error");
+                        NavigationManager.NavigateTo("Error"); //navigate to error page
                     }
                 }
             }
         });
 
+        //This event is called when an admin changes the status of hiddenVotes
+        //status = true when votes are hidden, false otherwise
         hubConnection.On<int, bool>("recieveHideVotes", async(room, status) =>
         {
-            if(roomId == room)
+            if(roomId == room) //if calling clients room is the same room as the reciving client
             {
                 hiddenVotes = status;
                 StateHasChanged();
             }
         });
 
+        //This event is called when an admin changes the status of hiddenUsers
+        //status = true when users are hidden, false otherwise
         hubConnection.On<int, bool>("recieveHideUsers", async(room, status) =>
         {
-            if(roomId == room)
+            if(roomId == room) //if calling clients room is the same room as the reciving client
             {
                 hiddenUsers = status;
                 StateHasChanged();
             }
         });
+
+        //Called when an admin has cleared the votes in the given room
+        //newList = a new list to display in the table with empty votes
         hubConnection.On<int, List<userModel>>("recieveClearedList", async (room, newlist) =>
         {
             if(roomId == room)
@@ -688,163 +726,168 @@ else{
                 StateHasChanged();
             } 
         });
-        await hubConnection.StartAsync();
-        if(hubConnection is not null)
+
+        await hubConnection.StartAsync(); //start hub connection
+        if(hubConnection is not null) 
         {
-            await hubConnection.SendAsync("userConnected", userId, roomId);
+            await hubConnection.SendAsync("userConnected", userId, roomId); //notify clients a new client has connected to the hub
         }
         loading = false;
     }
 
-    public void Dispose() //called on page close
+    public void Dispose() //called on page close or refresh (blazor limitation)
     {
-        if (!loading)
+        if (!loading) //do not call during render process while loading the page
         {
-            _dB.removeUserData(roomId, userId);
+            _dB.removeUserData(roomId, userId); //remove user data
             if(hubConnection is not null)
             {
-                hubConnection.StopAsync();
+                hubConnection.StopAsync(); //stop connection to hub (calls OnDisconnecedAsync in VotingHub)
             }
         }
 
     }
 
     //Custom Scale
-    private string newCustomTitle { get; set; } = "";
-    private int currentCustomScale;
-    private int tempCustomScale;
+    
+    private int tempCustomScale; //temp variables are used to stop dynamic rerendering of the page when user types in input boxes
+        private string newCustomTitle { get; set; } = ""; //temp
+    private int currentCustomScale; //Current custom scale used for display
+    private string currentCustomTitle = "Custom Title"; //current scale title used for display
 
+    //This function updates the user's custom voting title and/or scale and notifies other clients
     async void updateCustomVote()
     {
-        if(newCustomTitle.Length > 3 && newCustomTitle.Length < 101)
+        if(newCustomTitle.Length > 3 && newCustomTitle.Length < 101) //valid title length
         {
-            _dB.UpdateCustomScaleTitle(roomId, newCustomTitle);
-            currentCustomTitle = newCustomTitle;
+            _dB.UpdateCustomScaleTitle(roomId, newCustomTitle); //update database
+            currentCustomTitle = newCustomTitle; //update display
         }
-        if(tempCustomScale != currentCustomScale){
-            _dB.UpdateCustomScale(roomId, tempCustomScale);
-            currentCustomScale = tempCustomScale;
+        if(tempCustomScale != currentCustomScale){ //if scale has changed
+            _dB.UpdateCustomScale(roomId, tempCustomScale);  //update database
+            currentCustomScale = tempCustomScale; //update display
         }
         if(hubConnection is not null)
         {
-            await hubConnection.SendAsync("updateScale", roomId, currentCustomTitle, currentCustomScale);
+            await hubConnection.SendAsync("updateScale", roomId, currentCustomTitle, currentCustomScale); //noifty clients of change
         }
     }
     //Settings Menu Content
-    private bool tempObserver = false;
-    private bool visibleProfile;
-    private void OpenProfile() => visibleProfile = true;
-    void CloseProfile() => visibleProfile = false;
+    private string tempUsername = ""; //temp username used for user profile settings
+    private bool tempAdmin; //temp admin status used for user profile settings
+    private bool tempObserver = false; 
+    private bool visibleProfile; //Used for enabling/disabling profile popup
+    private void OpenProfile() => visibleProfile = true; //Sets profile to visable
+    void CloseProfile() => visibleProfile = false; //Hides profile popup
+
+    //this function is called when the user clicks save in the user settings menu
     async void SubmitProfile()
     {
         if(!(tempUsername.Length > 50 || tempUsername.Length < 2)){ //valid submission
             visibleProfile = false;
-            _dB.UpdateUsername(newGroupedModel.userId, tempUsername);
-            newGroupedModel.userName = tempUsername;
-            newGroupedModel.isAdmin = tempAdmin;
-            if(!newGroupedModel.isAdmin){
+            _dB.UpdateUsername(newGroupedModel.userId, tempUsername); //update database
+            newGroupedModel.userName = tempUsername; //update data model
+            newGroupedModel.isAdmin = tempAdmin; //update datamodel
+            if(!newGroupedModel.isAdmin){ //if user is not an admin they cannot be an observer
                 tempObserver = false;
                 newGroupedModel.observer = false;
             }
             else{
-                newGroupedModel.observer = tempObserver;
+                newGroupedModel.observer = tempObserver; //if user is an admin then take the current observer status
             }
-            _dB.UpdateAdmin(newGroupedModel.userId, newGroupedModel.isAdmin, newGroupedModel.observer);
-            connectedUsers = await _dB.getConnectedUsers(roomId);
+            _dB.UpdateAdmin(newGroupedModel.userId, newGroupedModel.isAdmin, newGroupedModel.observer); //update database 
+            connectedUsers = await _dB.getConnectedUsers(roomId); //regrab list of users with new data
             StateHasChanged();
             if(hubConnection is not null)
             {
-                await hubConnection.SendAsync("updateUserProfile", userId, newGroupedModel.userName, newGroupedModel.isAdmin, newGroupedModel.observer);
+                await hubConnection.SendAsync("updateUserProfile", userId, newGroupedModel.userName, newGroupedModel.isAdmin, newGroupedModel.observer); //noftify clients
             }
         }
     }
-    private DialogOptions dialogProfile = new() { FullWidth = true };
-    private bool visibleAbout;
-    private void OpenAbout() => visibleAbout = true;
-    void CloseAbout() => visibleAbout = false;
-    private string AboutProduct = "This is a story point estimating tool for aid in the agile development process. This tool will (hopefully) serve as the ideal aid for Paychex agile development teams as it was created specifically with that in mind. Included are several different agile development voting systems, a timer for general use, and a room creation and joining feature. All aspects of the tool are designed to be as intuitive and simple as possible to provide the quickest and easiest solution to story point estimation and agile development collaboration.";
-    private string AboutUs = "This product was created by a team of four aspiring software engineers from SUNY Fredonia consisting of Derek Zeplowitz, Rick Corsi, Peyton Miller, and Tyler Dorey. All of us are extremely grateful to have the oppurtunity to work on this project as it has provided us with experience in agile development in a real world setting. We hope you have a great experience using our tool!";
-    private DialogOptions dialogAbout = new() { FullWidth = true };
-    private bool visibleHelp;
-    private void OpenHelp() => visibleHelp = true;
-    void CloseHelp() => visibleHelp = false;
-    private string panelVoting = "Custom Voting: If the user is an admin on the custom voting tab you can use the scale to change the number of buttons and an input box to change the custom voting title, the title will also be updated on the table as the vote column header";
-    private string panelTable = ": Indicates whether a user is a facilitator \nUser Sorting: Usernames can be sorted alphabetically by clicking on the column header \nClear My Vote: Removes your own vote from the table \nResize Button: Changes the size of the table, useful for rooms with a lot of users";
-    private string panelAdmin = "Hide Votes: Toggleable tool that determines whether votes are visable for all users \nHide Users: Toggleable tool that determines whether users are visable for all users \nClear Votes: Clears all of the votes in the table for all users \nClear Users: Removes all non-facilitators from the room \nDelete Room: Removes all users and deletes the room";
-    private string panelMisc = "Timer: The timer tab comes with two modes, a stopwatch mode and timer mode where you can set hours, minutes, and seconds for a countdown.  If you are using timer mode you can also trigger a sound to play when the timer is finished \nDark Mode: If you click the moon in the bottom right corner you'll enter dark mode. You're Welcome :)";
-    private DialogOptions dialogHelp = new() { FullWidth = true };
+    private DialogOptions dialogProfile = new() { FullWidth = true }; //Profile dialog box
+    private bool visibleAbout; //Used for enabling/disabling profile popup
+    private void OpenAbout() => visibleAbout = true; //Sets profile to visable
+    void CloseAbout() => visibleAbout = false; //Hides profile popup
+    private DialogOptions dialogAbout = new() { FullWidth = true }; //About dialog box
+    private bool visibleHelp; //Used for enabling/disabling profile popup
+    private void OpenHelp() => visibleHelp = true; //Sets profile to visable
+    void CloseHelp() => visibleHelp = false; //Hides profile popup
+    private DialogOptions dialogHelp = new() { FullWidth = true }; //Help dialog box
 
-    //Return Home Warning
-    MudMessageBox returnHomeMSG { get; set; }
+    //Return User Home
+    MudMessageBox returnHomeMSG { get; set; } //Display warning after clicking home
+    
+    //Displays are you sure popup for the Home Button
     private async void returnHome()
     {
-        if (!loading)
+        if (!loading) //do not display when loading (causes a crash if yes is clicked)
         {
             bool? result = await returnHomeMSG.Show();
         }
     }
 
+    //called when user clicks yes on are you sure popup for home button
     private void removeUserReturnHome()
     {
-        _dB.removeUserData(roomId, userId);
+        _dB.removeUserData(roomId, userId); //remove user from db
         if(hubConnection is not null)
         {
-            hubConnection.SendAsync("userDisconnect", userId, roomId);
+            hubConnection.SendAsync("userDisconnect", userId, roomId); //notify other clients
         }
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/"); //go to home page
     }
     //Admin Tools
-    private bool hiddenUsers = false;
-    private bool hiddenVotes = true;
-    private bool votesCleared = false;
+    private bool hiddenUsers = false; //Used to toggle users to hidden or unhidden
+    private bool hiddenVotes = true; //Used to toggle votes to hidden or unhidden, Votes are hidden by default
+    private bool votesCleared = false; //Used to send signal to all users if votes have been cleared
     MudMessageBox deleteRoomMSG { get; set; }
-    private bool _isDense = false;
-    private async void deleteRoom()
+    private bool _isDense = false; //Used to determine if table is dense or not. Clientside only.
+    private async void deleteRoom() //Displays warning if "Delete room" is clicked 
     {
         bool? result = await deleteRoomMSG.Show();
     }
 
-    private void deleteRoomConfirmed()
+    private void deleteRoomConfirmed() //If delete room is confirmed in the popup, delete the room
     {
         if(hubConnection is not null){
-            hubConnection.SendAsync("userRemoval", roomId, true);
-            _dB.removeRoomData(roomId);
-            _dB.removeUserData(roomId, userId);
+            hubConnection.SendAsync("userRemoval", roomId, true); //notify clients of deletion
+            _dB.removeRoomData(roomId); //remove room from database
+            _dB.removeUserData(roomId, userId); //remove user from database
             Thread.Sleep(500); //Wait for all clients to recieve message
-            NavigationManager.NavigateTo("/RoomDeleted/true");
+            NavigationManager.NavigateTo("/RoomDeleted/true"); //navigate to ExitRoomPage.razor
         }
     }
 
-    MudMessageBox clearUsersMSG { get; set; }
+    MudMessageBox clearUsersMSG { get; set; } //Displays warning if "Clear Users" is clicked
     private async void clearUsers()
     {
         bool? result = await clearUsersMSG.Show();
     }
 
-    private async void clearUsersConfirmed(){
+    private async void clearUsersConfirmed(){ //If clear users is confirmed in the popup, clear users
         if(hubConnection is not null)
         {
-            await hubConnection.SendAsync("userRemoval", roomId, false);
+            await hubConnection.SendAsync("userRemoval", roomId, false); //notify clients of room clear
         }
     }
-    MudMessageBox clearVotesMSG { get; set; }
+    MudMessageBox clearVotesMSG { get; set; } //Display warning if "Clear Votes" is clicked
     private async void clearVotesMsg()
     {
         bool? result = await clearVotesMSG.Show();
     }
 
-    private async void clearVotes()
+    private async void clearVotes() //If clear votes is confirmed in the popup, clear votes
     {
-        hiddenVotes = true;
+        hiddenVotes = true; //Re-Hide votes after votes have been cleared
         if(hubConnection is not null){
-            connectedUsers = await _dB.GetClearedVotesList(roomId);
-            await hubConnection.SendAsync("sendClearedVotes", roomId, connectedUsers);
-            await hubConnection.SendAsync("sendHideVotes", roomId, hiddenVotes);
-            _dB.UpdateHideVotes(roomId, hiddenVotes);
+            connectedUsers = await _dB.GetClearedVotesList(roomId); //get new list with cleared votes
+            await hubConnection.SendAsync("sendClearedVotes", roomId, connectedUsers); //send clients new user list
+            await hubConnection.SendAsync("sendHideVotes", roomId, hiddenVotes); //notify clients that votes are hidden
+            _dB.UpdateHideVotes(roomId, hiddenVotes); //update database
 
         }
     }
-    private void hideUsers(){
+    private void hideUsers(){ //Toggles hide users
         if(hiddenUsers)
         {
             hiddenUsers = false;
@@ -855,11 +898,11 @@ else{
         }
         if(hubConnection is not null)
         {
-            hubConnection.SendAsync("sendHideUsers", roomId, hiddenUsers);
-            _dB.UpdateHideUsers(roomId, hiddenUsers);
+            hubConnection.SendAsync("sendHideUsers", roomId, hiddenUsers); //nofity clients that users are hidden
+            _dB.UpdateHideUsers(roomId, hiddenUsers); //update database
         }
     }
-    private void hideVotes(){
+    private void hideVotes(){ //Toggles hide votes
         if(hiddenVotes)
         {
             hiddenVotes = false;
@@ -870,64 +913,67 @@ else{
         }
         if(hubConnection is not null)
         {
-            hubConnection.SendAsync("sendHideVotes", roomId, hiddenVotes);
-            _dB.UpdateHideVotes(roomId, hiddenVotes);
+            hubConnection.SendAsync("sendHideVotes", roomId, hiddenVotes); //notify clients that votes are hidden
+            _dB.UpdateHideVotes(roomId, hiddenVotes);//update database
         }
     }
     //Voting Mode
-
-    public int Voting_Mode { get; set; } = 1;
-    string fiboVoteClient { get; set; }
-    string fistVoteClient { get; set; } 
-    string tshirtVoteClient { get; set; }
-    string scaleVoteClient { get; set; } 
-    void setVotingMode(int mode){
+    public int Voting_Mode { get; set; } = 1; //Voting mode is set to Fibonacci Tool by default
+    string fiboVoteClient { get; set; } //Client Fibonacci Vote
+    string fistVoteClient { get; set; } //Client Fist of Five Vote
+    string tshirtVoteClient { get; set; } //Client T-Shirt Vote
+    string scaleVoteClient { get; set; } //Client Custom Scale Vote
+    void setVotingMode(int mode){ //Sets voting mode, chanes tab
         Voting_Mode = mode;
-        if(Voting_Mode == 1) //fib vote
+        if(Voting_Mode == 1) //Fibonacci Tool
         {
-            AppBarEverythingFalse();
-            _fiboAppBar = true;
+            AppBarEverythingFalse(); //Makes sure all appbar tabs are unselected
+            _fiboAppBar = true; //Select Fibonacci Tool
         }
-        else if (Voting_Mode == 2) //Fist vote
+        else if (Voting_Mode == 2) //Fist of Five
         {
-            AppBarEverythingFalse();
-            _fistAppBar = true;
+            AppBarEverythingFalse(); //Makes sure all appbar tabs are unselected
+            _fistAppBar = true; //Select Fist of Five
         }
-        else if (Voting_Mode == 3) //Tshirt vote
+        else if (Voting_Mode == 3) //T-Shirt
         {
-            AppBarEverythingFalse();
-            _tshirtAppBar = true;
+            AppBarEverythingFalse(); //Makes sure all appbar tabs are unselected
+            _tshirtAppBar = true; //Select T-shirt
         }
-        else if (Voting_Mode == 4) //custom scale
+        else if (Voting_Mode == 4) //Custom Scale
         {
-            AppBarEverythingFalse();
-            _customAppBar = true;
+            AppBarEverythingFalse(); //Makes sure all appbar tabs are unselected
+            _customAppBar = true; //Selects custom scale
         }
-        else if (Voting_Mode == 5) //timer
+        else if (Voting_Mode == 5) //Timer
         {
-            AppBarEverythingFalse();
-            _timerAppBar = true;
+            AppBarEverythingFalse(); //Makes sure all appbar tabs are unselected
+            _timerAppBar = true; //Selects Timer
         }
     }
-    void setVote(string val)
+
+    //Sets the users votes
+    //val = the value from which button was clicked
+    //Note: found is rewritten in each if statement to ensure that the list is as updated as possible before setting the vote due to async calls
+    void setVote(string val) 
     {
         try
         {
             _dB.UpdateVote(newGroupedModel.userId, Voting_Mode, val);
             if (Voting_Mode == 1)//fib vote
             {
-                userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
-                if (val.Equals("coffee"))
+                userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId); // grab user from list of connected users
+                if (val.Equals("coffee")) //coffee button clicked
                 {
-                    found.fibVote = "" + COFFEE;
+                    found.fibVote = "" + COFFEE;//update vote
                     fiboVoteClient = "" + COFFEE;
                 }
-                else if (val.Equals("half"))
+                else if (val.Equals("half")) //1/2 button clicked
                 {
-                    found.fibVote = "" + HALF;
+                    found.fibVote = "" + HALF; 
                     fiboVoteClient = "" + HALF;
                 }
-                else
+                else //any other vote
                 {
                     found.fibVote = val;
                     fiboVoteClient = val;
@@ -935,14 +981,14 @@ else{
             }
             else if (Voting_Mode == 2) //Fist vote
             {
-                userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
-                found.fistVote = val;
+                userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId); // grab user from list of connected users
+                found.fistVote = val; //update vote
                 fistVoteClient = val;
             }
             else if (Voting_Mode == 3) //Tshirt vote
             {
-                userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId);
-                found.tshirtVote = val;
+                userModel found = connectedUsers.Find(x => x.userId == newGroupedModel.userId); // grab user from list of connected users
+                found.tshirtVote = val;//update vote
                 tshirtVoteClient = val;
             }
             else if (Voting_Mode == 4) //custom scale
@@ -953,7 +999,7 @@ else{
             }
             if (hubConnection is not null)
             {
-                hubConnection.SendAsync("updateVote", newGroupedModel.userId, val, Voting_Mode);
+                hubConnection.SendAsync("updateVote", newGroupedModel.userId, val, Voting_Mode); //notify clients that users vote has changed
             }
             StateHasChanged();
         }
@@ -963,7 +1009,7 @@ else{
             {
                 hubConnection.SendAsync("userDisconnect", userId, roomId); //if the case is where user joins during clear make sure user is removed from the list
             }
-            NavigationManager.NavigateTo("Error");
+            NavigationManager.NavigateTo("Error"); //go to error page
         }
     }
     //Timer
@@ -973,19 +1019,19 @@ else{
     TimeSpan TimeRemaining;
     string displaytimer = "00:00:00"; //displayed time
     string mostRecentTime = "00:00:00"; //displayed time
-    private bool _timing = false;
-    private bool _pause = false;
-    private bool _reset = false;
-    private bool _timerDone = false;
-    private bool _pauseDisable = true;
-    private bool _soundOff = true;
-    private bool _stopwatchMode = false;
-    private bool _isStopwatchRunning = false;
-    private bool _stopwatchDone = false;
-    private bool _stopDisable = true;
-    async Task Timer()
+    private bool _timing = false; //Used to determine if timer is timing
+    private bool _pause = false; //Used to determine if timer is paused
+    private bool _reset = false; //Used to determine if timer is reset
+    private bool _timerDone = false; //Used to determing if timer is done
+    private bool _pauseDisable = true; //Used to determine if pause functionality
+    private bool _soundOff = true; //Used to disable/enable sound, Sound if off by default
+    private bool _stopwatchMode = false; //Used to toggle between stopwatch and timer modes
+    private bool _isStopwatchRunning = false; //Used to determing if stopwatch isn timing
+    private bool _stopwatchDone = false; //Used to determing if stopwatch is done
+    private bool _stopDisable = true; //Used to disable stop button
+    async Task Timer() //Timer Task
     {
-        _timerDone = false;
+        _timerDone = false; //Set timer to not be done
         _timing = true;
         _pauseDisable = false;
         if(!_pause) TimeRemaining = new TimeSpan(Hours, Minutes, Seconds+1); //if not paused create new timer
@@ -999,7 +1045,7 @@ else{
             if (!_pause) //if not paused progress timer
             {
                 await Task.Delay(1000);
-                TimeRemaining = TimeRemaining.Subtract(new TimeSpan(0,0,1));
+                TimeRemaining = TimeRemaining.Subtract(new TimeSpan(0,0,1)); //Remove one second while timing is running
                 displaytimer = TimeRemaining.ToString();
                 StateHasChanged();
             }
@@ -1008,22 +1054,21 @@ else{
             }
         }
         _reset = false;
-        if(!_pause && !_reset)
-        {//do not display Times Up! When paused or after reset
+        if(!_pause && !_reset) {//do not display Times Up! When paused or after reset
             await AfterTime();
         }
         StateHasChanged();
     }
-    async Task Stopwatch() {
+    async Task Stopwatch() { //Stopwatch task
         _stopwatchDone = false;
-        TimeRemaining = new TimeSpan(0, 0, 0);
+        TimeRemaining = new TimeSpan(0, 0, 0); //Timespan 
         _isStopwatchRunning = true;
         _stopDisable = false;
-        while (_isStopwatchRunning) {
+        while (_isStopwatchRunning) { //While stopwatch is running
             await Task.Delay(1000);
             if (_isStopwatchRunning)
             {
-                TimeRemaining = TimeRemaining.Add(new TimeSpan(0, 0, 1));
+                TimeRemaining = TimeRemaining.Add(new TimeSpan(0, 0, 1)); //Add one second while stopwatch is running
                 displaytimer = TimeRemaining.ToString();
                 StateHasChanged();
             }
@@ -1031,42 +1076,42 @@ else{
     }
     void pauseTimer()
     {
-        TimeRemaining = TimeRemaining.Add(new TimeSpan(0,0,1));
+        TimeRemaining = TimeRemaining.Add(new TimeSpan(0,0,1)); //Add one second back to timer if paused to account for delay
         _pause = true;
         _timing = false;
         _pauseDisable = true;
     }
-    void stopStopwatch()
+    void stopStopwatch()//
     {
         _isStopwatchRunning = false;
         _stopwatchDone = true;
         _stopDisable = true;
-        displaytimer = "00:00:00";
-        mostRecentTime = TimeRemaining.ToString();
+        displaytimer = "00:00:00"; //Display timer as 0
+        mostRecentTime = TimeRemaining.ToString(); //Display most recent time
     }
-    Task AfterTime()
+    Task AfterTime() //Task is called when the timer is finished
     {
         _pauseDisable = true;
         _timerDone = true;
-        displaytimer = "00:00:00";
+        displaytimer = "00:00:00"; //Display timer as 0
         return Task.CompletedTask;
     }
-    void resetTimer()
+    void resetTimer() //Function resets the timer
     {
         _timerDone = false;
         _timing = false;
         _pauseDisable = true;
         _pause = false;
         _reset = true;
-        displaytimer = "00:00:00";
-        TimeRemaining = new TimeSpan(0, 0, 1);
+        displaytimer = "00:00:00"; //Display timer as 0
+        TimeRemaining = new TimeSpan(0, 0, 1); //Set timespan to one second by default
     }
-    MudMessageBox timerNotificationMSG { get; set; }
+    MudMessageBox timerNotificationMSG { get; set; } //Call timer notification
     private async void timerNotification()
     {
         bool? result = await timerNotificationMSG.Show();
     }
-    void toggleSound()
+    void toggleSound() //Toggles sound
     {
         if(_soundOff)
         {
@@ -1077,7 +1122,7 @@ else{
             _soundOff = true;
         }    
     }
-    void toggleStopwatch()
+    void toggleStopwatch() //Toggle between stopwatch and timer modes
     {
         if(_stopwatchMode)
         {
@@ -1085,8 +1130,8 @@ else{
             _stopDisable = true;
             _stopwatchDone = false;
             _isStopwatchRunning = false;
-            displaytimer = "00:00:00";
-            TimeRemaining = new TimeSpan(0, 0, 1);
+            displaytimer = "00:00:00"; //Display timer as 0
+            TimeRemaining = new TimeSpan(0, 0, 1); //Set timespan to one second by default
             _stopwatchMode = false;
         }
         else
@@ -1096,22 +1141,21 @@ else{
             _stopwatchDone = false;
             _isStopwatchRunning = false;
             _reset = true;
-            displaytimer = "00:00:00";
-            TimeRemaining = new TimeSpan(0, 0, 1);
+            displaytimer = "00:00:00"; //Display timer as 0
+            TimeRemaining = new TimeSpan(0, 0, 1); //Set timespan to one second by default
             Hours = 0;
             Minutes = 0;
             Seconds = 0;
             _stopwatchMode = true;
         }    
     }
-    //AppBar
+    //AppBar variables (true if highlighted false if not)
     private bool _fiboAppBar = true;
     private bool _fistAppBar = false;
     private bool _tshirtAppBar = false;
     private bool _customAppBar = false;
     private bool _timerAppBar = false;
-
-    void AppBarEverythingFalse(){
+    void AppBarEverythingFalse(){ //Disables highlight on all appbar tabs
         _fiboAppBar = false;
         _fistAppBar = false;
         _tshirtAppBar = false;
@@ -1123,4 +1167,10 @@ else{
     const char HALF = '\u00BD';
     const char STAR = '\u2B50';
     private string Me = " (Me)";
+    private string AboutProduct = "This is a story point estimating tool for aid in the agile development process. This tool will (hopefully) serve as the ideal aid for Paychex agile development teams as it was created specifically with that in mind. Included are several different agile development voting systems, a timer for general use, and a room creation and joining feature. All aspects of the tool are designed to be as intuitive and simple as possible to provide the quickest and easiest solution to story point estimation and agile development collaboration.";
+    private string AboutUs = "This product was created by a team of four aspiring software engineers from SUNY Fredonia consisting of Derek Zeplowitz, Rick Corsi, Peyton Miller, and Tyler Dorey. All of us are extremely grateful to have the oppurtunity to work on this project as it has provided us with experience in agile development in a real world setting. We hope you have a great experience using our tool!";
+    private string panelVoting = "Custom Voting: If the user is an admin on the custom voting tab you can use the scale to change the number of buttons and an input box to change the custom voting title, the title will also be updated on the table as the vote column header";
+    private string panelTable = ": Indicates whether a user is a facilitator \nUser Sorting: Usernames can be sorted alphabetically by clicking on the column header \nClear My Vote: Removes your own vote from the table \nResize Button: Changes the size of the table, useful for rooms with a lot of users";
+    private string panelAdmin = "Hide Votes: Toggleable tool that determines whether votes are visable for all users \nHide Users: Toggleable tool that determines whether users are visable for all users \nClear Votes: Clears all of the votes in the table for all users \nClear Users: Removes all non-facilitators from the room \nDelete Room: Removes all users and deletes the room";
+    private string panelMisc = "Timer: The timer tab comes with two modes, a stopwatch mode and timer mode where you can set hours, minutes, and seconds for a countdown.  If you are using timer mode you can also trigger a sound to play when the timer is finished \nDark Mode: If you click the moon in the bottom right corner you'll enter dark mode. You're Welcome :)";
 } 
