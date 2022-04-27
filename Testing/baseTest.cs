@@ -59,6 +59,11 @@ namespace Testing
             Thread.Sleep(500);
             //Assert.Contains("https://paychex-story-point-estimator.azurewebsites.net/Room", driver.Url);
             Thread.Sleep(500);
+
+            driver.FindElements(By.ClassName("admin-tools-buttons"))[4].Click();
+            Thread.Sleep(1000);
+            //Need to figure out how to confirm delete in this line
+            Thread.Sleep(5000);
             driver.Close();
         }
     }
