@@ -54,11 +54,12 @@ namespace Testing
             driver.FindElements(By.ClassName("join-create-text-fields"))[0].SendKeys(Keys.Clear + "UserA");
             Thread.Sleep(500);
             driver.FindElements(By.ClassName("join-create-text-fields"))[1].SendKeys(Keys.Clear + "TestingRoom");
+            driver.FindElement(By.ClassName("mud-checkbox")).Click();
             driver.FindElement(By.TagName("button")).Click();
             Thread.Sleep(500);
-            Assert.Contains("https://paychex-story-point-estimator.azurewebsites.net/Room", driver.Url);
+            //Assert.Contains("https://paychex-story-point-estimator.azurewebsites.net/Room", driver.Url);
+            Thread.Sleep(500);
+            driver.Close();
         }
-
-
     }
 }
