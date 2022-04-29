@@ -15,13 +15,39 @@ namespace Testing
     public class baseTest
     {
         [Fact]
-        public void userA()
+        public void main()
         {
-            //Initialize Driver and navigate to site
-            var driver = new ChromeDriver();
-            driver.Manage().Window.Maximize();
-            driver.Navigate().GoToUrl("https://paychex-story-point-estimator.azurewebsites.net/");
+            //Initialize User A and navigate to site
+            var userA = new ChromeDriver();
+            userA.Manage().Window.Maximize();
+            userA.Navigate().GoToUrl("https://paychex-story-point-estimator.azurewebsites.net/");
 
+            //Initialize User B
+            var userB = new ChromeDriver();
+            userB.Manage().Window.Maximize();
+            userB.Navigate().GoToUrl("https://paychex-story-point-estimator.azurewebsites.net/");
+
+            createRoom(userA);
+            joinRoom(userB);
+
+            vote(userB);
+            Thread.Sleep(500);
+
+            checkVotesAndUnhide(userA);
+            clearVotesAndCheck(userA);
+
+
+
+            userA.FindElements(By.ClassName("admin-tools-buttons"))[4].Click();
+            Thread.Sleep(1000);
+            userA.FindElement(By.TagName("html")).SendKeys(Keys.Tab + Keys.Enter);
+            Thread.Sleep(3000);
+            userA.Close();
+            userB.Close();
+        }
+
+        public void createRoom(ChromeDriver driver)
+        {
             //Click on create room button and assert that the navigation executed correctly
             driver.FindElement(By.LinkText("Create Room")).Click();
             Thread.Sleep(500);
@@ -34,7 +60,7 @@ namespace Testing
             Assert.Equal("https://paychex-story-point-estimator.azurewebsites.net/CreateRoom", driver.Url);
 
             //Attempt a submission in which the room name and username are both one character, which is too short for both fields
-            foreach(IWebElement textbox in driver.FindElements(By.ClassName("join-create-text-fields")))
+            foreach (IWebElement textbox in driver.FindElements(By.ClassName("join-create-text-fields")))
             {
                 textbox.SendKeys("a");
                 Thread.Sleep(500);
@@ -46,7 +72,7 @@ namespace Testing
             Assert.Equal("https://paychex-story-point-estimator.azurewebsites.net/CreateRoom", driver.Url);
 
             //Attempting submission with valid username but invalid room name
-            driver.FindElements(By.ClassName("join-create-text-fields"))[0].SendKeys(Keys.Backspace + "UserA");
+            driver.FindElements(By.ClassName("join-create-text-fields"))[0].SendKeys(Keys.Backspace + "userA");
             Thread.Sleep(500);
             driver.FindElements(By.ClassName("join-create-text-fields"))[1].SendKeys(Keys.Backspace + "a");
             Assert.Equal("https://paychex-story-point-estimator.azurewebsites.net/CreateRoom", driver.Url);
@@ -58,23 +84,11 @@ namespace Testing
             driver.FindElement(By.TagName("button")).Click();
             Thread.Sleep(500);
             Assert.NotEqual("https://paychex-story-point-estimator.azurewebsites.net/CreateRoom", driver.Url);
-            Thread.Sleep(500);
-
-            userB();
-
-            driver.FindElements(By.ClassName("admin-tools-buttons"))[4].Click();
-            Thread.Sleep(1000);
-            driver.FindElement(By.TagName("html")).SendKeys(Keys.Tab + Keys.Enter);
-            Thread.Sleep(3000);
-            driver.Close();
         }
 
-        public void userB()
+        public void joinRoom(ChromeDriver driver)
         {
-            var driver = new ChromeDriver();
-            driver.Manage().Window.Maximize();
-            driver.Navigate().GoToUrl("https://paychex-story-point-estimator.azurewebsites.net/");
-            
+           
             driver.FindElement(By.LinkText("Join Room")).Click();
             Thread.Sleep(500);
 
@@ -98,6 +112,35 @@ namespace Testing
             driver.FindElements(By.TagName("button"))[1].Click();
             Thread.Sleep(200);
             Assert.NotEqual("https://paychex-story-point-estimator.azurewebsites.net/JoinRoom", driver.Url);
+        }
+
+        public void vote(ChromeDriver driver)
+        {
+            driver.FindElements(By.ClassName("tool-buttons"))[1].Click();            
+        }
+
+        public void checkVotesAndUnhide(ChromeDriver driver)
+        {
+            var table_vote_elements = driver.FindElements(By.CssSelector("p.table-vote-text"));
+            Assert.Equal(2, table_vote_elements.Count);
+
+            driver.FindElements(By.ClassName("admin-tools-buttons"))[0].Click();
+            Thread.Sleep(500);
+            table_vote_elements = driver.FindElements(By.CssSelector("p.table-vote-text"));
+            Assert.Equal(3, table_vote_elements.Count);
+        }
+
+        public void clearVotesAndCheck(ChromeDriver driver)
+        {
+            var table_vote_elements = driver.FindElements(By.CssSelector("p.table-vote-text"));
+            Assert.Equal(3, table_vote_elements.Count);
+
+            driver.FindElements(By.ClassName("admin-tools-buttons"))[2].Click();
+            Thread.Sleep(500);
+            driver.FindElement(By.TagName("html")).SendKeys(Keys.Tab + Keys.Enter);
+            Thread.Sleep(500);
+            table_vote_elements = driver.FindElements(By.CssSelector("p.table-vote-text"));
+            Assert.Equal(2, table_vote_elements.Count);
         }
     }
 }
