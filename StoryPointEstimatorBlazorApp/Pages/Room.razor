@@ -179,7 +179,7 @@ else{
             } 
             else {<MudText Class="mud-paper-tool-name" >Timer</MudText>//Heading name is "Timer" if stopwatch mode is not selected-->
             }    
-            <MudPaper Class="mud-paper-timer" Style="justify-content: space-evenly" Height ="515px" Width ="850px" Elevation="0">  
+            <MudPaper Class="mud-paper-timer" Style="justify-content: space-evenly" Height ="500px" Width ="850px" Elevation="0">  
                 <MudPaper Class="timer-display">
                     @if (_timerDone) {<MudText Class="main-font" Style="font-size: 70px;"> 00:00:00 </MudText> //Set timer display to zero if the timer is done
                     }
@@ -276,7 +276,7 @@ else{
                         ToggledIcon="@Icons.Rounded.ZoomOutMap" ToggledColor="@Color.Secondary"/>
                     </MudPaper>
                 </MudItem>
-                <MudTable Items="@connectedUsers" Style="background: rgba(0,0,0,0.0);" Dense="@_isDense" FixedHeader="true" Height="500px" Hover="true" Bordered="true" Breakpoint="Breakpoint.Sm">
+                <MudTable Items="@connectedUsers" Style="background: rgba(0,0,0,0.0);" Dense="@_isDense" Elevation="0" FixedHeader="true" Height="514px" Hover="true" Bordered="true" Striped="true" Breakpoint="Breakpoint.Sm">
                     <ColGroup>
                         <col style="width: 50%;" />
                         <col style="width: 50%;" />
