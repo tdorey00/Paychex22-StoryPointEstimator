@@ -34,9 +34,16 @@ namespace Testing
             Thread.Sleep(500);
 
             checkVotesAndUnhide(userA);
+            Thread.Sleep(100);
             clearVotesAndCheck(userA);
 
-
+            clearMyVote(userB);
+            Thread.Sleep(500);
+            hideUsers(userA);
+            Thread.Sleep(500);
+            clearUsers(userA);
+            Thread.Sleep(500);
+            Assert.Equal("https://paychex-story-point-estimator.azurewebsites.net/RoomDeleted/false", userB.Url);
 
             userA.FindElements(By.ClassName("admin-tools-buttons"))[4].Click();
             Thread.Sleep(1000);
@@ -141,6 +148,45 @@ namespace Testing
             Thread.Sleep(500);
             table_vote_elements = driver.FindElements(By.CssSelector("p.table-vote-text"));
             Assert.Equal(2, table_vote_elements.Count);
+        }
+
+        public void clearMyVote(ChromeDriver driver)
+        {
+            vote(driver);
+            Thread.Sleep(200);
+            var table_vote_elements = driver.FindElements(By.CssSelector("p.table-vote-text"));
+            Assert.Equal(3, table_vote_elements.Count);
+            driver.FindElement(By.ClassName("admin-tools-buttons")).Click();
+            Thread.Sleep(200);
+            table_vote_elements = driver.FindElements(By.CssSelector("p.table-vote-text"));
+            Assert.Equal(2, table_vote_elements.Count);
+        }
+
+        public void hideUsers(ChromeDriver driver)
+        {
+            vote(driver);
+            checkVotesAndUnhide(driver);
+            var table_vote_elements = driver.FindElements(By.CssSelector("p.table-vote-text"));
+            Assert.Equal(3, table_vote_elements.Count);
+            driver.FindElements(By.ClassName("admin-tools-buttons"))[1].Click();
+            Thread.Sleep(200);
+            table_vote_elements = driver.FindElements(By.CssSelector("p.table-vote-text"));
+            Assert.Equal(1, table_vote_elements.Count);
+
+            driver.FindElements(By.ClassName("admin-tools-buttons"))[1].Click();
+            Thread.Sleep(200);
+            table_vote_elements = driver.FindElements(By.CssSelector("p.table-vote-text"));
+            Assert.Equal(3, table_vote_elements.Count);
+        }
+
+        public void clearUsers(ChromeDriver driver)
+        {
+            var table_vote_elements = driver.FindElements(By.CssSelector("p.table-vote-text"));
+            Assert.Equal(3, table_vote_elements.Count);
+
+            driver.FindElements(By.ClassName("admin-tools-buttons"))[3].Click();
+            Thread.Sleep(100);
+            driver.FindElement(By.TagName("html")).SendKeys(Keys.Tab + Keys.Enter);
         }
     }
 }
