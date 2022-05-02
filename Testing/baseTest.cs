@@ -37,6 +37,8 @@ namespace Testing
             Thread.Sleep(100);
             clearVotesAndCheck(userA);
 
+            customVotingTools(userA);
+
             clearMyVote(userB);
             Thread.Sleep(500);
             hideUsers(userA);
@@ -123,7 +125,7 @@ namespace Testing
 
         public void vote(ChromeDriver driver)
         {
-            driver.FindElements(By.ClassName("tool-buttons"))[1].Click();            
+            driver.FindElement(By.ClassName("tool-buttons")).Click();            
         }
 
         public void checkVotesAndUnhide(ChromeDriver driver)
@@ -187,6 +189,33 @@ namespace Testing
             driver.FindElements(By.ClassName("admin-tools-buttons"))[3].Click();
             Thread.Sleep(100);
             driver.FindElement(By.TagName("html")).SendKeys(Keys.Tab + Keys.Enter);
+        }
+
+        public void customVotingTools(ChromeDriver driver)
+        {
+            driver.FindElements(By.ClassName("appbar-buttons"))[4].Click();
+            Thread.Sleep(200);
+
+            Assert.Equal(24, driver.FindElements(By.ClassName("tool-buttons")).Count);
+            driver.FindElement(By.ClassName("mud-slider-primary")).Click();
+
+            driver.FindElement(By.ClassName("join-create-text-fields")).SendKeys("Test");
+            //driver.FindElement(By.TagName("html")).SendKeys(Keys.ArrowLeft + Keys.ArrowLeft);
+            
+
+            driver.FindElements(By.ClassName("admin-tools-buttons"))[0].Click();
+            Thread.Sleep(300);
+            Assert.Equal(12, driver.FindElements(By.ClassName("tool-buttons")).Count);
+            Assert.Equal("Test", driver.FindElement(By.ClassName("mud-paper-tool-name")).Text);
+
+            driver.FindElements(By.ClassName("appbar-buttons"))[1].Click();
+        }
+
+        public void userProfile(ChromeDriver driver)
+        {
+            driver.FindElement(By.TagName("svg")).Click();
+
+
         }
     }
 }
