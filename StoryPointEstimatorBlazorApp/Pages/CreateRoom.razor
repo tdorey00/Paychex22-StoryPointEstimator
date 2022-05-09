@@ -106,12 +106,12 @@
     {
         Random rand = new Random();
 
-        int randomId = rand.Next(1000, 10000); //generates a random user ID between 1000 and 9999
+        int randomId = rand.Next(1000, 10000); //generates a random room ID between 1000 and 9999
         bool unique = false;
         roomIdList = _dB.GetRoomIds(); //pull roomId list from dB
         while (!unique)
         {
-            int found = roomIdList.Find(x => x == randomId); //check if userId already exists in list of current users
+            int found = roomIdList.Find(x => x == randomId); //check if roomId already exists in list of current users
             if(found != 0)
             {
                 randomId = rand.Next(1000, 10000); //generate new Id
@@ -130,7 +130,7 @@
     private int createUserId()
     {
         Random rand = new Random();
-        int possibleId = rand.Next(1000, 10000); //generates a random room code between 1000 and 9999
+        int possibleId = rand.Next(1000, 10000); //generates a random userId between 1000 and 9999
         bool unique = false;
         userIdList = _dB.GetUserIds(); //pull userId list from the db
         while (!unique)
