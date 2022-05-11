@@ -782,7 +782,7 @@ else{
     //this function is called when the user clicks save in the user settings menu
     async void SubmitProfile()
     {
-        if(!(tempUsername.Length > 50 || tempUsername.Length < 2)){ //valid submission
+        if(!(tempUsername.Length > 50 || tempUsername.Length < 3)){ //valid submission
             visibleProfile = false;
             _dB.UpdateUsername(newGroupedModel.userId, tempUsername); //update database
             newGroupedModel.userName = tempUsername; //update data model
