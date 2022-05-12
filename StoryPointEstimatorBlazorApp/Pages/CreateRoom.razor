@@ -162,7 +162,7 @@
             {
                 List<string> roomNames = _dB.GetRoomNames(); //get current list of room names
                 if (newGroupedModel.roomName.Equals(String.Empty) || newGroupedModel.userName.Equals(String.Empty) //ensure input areas contain data and are within length requirements
-                    || newGroupedModel.roomName.Length > 50 || newGroupedModel.roomName.Length < 3 || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 2)
+                    || newGroupedModel.roomName.Length > 50 || newGroupedModel.roomName.Length < 3 || newGroupedModel.userName.Length > 50 || newGroupedModel.userName.Length < 3)
                     validSubmit = false;
                 else
                     validSubmit = true;
